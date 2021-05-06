@@ -38,16 +38,20 @@ if($status == 'SUCCESS'){
 	print_r($response);
 	sysmsg('系统异常，状态未知！');
 }
+
+if(checkmobile()==true){
+	include 'alipaywap.php';
+	exit;
+}
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Language" content="zh-cn">
 <meta name="renderer" content="webkit">
 <title>支付宝扫码支付 - <?php echo $conf['sitename']?></title>
-<link href="assets/css/alipay_pay.css?v=2" rel="stylesheet" media="screen">
+<link href="assets/css/alipay_pay.css" rel="stylesheet" media="screen">
 </head>
 <body>
 <div class="body">
@@ -60,10 +64,7 @@ if($status == 'SUCCESS'){
 <div class="amount">￥<?php echo $row['money']?></div>
 <div class="qr-image" id="qrcode">
 </div>
-<div class="open_app" style="display: none;">
-    <a onclick="openAlipay()" class="btn-open-app">打开支付宝APP继续付款</a><br/><br/><br/>
-	<a onclick="checkresult()" class="btn-check">我已付款，返回查看订单</a>
-</div>
+ 
 <div class="detail" id="orderDetail">
 <dl class="detail-ct" style="display: none;">
 <dt>购买物品</dt>
@@ -87,12 +88,22 @@ if($status == 'SUCCESS'){
 <div class="tip-text">
 </div>
 </div>
+<?php if(checkmobile()==true){?>
+<div class="foot">
+<div class="inner">
+<div id="J_downloadInteraction" class="download-interaction download-interaction-opening">
+	<div class="inner-interaction">
+		<p class="download-opening">正在打开支付宝<span class="download-opening-1">.</span><span class="download-opening-2">.</span><span class="download-opening-3">.</span></p>
+		<p class="download-asking">如果没有打开支付宝，<a id="J_downloadBtn" href="javascript:;" onclick="openAli();">请点此重新唤起</a></p>
+</div>
+</div>
+</div>
+</div>
+<?php }?>
 <script src="//cdn.staticfile.org/jquery/1.12.4/jquery.min.js"></script>
 <script src="//cdn.staticfile.org/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
-<script src="//cdn.staticfile.org/layer/3.1.1/layer.min.js"></script>
 <script>
 	var code_url = '<?php echo $code_url?>';
-	var url_scheme = 'alipays://platformapi/startapp?appId=20000067&url=' + encodeURIComponent(code_url);
     $('#qrcode').qrcode({
         text: code_url,
         width: 230,
@@ -120,14 +131,17 @@ if($status == 'SUCCESS'){
             dataType: "json",
             url: "getshop.php",
             timeout: 10000, //ajax请求超时时间10s
-            data: {type: "alipay", trade_no: "<?php echo $row['trade_no']?>"}, //post数据
+            data: {type: "wxpay", trade_no: "<?php echo $row['trade_no']?>"}, //post数据
             success: function (data, textStatus) {
                 //从服务器得到数据，显示数据并继续查询
                 if (data.code == 1) {
-					layer.msg('支付成功，正在跳转中...', {icon: 16,shade: 0.1,time: 15000});
-					setTimeout(window.location.href=data.backurl, 1000);
+					if (confirm("您已支付完成，需要跳转到订单页面吗？")) {
+                        window.location.href=data.backurl;
+                    } else {
+                        // 用户取消
+                    }
                 }else{
-                    setTimeout("loadmsg()", 3000);
+                    setTimeout("loadmsg()", 4000);
                 }
             },
             //Ajax请求超时，继续查询
@@ -140,40 +154,24 @@ if($status == 'SUCCESS'){
             }
         });
     }
-	function checkresult() {
-        $.ajax({
-            type: "GET",
-            dataType: "json",
-            url: "getshop.php",
-            timeout: 10000, //ajax请求超时时间10s
-            data: {type: "alipay", trade_no: "<?php echo $row['trade_no']?>"},
-            success: function (data, textStatus) {
-                //从服务器得到数据，显示数据并继续查询
-                if (data.code == 1) {
-                    layer.msg('支付成功，正在跳转中...', {icon: 16,shade: 0.1,time: 15000});
-					setTimeout(window.location.href=data.backurl, 1000);
-                }else{
-					layer.msg('您还未完成付款，请继续付款', {shade: 0,time: 1500});
-				}
-            }
-        });
-    }
-	var isMobile = function (){
-		var ua = navigator.userAgent;
-		var ipad = ua.match(/(iPad).*OS\s([\d_]+)/),
-		isIphone =!ipad && ua.match(/(iPhone\sOS)\s([\d_]+)/),
-		isAndroid = ua.match(/(Android)\s+([\d.]+)/);
-		return isIphone || isAndroid;
-	}
-	function openAlipay(){
-		window.location.href = url_scheme;
-		layer.msg('正在打开支付宝...', {shade: 0,time: 1000});
+
+
+	function openAli(){
+		var scheme = 'alipays://platformapi/startapp?saId=10000007&qrcode=';
+		scheme += encodeURIComponent(code_url);
+
+		if(navigator.userAgent.indexOf("Safari") > -1){
+			window.location.href = scheme;
+		}
+		else{
+			var iframe = document.createElement("iframe");
+			iframe.style.display = "none";
+			iframe.src = scheme;
+			document.body.appendChild(iframe);
+		}
 	}
 	window.onload = function(){
-		if(isMobile()){
-			$('.open_app').show();
-		}
-		window.location.href = url_scheme;
+		openAli();
 		setTimeout("loadmsg()", 2000);
 	}
 </script>

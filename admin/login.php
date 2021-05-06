@@ -6,6 +6,7 @@ $verifycode = 1;//验证码开关
 
 if(!function_exists("imagecreate") || !file_exists('code.php'))$verifycode=0;
 include("../includes/common.php");
+include("../includes/admin.config.php");
 if(isset($_POST['user']) && isset($_POST['pass'])){
 	$user=daddslashes($_POST['user']);
 	$pass=daddslashes($_POST['pass']);
@@ -14,7 +15,11 @@ if(isset($_POST['user']) && isset($_POST['pass'])){
 		unset($_SESSION['vc_code']);
 		@header('Content-Type: text/html; charset=UTF-8');
 		exit("<script language='javascript'>alert('验证码错误！');history.go(-1);</script>");
-	}elseif($user===$conf['admin_user'] && $pass===$conf['admin_pwd']) {
+	}elseif($user===ADMIN_USERNAME && $pass===ADMIN_PASSWORD) {
+		if (ADMIN_KEY != '') {
+			$key = daddslashes($_POST['key']);
+			if ($key != ADMIN_KEY) exit("<script language='javascript'>alert('后台口令不正确！');history.go(-1);</script>");
+		}
 		unset($_SESSION['vc_code']);
 		$session=md5($user.$pass.$password_hash);
 		$token=authcode("0\t{$user}\t{$session}", 'ENCODE', SYS_KEY);
@@ -63,7 +68,7 @@ include './head.php';
         <h4 class="modal-title">找回管理员密码方法</h4>
       </div>
       <div class="modal-body">
-        <p>进入数据库管理器（phpMyAdmin），点击进入当前网站所在数据库，然后查看shua_config表即可找回管理员密码。</p>
+        <p>重设密码请编辑[includes]目录下的[admin.config.php]文件</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -99,6 +104,16 @@ include './head.php';
 					</div>
 				</div>
 			</div>
+			<?php if (ADMIN_KEY != '') { ?>
+			<div class="form-group">
+				<div class="col-xs-12">
+					<div class="input-group">
+						<span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+						<input type="password" id="key" name="key" class="form-control" placeholder="口令，员工无需填写">
+					</div>
+				</div>
+			</div>
+			<?php } ?>
 			<?php if($verifycode==1){?>
 			<div class="form-group">
 				<div class="col-xs-12">

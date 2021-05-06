@@ -655,7 +655,7 @@ case 'getshuoshuo':
 		exit('{"code":-1,"msg":"验证失败，请刷新页面重试"}');
 	}
 	if(empty($uin))exit('{"code":-5,"msg":"QQ号不能为空"}');
-	$result = getshuoshuo($uin,$page);
+	$result = get_shuoshuo($uin,$page);
 	exit(json_encode($result));
 	break;
 case 'getrizhi':

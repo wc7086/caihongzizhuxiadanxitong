@@ -81,8 +81,8 @@ $_SESSION['checksession']=1;
 		<h3 class="panel-title" align="center">用户使用协议阅读</h3>
 	</div>
 	<div class="panel-body">
-		<p><iframe src="lisence.html" style="width:100%;height:465px;"></iframe></p>
-		<p align="center"><a id="agreebtn" class="btn btn-primary" href="index.php?do=1">同意协议并开始安装</a></p>
+		<p><iframe src="../readme.txt?ls=<?php echo time();?>" style="width:100%;height:465px;"></iframe></p>
+		<p align="center"><a id="agreebtn" class="btn btn-primary" href="index.php?do=1">开始安装</a></p>
 	</div>
 </div>
 <?php }elseif($do=='1'){?>

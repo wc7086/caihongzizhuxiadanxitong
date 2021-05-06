@@ -1,9 +1,5 @@
 <?php
-require 'inc.php';
-
-@header('Content-Type: application/json; charset=UTF-8');
-
-if(!checkRefererHost())exit('{"code":403}');
+if (!defined('IN_CRONLITE')) die();
 
 get_data_show();
 

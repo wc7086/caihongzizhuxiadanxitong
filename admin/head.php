@@ -5,7 +5,7 @@ $admin_cdnpublic = 1;
 if($admin_cdnpublic==1){
 	$cdnpublic = '//lib.baomitu.com/';
 }elseif($admin_cdnpublic==2){
-	$cdnpublic = 'https://cdn.bootcdn.net/ajax/libs/';
+	$cdnpublic = '//cdn.bootcss.com/';
 }elseif($admin_cdnpublic==4){
 	$cdnpublic = '//s1.pstatp.com/cdn/expire-1-M/';
 }else{
@@ -191,6 +191,11 @@ h4{font-family:"微软雅黑",Georgia,Serif;}
 <li>
 	<a class="<?php echo checkIfActive('index,')?>" href="./">
 		<i class="fa fa-home sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">后台首页</span>
+	</a>
+</li>
+<li>
+	<a class="<?php echo checkIfActive('classlist,shoplist,shopedit,price,shoprank')?>" href="./set.php?mod=ggzz">
+		<i class="fa fa-list sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">货源推荐</span>
 	</a>
 </li>
 <li>

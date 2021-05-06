@@ -20,9 +20,9 @@
 </div>
 </div>
 <script>
-document.body.addEventListener('touchmove', function (event) {
+document.querySelector('body').addEventListener('touchmove', function (event) {
 	event.preventDefault();
-},{ passive: false });
+});
 </script>
 </body>
 </html>

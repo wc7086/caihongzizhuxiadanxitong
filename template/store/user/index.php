@@ -127,7 +127,7 @@ if($islogin2==1){
                 <div class="fui-cell-remark" style="font-size: 0.65rem;">查看全部订单</div>
             </a>
             <div class="fui-icon-group selecter col-5">
-                <a class="fui-icon-col external" href="../?mod=query&status=1">
+                <a class="fui-icon-col external" href="../?mod=query&status=0">
                     <div class="icon icon-green radius">
                         <i class="icon icon-daifukuan1"></i>
                     </div>

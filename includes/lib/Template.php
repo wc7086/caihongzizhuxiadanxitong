@@ -127,7 +127,7 @@ class Template {
 				$background_css = '<style>body{ background: linear-gradient(to bottom,'.$conf['ui_color1'].','.$conf['ui_color2'].') fixed;}</style>';
 			}
 		}else{
-			$background_image=$path.'assets/img/bj.png';
+			$background_image=$conf['beijing']."?ls=".time();
 			if($conf['ui_background']==0)
 			$repeat='background-repeat:repeat;';
 			elseif($conf['ui_background']==1)

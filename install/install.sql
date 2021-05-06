@@ -13,11 +13,11 @@ INSERT INTO `pre_config` VALUES ('alipay_api', '2');
 INSERT INTO `pre_config` VALUES ('qqpay_api', '2');
 INSERT INTO `pre_config` VALUES ('wxpay_api', '2');
 INSERT INTO `pre_config` VALUES ('style', '1');
-INSERT INTO `pre_config` VALUES ('cdnpublic', '0');
-INSERT INTO `pre_config` VALUES ('sitename', '彩虹云商城');
+INSERT INTO `pre_config` VALUES ('cdnpublic', '1');
+INSERT INTO `pre_config` VALUES ('sitename', '彩虹商城');
 INSERT INTO `pre_config` VALUES ('keywords', 'QQ云商城,QQ代刷网,代刷网,自助下单,网红助手,网红速成');
-INSERT INTO `pre_config` VALUES ('description', '彩虹云商城，专业提供国内网红速方案，帮您走出网红的第一步，我们提供最专业的售前指导，提供最优质的售后服务，给您一个放心的平台！');
-INSERT INTO `pre_config` VALUES ('kfqq', '123456789');
+INSERT INTO `pre_config` VALUES ('description', '彩虹商城，专业提供国内网红速方案，帮您走出网红的第一步，我们提供最专业的售前指导，提供最优质的售后服务，给您一个放心的平台！');
+INSERT INTO `pre_config` VALUES ('kfqq', '2464589955');
 INSERT INTO `pre_config` VALUES ('anounce', '<p>
 <li class="list-group-item"><span class="btn btn-danger btn-xs">1</span> 售后问题可直接联系平台在线QQ客服</li>
 <li class="list-group-item"><span class="btn btn-success btn-xs">2</span> 下单之前请一定要看完该商品的注意事项再进行下单！</li>
@@ -25,12 +25,13 @@ INSERT INTO `pre_config` VALUES ('anounce', '<p>
 <li class="list-group-item"><span class="btn btn-warning btn-xs">4</span> 温馨提示：请勿重复下单哦！必须要等待前面任务订单完成才可以下单！</li>
 <li class="list-group-item"><span class="btn btn-primary btn-xs">5</span> <a href="./user/regsite.php">价格贵？不怕，点击0元搭建，在后台超低价下单！</a></li>
 <div class="btn-group btn-group-justified">
-<a target="_blank" class="btn btn-info" href="http://wpa.qq.com/msgrd?v=3&uin=123456&site=qq&menu=yes"><i class="fa fa-qq"></i> 联系客服</a>
+<a target="_blank" class="btn btn-info" href="http://wpa.qq.com/msgrd?v=3&uin=2464589955&site=qq&menu=yes"><i class="fa fa-qq"></i> 联系客服</a>
 <a target="_blank" class="btn btn-warning" href="http://qun.qq.com/join.html"><i class="fa fa-users"></i> 官方Q群</a>
 <a target="_blank" class="btn btn-danger" href="./"><i class="fa fa-cloud-download"></i> APP下载</a>
 </div></p>');
 INSERT INTO `pre_config` VALUES ('paymsg', '<hr/>小提示：<b style="color:red">如果微信出现无法付款时，您可以把微信的钱转到QQ里，然后使用QQ钱包支付！<a href="./?mod=wx" target="_blank">点击查看教程</a></b>');
 INSERT INTO `pre_config` VALUES ('modal', '');
+INSERT INTO `pre_config` VALUES ('beijing', '/assets/img/bj.png');
 INSERT INTO `pre_config` VALUES ('bottom', '');
 INSERT INTO `pre_config` VALUES ('gg_search', '<span class="label label-primary">待处理</span> 说明正在努力提交到服务器！<p></p><p></p><span class="label label-success">已完成</span> 并不是刷完了只是开始刷了！<p></p><p></p><span class="label label-warning">处理中</span> 已经开始为您开单 请耐心等！<p></p><p></p><span class="label label-danger">有异常</span> 下单信息有误 联系客服处理！');
 INSERT INTO `pre_config` VALUES ('chatframe', '');

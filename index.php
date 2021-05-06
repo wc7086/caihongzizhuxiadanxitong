@@ -37,7 +37,7 @@ if($is_fenzhan==true && file_exists(ROOT.'assets/img/logo_'.$conf['zid'].'.png')
 if($conf['cdnpublic']==1){
 	$cdnpublic = '//lib.baomitu.com/';
 }elseif($conf['cdnpublic']==2){
-	$cdnpublic = 'https://cdn.bootcdn.net/ajax/libs/';
+	$cdnpublic = '//cdn.bootcss.com/';
 }elseif($conf['cdnpublic']==4){
 	$cdnpublic = '//s1.pstatp.com/cdn/expire-1-M/';
 }else{

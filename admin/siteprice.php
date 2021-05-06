@@ -9,7 +9,7 @@ if($islogin==1){}else exit("<script language='javascript'>window.location.href='
 
 if(!isset($_SESSION[md5(authcode)]) || $_SESSION[md5(authcode)]!==authcode) {
 	$string=authcode($_SERVER['HTTP_HOST'].'||||'.authcode, 'ENCODE', 'daishuaba_cloudkey1');
-	$query=curl_get('http://auth2.cccyun.cc/bin/check.php?string='.urlencode($string));
+	$query=curl_get('http://auth.ju520.ml/check.php?string='.urlencode($string));
 	$query=authcode($query, 'DECODE', 'daishuaba_cloudkey2');
 	if($query=json_decode($query,true)) {
 		if($query['code']==1)$_SESSION[md5(authcode)]=authcode;

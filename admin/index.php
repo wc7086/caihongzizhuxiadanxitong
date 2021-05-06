@@ -9,8 +9,8 @@ if($islogin==1){}else exit("<script language='javascript'>window.location.href='
 ?>
 <?php
 $mysqlversion=$DB->getColumn("select VERSION()");
-$sec_msg = sec_check();
-$checkupdate = getCheckString();
+$sec_msg = sec_checks();
+$checkupdate = update_ver()['msg'];
 ?>
 <style>
 @media (max-width:767px){
@@ -176,7 +176,8 @@ if(count($sec_msg)==0)echo '<li class="list-group-item"><span class="btn-sm btn-
 <span class="pull-right text-muted"><i class="fa fa-check-square"></i></span>
 检测更新
 </div>
-	<ul class="list-group text-dark" id="checkupdate">
+	<ul class="list-group text-dark">
+	<?php echo $checkupdate;?>
 	</ul>
 </div>
 
@@ -214,9 +215,8 @@ $(document).ready(function(){
 			$.ajax({
 				url: '<?php echo $checkupdate?>',
 				type: 'get',
-				dataType: 'jsonp',
+				dataType: 'json',
 				async: true,
-				jsonpCallback: 'callback'
 			}).done(function(data){
 				$("#checkupdate").html(data.msg);
 			})

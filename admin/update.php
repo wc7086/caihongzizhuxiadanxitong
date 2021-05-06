@@ -54,7 +54,7 @@ $act = isset($_GET['act']) ? $_GET['act'] : null;
 switch ($act) {
 default:
 
-$res=update_version();
+$res=update_versions();
 
 
 if(!$res['msg'])$res['msg']='啊哦，更新服务器开小差了，请刷新此页面。';
@@ -76,7 +76,7 @@ echo '<hr/><div class="well">'.$res['uplog'].'</div>';
 break;
 
 case 'do':
-$res=update_version();
+$res=update_versions();
 $RemoteFile = $res['file'];
 $ZipFile = "Archive.zip";
 copy($RemoteFile,$ZipFile) or die("无法下载更新包文件！".'<a href="update.php">返回上级</a>');

@@ -17,7 +17,7 @@ if($islogin==1){}else exit("<script language='javascript'>window.location.href='
       </div>
       <div class="modal-body">
       <form action="kmlist.php" method="GET">
-<input type="text" class="form-control" name="kw" placeholder="请输入卡密"><br/>
+<input type="text" class="form-control" name="kw" placeholder="请输入卡密或ZID"><br/>
 <input type="submit" class="btn btn-primary btn-block" value="搜索"></form>
 </div>
       <div class="modal-footer">
@@ -113,7 +113,7 @@ else
 {
 
 if(isset($_GET['kw'])) {
-	$sql=" `km`='{$_GET['kw']}'";
+	$sql=" `km`='{$_GET['kw']}' or `user`='{$_GET['kw']}'";
 	$numrows=$DB->getColumn("SELECT count(*) from pre_kms WHERE{$sql}");
 	$con='包含 '.$_GET['kw'].' 的共有 <b>'.$numrows.'</b> 个卡密';
 }else{

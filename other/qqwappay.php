@@ -65,10 +65,20 @@ if(strpos($_SERVER['HTTP_USER_AGENT'], 'QQ/')!==false){
 </div>
 </div>
 <script src="//cdn.staticfile.org/jquery/1.12.4/jquery.min.js"></script>
-<script src="//cdn.staticfile.org/layer/3.1.1/layer.min.js"></script>
 <script>
+	var isSafari = navigator.userAgent.indexOf("Safari") > -1;
 	var code_url = '<?php echo $code_url?>';
-	var	url_scheme = 'mqqapi://forward/url?src_type=web&style=default&=1&version=1&url_prefix='+window.btoa(code_url);
+	var	tencentSeries = 'mqqapi://forward/url?src_type=web&style=default&=1&version=1&url_prefix='+window.btoa(code_url);
+	if(isSafari){
+		location.href = tencentSeries;
+	}
+	else{
+		var iframe = document.createElement("iframe");
+        iframe.style.display = "none";
+        iframe.src = tencentSeries;
+        document.body.appendChild(iframe);
+	}
+	document.getElementById("openUrl").href = tencentSeries; 
     // 检查是否支付完成
     function loadmsg() {
         $.ajax({
@@ -80,10 +90,13 @@ if(strpos($_SERVER['HTTP_USER_AGENT'], 'QQ/')!==false){
             success: function (data, textStatus) {
                 //从服务器得到数据，显示数据并继续查询
                 if (data.code == 1) {
-					layer.msg('支付成功，正在跳转中...', {icon: 16,shade: 0.1,time: 15000});
-					setTimeout(window.location.href=data.backurl, 1000);
+					if (confirm("您已支付完成，需要跳转到订单页面吗？")) {
+                        window.location.href=data.backurl;
+                    } else {
+                        // 用户取消
+                    }
                 }else{
-                    setTimeout("loadmsg()", 3000);
+                    setTimeout("loadmsg()", 4000);
                 }
             },
             //Ajax请求超时，继续查询
@@ -106,11 +119,12 @@ if(strpos($_SERVER['HTTP_USER_AGENT'], 'QQ/')!==false){
             success: function (data, textStatus) {
                 //从服务器得到数据，显示数据并继续查询
                 if (data.code == 1) {
-					layer.msg('支付成功，正在跳转中...', {icon: 16,shade: 0.1,time: 15000});
-					setTimeout(window.location.href=data.backurl, 1000);
-                }else{
-					layer.msg('您还未完成付款，请继续付款', {shade: 0,time: 1500});
-				}
+					if (confirm("您已支付完成，需要跳转到订单页面吗？")) {
+                        window.location.href=data.backurl;
+                    } else {
+                        // 用户取消
+                    }
+                }
             },
             //Ajax请求超时，继续查询
             error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -118,11 +132,7 @@ if(strpos($_SERVER['HTTP_USER_AGENT'], 'QQ/')!==false){
             }
         });
     }
-    window.onload = function(){
-		document.getElementById("openUrl").href = url_scheme; 
-		window.location.href = url_scheme;
-		setTimeout("loadmsg()", 2000);
-	}
+    window.onload = loadmsg();
 </script>
 </body>
 </html>
