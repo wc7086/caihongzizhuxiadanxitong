@@ -1,0 +1,1167 @@
+@charset "utf-8";
+/* CSS Document */
+* {
+    margin: 0;
+    padding: 0
+}
+
+ul li {
+    list-style: none
+}
+
+.clear {
+    clear: both
+}
+
+a {
+    text-decoration: none;
+    color: #666
+}
+
+img {
+    max-height: 100%;
+    max-width: 100%;
+    border: 0
+}
+
+html, body {
+    font-size: 100%;
+    width: 100%;
+    height: 100%
+}
+
+body {
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto;
+    color: #666;
+    background: #f7f7f7;
+    font-size: 12px;
+    overflow-x: hidden
+}
+
+p {
+    text-align: justify
+}
+
+.kbox {
+    width: 100%;
+    background: #f7f7f7;
+    height: 0.4rem
+}
+
+.hbox {
+    width: 100%;
+    height: 2.85rem;
+    overflow: hidden
+}
+
+/*banner*/
+.d1 {
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    position: relative;
+}
+
+.loading {
+    width: 100%;
+    text-align: center;
+}
+
+.d2 img {
+    width: 100%;
+}
+
+.num_list {
+    position: absolute;
+    width: 100%;
+    left: 0px;
+    bottom: -1px;
+    color: #FFFFFF;
+    overflow: hidden;
+}
+
+.num_list span {
+    display: inline-block;
+}
+
+#fade_focus ul {
+    display: none;
+}
+
+.button {
+    position: absolute;
+    z-index: 1000;
+    right: 0.6rem;
+    bottom: 0.6rem;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.b1, .b2 {
+    background: rgba(255, 255, 255, 0.4);
+    display: block;
+    float: left;
+    width: 0.5rem;
+    height: 0.5rem;
+    margin-right: 0.3rem;
+    color: #FFFFFF;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 100%
+}
+
+.b2 {
+    background-color: #fff;
+}
+
+.button a {
+    color: transparent
+}
+
+
+/*猜你喜欢*/
+.likebox {
+    background: #fff;
+    border-top: 1px solid #eee;
+}
+
+.likeTit {
+    padding: 0.5rem;
+    height: 1.8rem;
+    border-bottom: 1px solid #eee;
+    overflow: hidden;
+    padding-right: 0.2rem
+}
+
+.likeTit img {
+    height: 0.8rem;
+    vertical-align: middle
+}
+
+.likeTit span {
+    line-height: 1.8rem;
+    height: 1.8rem;
+    padding-left: 0.5rem;
+    font-size: 0.875rem;
+    overflow: hidden;
+    color: #333
+}
+
+.likebox ul {
+    overflow: hidden;
+}
+
+.likebox ul li {
+    float: left;
+    width: 50%;
+    border-bottom: 1px solid #eee;
+    border-right: 1px solid #eee;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.likebox ul li:nth-child(2n) {
+    border-right: 1px solid #fff
+}
+
+.likebox ul li a {
+    display: block;
+    padding: 0.5rem
+}
+
+.likebox ul li img.proimg {
+    width: 100%;
+}
+
+.likebox ul li p.tit {
+    height: 2.5rem;
+    font-size: 0.8rem;
+    padding-top: 0.5rem;
+    color: #333;
+    line-height: 1.5;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.likebox ul li p.price {
+    color: #ff2150;
+    padding-top: 0.5rem;
+    height: 1rem;
+    line-height: 1rem;
+    font-size: 0.875rem;
+}
+
+.likebox ul li p.price span {
+    padding-left: 1rem;
+    color: #999;
+    text-decoration: line-through;
+    font-size: 0.7rem;
+    height: 1rem;
+    line-height: 1rem
+}
+
+.likebox ul li p.price img {
+    float: right
+}
+
+
+/*footer*/
+.fbox2 {
+    width: 100%;
+    height: 2.8rem
+}
+
+.fbox1 {
+    width: 100%;
+    height: 5.5rem
+}
+
+.fbox {
+    width: 100%;
+    height: 2.7rem
+}
+
+.footbox {
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto;
+}
+
+.footer {
+    position: fixed;
+    width: 100%;
+    max-width: 640px;
+    bottom: 0;
+    background: #fff;
+    z-index: 99999;
+    padding-top: 0.2rem;
+    border-top: 1px solid #eee;
+    height: 2.5rem;
+}
+
+.footer ul {
+    overflow: hidden;
+}
+
+.footer ul li {
+    float: left;
+    width: 25%;
+    text-align: center
+}
+
+.footer ul li img {
+    height: 1.3rem;
+}
+
+.footer ul li p {
+    text-align: center;
+    color: #333;
+    font-size: 0.75rem;
+    height: 1.2rem;
+    line-height: 1.2rem
+}
+
+.footer ul li.on p {
+    color: #ff2150
+}
+
+/*headerbox*/
+.headerbox {
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto;
+}
+
+.headerbox .header {
+    padding: 0.5rem 0;
+    height: 1.8rem;
+    position: fixed;
+    width: 100%;
+    max-width: 640px;
+    top: 0;
+    background: #fff;
+    z-index: 9999;
+    border-bottom: 1px solid #eee;
+}
+
+.headerbox .header .headerL {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 1.8rem;
+    padding-left: 0.6rem;
+}
+
+.headerbox .header .headerL img {
+    display: block;
+    height: 1.1rem;
+    padding-top: 0.9rem;
+}
+
+.headerbox .header .headerC {
+    width: 100%;
+    height: 1.8rem;
+    line-height: 1.8rem;
+    text-align: center
+}
+
+.headerbox .header .headerC p {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #333
+}
+
+.headerbox .header .headerR {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 1.8rem;
+    padding-right: 0.6rem;
+}
+
+.headerbox .header .headerR a {
+    color: #333;
+    font-size: 0.8rem;
+    line-height: 2.8rem
+}
+
+.headerbox .header .headerR a.c9 {
+    color: #999
+}
+
+.headerbox .header .headerR img {
+    height: 0.6rem;
+    margin-top: 1rem;
+}
+
+
+/*购物车*/
+.gwcbox {
+    background: #fff
+}
+
+.gwcbox_1 {
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee
+}
+
+.gwcbox_1 .gwc1_1 {
+    padding: 0.8rem 0.5rem;
+    height: 1.2rem;
+    line-height: 1.2rem;
+    border-bottom: 1px solid #eee
+}
+
+.gwcbox_1 .gwc1_1 .g1 {
+    float: left;
+    width: 1.2rem;
+    height: 1.2rem;
+    padding-right: 0.5rem;
+}
+
+.gwccheck {
+    width: 100%;
+    height: 100%;
+    background-image: url(../images/checkno.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain
+}
+
+.gwccheck.on {
+    background-image: url(../images/checkon.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain
+}
+
+.gwcbox_1 .gwc1_1 .g2 {
+    float: left;
+    width: 60%;
+    overflow: hidden;
+    height: 1.2rem
+}
+
+.gwcbox_1 .gwc1_1 .g2 span {
+    display: block;
+    font-size: 0.9rem;
+    max-width: 50%;
+    float: left;
+    height: 1.2rem;
+    line-height: 1.2rem;
+    vertical-align: middle;
+    overflow: hidden
+}
+
+.gwcbox_1 .gwc1_1 .g2 img {
+    padding-left: 0.2rem
+}
+
+.gwcbox_1 .gwc1_1 .g3 {
+    float: right
+}
+
+.gwcbox_1 .gwc1_1 .g3 img {
+    height: 1rem;
+    padding-top: 0.1rem
+}
+
+.gwcbox_1 .gwc1_2 {
+    padding: 0 0.5rem;
+}
+
+.gwcbox_1 .gwc1_2 .gwcone {
+    border-bottom: 1px solid #eee;
+    padding: 0.5rem 0;
+    height: 4.5rem;
+    overflow: hidden
+}
+
+.gwcbox_1 .gwc1_2 .gwcone:last-child {
+    border-bottom: 0
+}
+
+.gwcbox_1 .gwc1_2 .gwcone .go1 {
+    float: left;
+    width: 1.2rem;
+    height: 1.2rem;
+    padding-right: 0.5rem;
+    margin-top: 1.7rem
+}
+
+.gwcbox_1 .gwc1_2 .gwcone .go2 {
+    float: left;
+    width: 4.5rem;
+    height: 4.5rem;
+    overflow: hidden;
+    padding-right: 0.5rem;
+}
+
+.gwcbox_1 .gwc1_2 .gwcone .go2 img {
+    width: 4.5rem;
+    height: 4.5rem;
+    overflow: hidden
+}
+
+.gwcbox_1 .gwc1_2 .gwcone .go3 {
+    flex: 1;
+    height: 4.5rem;
+}
+
+.gwcbox_1 .gwc1_2 .gwcone .go3 .go3_1 {
+    height: 1rem;
+    overflow: hidden
+}
+
+.gwcbox_1 .gwc1_2 .gwcone .go3 .go3_1 p.p1 {
+    float: left;
+    color: #333;
+    font-size: 0.8rem;
+    width: 70%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.gwcbox_1 .gwc1_2 .gwcone .go3 .go3_1 p.p2 {
+    float: right;
+    font-size: 0.7rem;
+    color: #999;
+    text-decoration: line-through
+}
+
+.gwcbox_1 .gwc1_2 .gwcone .go3 .go3_2 {
+    height: 1.05rem;
+    padding-top: 0.2rem;
+    overflow: hidden
+}
+
+.gwcbox_1 .gwc1_2 .gwcone .go3 .go3_2 p.p3 {
+    float: left;
+    color: #999;
+    font-size: 0.8rem;
+    width: 60%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis
+}
+
+.gwcbox_1 .gwc1_2 .gwcone .go3 .go3_2 p.p4 {
+    float: right;
+    color: #ff2150;
+    font-size: 1rem
+}
+
+.gwcbox_1 .gwc1_2 .gwcone .go3 .go3_3 {
+    height: 1.5rem;
+    overflow: hidden;
+    padding-top: 0.7rem
+}
+
+.gwcbox_1 .gwc1_2 .gwcone .go3 .go3_3 .num1 {
+    float: left;
+    text-align: center;
+    line-height: 1.5rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    background: #f7f7f7;
+    color: #333;
+    font-size: 0.9rem
+}
+
+.gwcbox_1 .gwc1_2 .gwcone .go3 .go3_3 .num2 {
+    float: left;
+    width: 2.5rem;
+    height: 1.5rem;
+    background: #f7f7f7;
+    color: #333;
+    font-size: 0.9rem;
+    border-left: 1px solid #fff;
+    border-right: 1px solid #fff;
+    text-align: center;
+    line-height: 1.5rem;
+}
+
+.gwcbox_1 .gwc1_2 .gwcone .go3 .go3_3 .num3 {
+    float: left;
+    text-align: center;
+    line-height: 1.5rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    background: #f7f7f7;
+    font-size: 0.9rem;
+    color: #ff2150
+}
+
+.gwcbox_1 .gwc1_2 .gwcone .go3 .go3_3 .del {
+    float: right
+}
+
+.gwcbox_1 .gwc1_2 .gwcone .go3 .go3_3 .del img {
+    height: 1.1rem;
+    margin-top: 0.1rem;
+}
+
+.hejiBox {
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto;
+    background: #fff
+}
+
+.hejiBox .heji {
+    height: 2.8rem;
+    position: fixed;
+    width: 100%;
+    max-width: 640px;
+    bottom: 2.7rem;
+    background: #fff;
+    z-index: 99999;
+    border-top: 1px solid #eee
+}
+
+.hejiBox .heji .heji_1 {
+    float: left;
+    width: 1.2rem;
+    height: 1.2rem;
+    padding: 0.8rem 0.5rem;
+}
+
+.hejiBox .heji .heji_2 {
+    float: left;
+    color: #333;
+    line-height: 1.2rem;
+    font-size: 0.9rem;
+    padding: 0.8rem 0;
+    padding-right: 0.5rem
+}
+
+.hejiBox .heji .heji_3 {
+    float: left;
+    padding: 0.8rem 0;
+    padding-left: 0.5rem;
+}
+
+.hejiBox .heji .heji_3 p {
+    color: #ff2150;
+    line-height: 1.2rem;
+    font-size: 0.75rem
+}
+
+.hejiBox .heji .heji_3 p span {
+    font-size: 1rem;
+    font-size: 0.9rem
+}
+
+.hejiBox .heji .heji_4 {
+    float: left;
+    padding: 0.8rem 0;
+    line-height: 1.2rem;
+    padding-left: 0.5rem;
+    color: #999;
+    font-size: 0.75rem
+}
+
+.hejiBox .heji .heji_5 {
+    float: right;
+    width: 5rem;
+    height: 2.8rem;
+    overflow: hidden
+}
+
+.hejiBox .heji .heji_5 a {
+    display: block;
+    background: #ff2150;
+    color: #fff;
+    text-align: center;
+    line-height: 2.8rem;
+    width: 5rem;
+    height: 2.8rem;
+    font-size: 0.875rem
+}
+
+/*确认订单*/
+.hejiBox.jiesuan .heji {
+    bottom: 0
+}
+
+.jsaddress {
+    padding: 0.8rem 0.5rem;
+    padding-bottom: 0.3rem;
+    border-top: 1px solid #eee;
+    background: #fff
+}
+
+.jsaddress .jsaddressL {
+    float: left;
+    width: 90%;
+    overflow: hidden
+}
+
+.jsaddress .jsaddressL p.p6 {
+    color: #333;
+    font-size: 0.8rem
+}
+
+.jsaddress .jsaddressL p.p6 span {
+    padding-left: 1.2rem
+}
+
+.jsaddress .jsaddressL p.p5 {
+    font-size: 0.75rem;
+    color: #999;
+    line-height: 1.4rem
+}
+
+.jsaddress .jsaddressR {
+    float: right;
+}
+
+.jsaddress .jsaddressR img {
+    height: 1.1rem;
+    margin-top: 0.5rem
+}
+
+.jsdingdan {
+    padding: 0 0.5rem;
+    border-top: 1px solid #eee;
+    background: #fff
+}
+
+.jsdp {
+    padding: 0.8rem 0;
+    height: 1.2rem;
+    line-height: 1.2rem;
+    border-bottom: 1px solid #eee;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.jsdp img {
+    height: 1.2rem;
+    float: left
+}
+
+.jsdp span {
+    font-size: 0.9rem;
+    height: 1.2rem;
+    line-height: 1.2rem;
+    padding-left: 0.3rem;
+    color: #333
+}
+
+.jsxq {
+    padding: 0.6rem 0;
+    border-bottom: 1px solid #eee;
+    overflow: hidden;
+    background: #fff
+}
+
+.jsxq .jsxq_1 {
+    float: left;
+    width: 2.3rem;
+    height: 2.3rem;
+    padding-right: 0.5rem
+}
+
+.jsxq .jsxq_1 img {
+    width: 2.3rem;
+    height: 2.3rem;
+}
+
+.jsxq .jsxq_2 {
+    flex: 1;
+    height: 2.3rem;
+}
+
+.jsxq .jsxq_2 .js_1 {
+    height: 1rem;
+    overflow: hidden
+}
+
+.jsxq .jsxq_2 .js_1 p.p1 {
+    float: left;
+    color: #333;
+    font-size: 0.8rem;
+    width: 70%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.jsxq .jsxq_2 .js_1 p.p2 {
+    float: right;
+    font-size: 0.7rem;
+    color: #ff2150;
+    text-decoration: line-through
+}
+
+.jsxq .jsxq_2 .js_2 {
+    height: 0.9rem;
+    padding-top: 0.2rem;
+    overflow: hidden
+}
+
+.jsxq .jsxq_2 .js_2 p.p3 {
+    float: left;
+    color: #999;
+    font-size: 0.8rem;
+    width: 60%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis
+}
+
+.jsxq .jsxq_2 .js_2 p.p4 {
+    color: #333;
+    float: right;
+    font-size: 0.75rem
+}
+
+.jsyf {
+    padding: 0.6rem 0;
+    border-bottom: 1px solid #eee;
+    overflow: hidden;
+    background: #fff
+}
+
+.jsyf .jsyfL {
+    color: #333;
+    float: left;
+    font-size: 0.8rem
+}
+
+.jsyf .jsyfR {
+    float: right;
+    font-size: 0.8rem
+}
+
+.jsyf .jsyfC {
+    flex: 1;
+    font-size: 0.8rem;
+    color: #999
+}
+
+.jsyf .jsyfR img {
+    width: 3rem;
+    border-radius: 100%
+}
+
+.jsyf .jsyfL p {
+    line-height: 3rem
+}
+
+.jshj {
+    padding: 0.6rem 0;
+    border-bottom: 1px solid #eee;
+    overflow: hidden;
+    background: #fff
+}
+
+.jshjp {
+    float: right;
+    text-align: right;
+    overflow: hidden;
+    white-space: nowrap;
+    color: #333;
+    font-size: 0.8rem
+}
+
+.jshjp .sp1 {
+    padding-left: 0.8rem
+}
+
+.jshjp .sp2 {
+    color: #ff2150
+}
+
+.jsyhq {
+    padding: 0 0.5rem;
+    border-top: 1px solid #eee;
+    background: #fff
+}
+
+.jsyhq_1 {
+    padding: 0.6rem 0;
+    border-bottom: 1px solid #eee;
+    overflow: hidden;
+}
+
+.jsyhq_1 .p1 {
+    float: left;
+    font-size: 0.8rem;
+    color: #333;
+    height: 1.2rem;
+    line-height: 1.2rem;
+}
+
+.jsyhq_1 .p2 {
+    float: left;
+    font-size: 0.75rem;
+    color: #fff;
+    display: block;
+    height: 1.2rem;
+    line-height: 1.2rem;
+    width: 3rem;
+    text-align: center;
+    border-radius: 4px;
+    background: #ff2150;
+    margin-left: 0.5rem
+}
+
+.jsyhq_2 {
+    padding: 0.6rem 0;
+    border-bottom: 1px solid #eee;
+    overflow: hidden;
+}
+
+.jsyhq_2 .jsjfL {
+    float: left;
+    height: 1.2rem;
+    line-height: 1.2rem;
+}
+
+.jsyhq_2 .jsjfL p {
+    color: #333;
+    font-size: 0.8rem
+}
+
+.jsyhq_2 .jsjfL p span {
+    color: #ff2150;
+    padding-left: 0.5rem
+}
+
+.jsyhq_2 .jsjfR {
+    float: right;
+    width: 1.2rem;
+    height: 1.2rem;
+}
+
+.jsyhq.pad0 {
+    padding: 0
+}
+
+.jsyhq_2.bor0 {
+    border: 0
+}
+
+.jsyhq_2.bor0 a {
+    display: block;
+    width: 100%;
+}
+
+.jsyhq.pad0 .jsyhq_2 {
+    padding: 0.6rem 0.5rem
+}
+
+.mytb {
+    padding: 0.5rem;
+    border-bottom: 1px solid #eee
+}
+
+.mytb .mytbL {
+    float: left;
+    width: 3rem;
+    height: 3rem;
+    padding-right: 0.3rem
+}
+
+.mytb .mytbL img {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 100%
+}
+
+.mytb .mytbC {
+    float: left;
+}
+
+.mytb .mytbC .p1 {
+    color: #333;
+    font-size: 0.8rem;
+    line-height: 1.5rem;
+    padding-top: 0.3rem;
+}
+
+.mytb .mytbC .p2 {
+    color: #999;
+    font-size: 0.7rem
+}
+
+.mytb .mytbR {
+    float: right;
+    width: 1.2rem;
+    height: 1.2rem;
+    padding-top: 1rem
+}
+
+.mytb .mytbR img {
+}
+
+.tuichu {
+    width: 100%;
+    height: 2.5rem;
+    background: url(../images/tcbg.jpg) repeat-y;
+    margin-top: 2rem
+}
+
+.tuichu a {
+    display: block;
+    text-align: center;
+    line-height: 2.5rem;
+    color: #fff;
+    font-size: 1rem
+}
+
+
+/*搜索*/
+.headerbox .header .headerC0 {
+    width: 75%;
+    margin: 0 auto;
+    height: 1.8rem;
+    line-height: 1.8rem;
+    text-align: center;
+    background: #f7f7f7;
+    border: 1px solid #f7f7f7;
+    box-sizing: border-box;
+    border-radius: 4px;
+}
+
+.headerbox .header .headerC0 .ssdiv {
+    display: block;
+    width: 100%;
+    height: 100%
+}
+
+.headerbox .header .headerC0 .ssdiv input {
+    float: left;
+    width: 80%;
+    border: 0;
+    outline: none;
+    height: 1.8rem;
+    line-height: 1.8rem;
+    color: #999;
+    font-size: 0.8rem;
+    background: none;
+    padding-left: 0.3rem
+}
+
+.headerbox .header .headerC0 .ssdiv img {
+    float: right;
+    height: 1.8rem
+}
+
+.zjssbox {
+    padding: 0.5rem 0.6rem;
+    overflow: hidden;
+    height: 1.8rem
+}
+
+.zjssbox img.i1 {
+    float: left;
+    display: block;
+    height: 1.1rem;
+    margin-top: 0.2rem;
+}
+
+.zjssbox .sstxt {
+    height: 1.8rem;
+    line-height: 1.8rem;
+    float: left
+}
+
+.zjssbox img.i2 {
+    float: right;
+    display: block;
+    height: 1.1rem;
+    margin-top: 0.2rem;
+}
+
+.ssbox {
+    overflow: hidden;
+    padding: 0 0.6rem
+}
+
+.ssbox a {
+    border: 1px solid #ddd;
+    display: block;
+    float: left;
+    height: 1.4rem;
+    line-height: 1.4rem;
+    padding: 0 0.5rem;
+    font-size: 0.75rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-radius: 4px
+}
+
+.linebox {
+    padding: 0 0.6rem;
+    height: 1px;
+    padding-top: 0.5rem
+}
+
+.linebox .line0 {
+    width: 100%;
+    height: 1px;
+    background: #ddd
+}
+
+/*付款成功*/
+.paysuccess {
+    width: 100%;
+    background: #fff;
+    padding: 1rem 0;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+}
+
+.paysuccess .pay1 {
+    width: 65%;
+    margin: 0 auto;
+    height: 4.5rem;
+}
+
+.paysuccess .pay1_L {
+    float: left;
+    width: 4.5rem;
+    height: 4.5rem;
+    overflow: hidden;
+    padding-right: 1rem
+}
+
+.paysuccess .pay1_L img {
+    width: 4.5rem;
+    height: 4.5rem;
+    overflow: hidden
+}
+
+.paysuccess .pay1_R {
+    flex: 1;
+    height: 4.5rem
+}
+
+.paysuccess .pay1_R p.p1 {
+    color: #ff2150;
+    font-size: 1rem
+}
+
+.paysuccess .pay1_R p.p2 {
+    color: #999;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    padding-top: 0.5rem
+}
+
+.paysuccess .pay2 {
+    width: 65%;
+    margin: 0 auto;
+    padding: 0.5rem 0;
+    height: 2rem;
+    margin-top: 0.8rem
+}
+
+.paysuccess .pay2 a {
+    display: block;
+    height: 1.5rem;
+    width: 6rem;
+    text-align: center;
+    line-height: 1.5rem;
+    border: 1px solid #eee;
+    background: #f9f9f9;
+    font-size: 0.75rem;
+    color: #333;
+    border-radius: 3px
+}
+
+.paysuccess .pay2 a.seedd {
+    float: left
+}
+
+.paysuccess .pay2 a.comeshop {
+    float: right
+}
+
+/*购物车空*/
+.pay30 {
+    width: 65%;
+    margin: 0 auto;
+    text-align: center
+}
+
+.pay30 img {
+    width: 4.5rem;
+    height: 4.5rem;
+    overflow: hidden;
+}
+
+.pay30 p {
+    color: #999;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    padding-top: 0.5rem;
+    text-align: center
+}
+
+.pay40 {
+    padding-top: 1rem
+}
+
+.pay40 a {
+    display: block;
+    height: 1.5rem;
+    width: 6rem;
+    text-align: center;
+    line-height: 1.5rem;
+    border: 1px solid #eee;
+    background: #f9f9f9;
+    font-size: 0.75rem;
+    color: #333;
+    border-radius: 3px;
+    margin: 0 auto
+}

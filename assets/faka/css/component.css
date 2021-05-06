@@ -1,0 +1,16 @@
+@charset "UTF-8";
+/* headerm2 */
+.headerm2{position:relative;height:50px;background:#007fc8;}
+.headerm2 .logo{display:block;width:30px;height:30px;padding:10px 10px 0 10px;}
+.headerm2 .logo img{display:block;width:100%;}
+.headerm2 .logo2{position:absolute;top:0;left:15px;z-index:1000;display:block;padding:4px 10px 0 10px;font-family:Helvetica, "Microsoft YaHei", Arial, Helvetica, sans-serif;}
+.headerm2 .logo2 img{display:block;width:100%;}
+.headerm2 .search2{position:absolute;top:0;right:0;z-index:1000;display:block;width:50px;height:50px;text-indent:-9999em;background:url(../images/icon-search.png) no-repeat center center;background-size:40%;}
+.headerm2 .search2:hover{background-color:#026fae;}
+.headerm2 .search2 span{display:none;}
+.headerm2 .user-icon{position:absolute;top:0;right:50px;z-index:1000;display:block;width:50px;height:50px;text-indent:-9999em;background:url(../images/icon-user.png) no-repeat center center;background-size:40%;}
+.headerm2 .user-icon span{display:none;}
+.headerm2 .user-icon:hover{background-color:#026fae;}
+.headerm2 .back{position:absolute;top:0;left:0;display:block;width:50px;height:50px;text-indent:-9999em;background:url(../images/icon-back.png) no-repeat center center;background-size:12px 20px;}
+
+@media (min-width:641px){body{width:640px;margin:auto;}}

@@ -1,0 +1,9 @@
+﻿html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+.m_banner{
+	padding: 8px;
+    font-size: 18px;
+	width: 100%;
+}
