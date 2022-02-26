@@ -6,8 +6,6 @@ include("../includes/common.php");
 $title='APP在线生成';
 include './head.php';
 if($islogin==1){}else exit("<script language='javascript'>window.location.href='./login.php';</script>");
-
-$url = (is_https() ? 'https://' : 'http://').$_SERVER['HTTP_HOST'];
 ?>
 <style>
 #orderItem .orderTitle{word-break:keep-all;}
@@ -32,7 +30,7 @@ $url = (is_https() ? 'https://' : 'http://').$_SERVER['HTTP_HOST'];
 	</div>
 	<div class="form-group">
 	  <label class="col-sm-3 control-label">APP生成平台密钥</label>
-	  <div class="col-sm-9"><div class="input-group"><input type="text" name="appcreate_key" value="<?php echo $conf['appcreate_key']; ?>" class="form-control"/><span class="input-group-btn"><a href="http://user.997665.cn/" class="btn btn-default" target="_blank" rel="noreferrer">获取密钥</a></span></div></div>
+	  <div class="col-sm-9"><div class="input-group"><input type="text" name="appcreate_key" value="<?php echo $conf['appcreate_key']; ?>" class="form-control"/><span class="input-group-btn"><a href="https://app.tt906.com/" class="btn btn-default" target="_blank" rel="noreferrer">获取密钥</a></span></div></div>
 	</div>
 	<div class="form-group">
 	  <label class="col-sm-3 control-label">允许自定义图标和启动图</label>
@@ -62,7 +60,7 @@ $url = (is_https() ? 'https://' : 'http://').$_SERVER['HTTP_HOST'];
 	  <div class="col-sm-offset-3 col-sm-9"><input type="submit" name="submit" value="修改" class="btn btn-primary btn-block"/>
 	 </div>
 	</div>
-	<div class="panel-footer"><span class="glyphicon glyphicon-info-sign"></span>APP自动化打包平台：<a href="http://user.997665.cn/" target="_blank" rel="noreferrer">点此进入</a></div>
+	<div class="panel-footer"><span class="glyphicon glyphicon-info-sign"></span>APP自动化打包平台：<a href="https://app.tt906.com/" target="_blank" rel="noreferrer">点此进入</a></div>
   </form>
 </div>
 		<div class="tab-pane fade in" id="create">
@@ -80,7 +78,7 @@ $url = (is_https() ? 'https://' : 'http://').$_SERVER['HTTP_HOST'];
 					<div class="input-group-addon">
 						应用网址
 					</div>
-                    <input name="url" class="form-control" value="<?php echo $url?>"/>
+                    <input name="url" class="form-control" value="<?php echo $siteurl?>"/>
 				</div>
 			</div>
             <div class="form-group">
@@ -120,7 +118,7 @@ $url = (is_https() ? 'https://' : 'http://').$_SERVER['HTTP_HOST'];
 		<div class="tab-pane fade in" id="other">
 			<div class="form-group">
 				<input type="button" id="cleanApp" value="清空全部已生成的APP链接" class="btn btn-danger btn-block btn-sm"/>
-				<br/><font color="green">此功能是当APP下载链接集体失效的时候，点击“刷新全部生成的APP状态”后，可以强制重新获取每个APP的下载链接。</font>
+				<br/><font color="green">此功能是当APP下载链接集体失效的时候，点击“清空全部已生成的APP链接”后，可以强制重新获取每个APP的下载链接。</font>
 			</div>
         </div>
     </div>

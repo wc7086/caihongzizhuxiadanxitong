@@ -14,13 +14,13 @@ if($islogin==1){}else exit("<script language='javascript'>window.location.href='
         <table class="table table-striped">
           <tbody>
 <?php
-$numrows=$DB->getColumn("SELECT count(*) from pre_logs WHERE action='社区对接'");
+$numrows=$DB->getColumn("SELECT count(*) from pre_logs WHERE action='社区对接' OR action='自动访问URL'");
 $pagesize=30;
 $pages=ceil($numrows/$pagesize);
 $page=isset($_GET['page'])?intval($_GET['page']):1;
 $offset=$pagesize*($page - 1);
 
-$rs=$DB->query("SELECT * FROM pre_logs WHERE action='社区对接' order by id desc limit $offset,$pagesize");
+$rs=$DB->query("SELECT * FROM pre_logs WHERE action='社区对接' OR action='自动访问URL' order by id desc limit $offset,$pagesize");
 while($res = $rs->fetch())
 {
 echo '<tr><td><b>时间：</b>'.$res['addtime'].'<b><br/>提交参数：</b>'.$res['param'].'<br/><b>返回结果：</b>'.$res['result'].'</td></tr>';

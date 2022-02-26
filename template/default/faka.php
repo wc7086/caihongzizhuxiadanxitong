@@ -20,6 +20,7 @@ while($res = $rs->fetch())
 		$kmdata.=$res['km']."\r\n";
 	}
 }
+if(strlen($kmdata)>2)$kmdata=substr($kmdata,0,-2);
 /*if($rcount<$count){
 	$scount = $count-$rcount;
 	$rs=$DB->query("SELECT * FROM pre_faka WHERE tid='{$row['tid']}' AND orderid=0 ORDER BY kid ASC LIMIT {$scount}");

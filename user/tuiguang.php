@@ -14,7 +14,10 @@ if($userrow['power']==0){
 	showmsg('你没有权限使用此功能！',3);
 }
 if(!$userrow['domain'])showmsg('当前分站还未绑定域名',3);
-$url = 'http://'.$userrow['domain'].'/';
+$scriptpath = str_replace('\\','/',$_SERVER['SCRIPT_NAME']);
+$scriptpath = substr($scriptpath, 0, strrpos($scriptpath, '/'));
+$scriptpath = substr($scriptpath, 0, strrpos($scriptpath, '/'));
+$url = 'http://'.$userrow['domain'].$scriptpath.'/';
 if($conf['fanghong_api']>0){
 	$turl = fanghongdwz($url);
 	if($turl == $url){

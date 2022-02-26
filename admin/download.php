@@ -19,11 +19,13 @@ if(isset($_GET['tid'])){
 }
 if(isset($_GET['use']) && $_GET['use']==1)$sql.= " and orderid!=0";
 elseif(isset($_GET['use']) && $_GET['use']==0)$sql.= " and orderid=0";
-$rs=$DB->query("SELECT * FROM pre_faka WHERE {$sql} order by kid asc");
+if(isset($_GET['num']))$limit = " limit ".$_GET['num'];
+$rs=$DB->query("SELECT * FROM pre_faka WHERE {$sql} order by kid asc{$limit}");
 $data='';
 while($res = $rs->fetch())
 {
 	$data.=($res['pw']?$res['km'].' '.$res['pw']:$res['km'])."\r\n";
+	if($_GET['isuse']==1&&$_GET['use']==0)$DB->exec("update `pre_faka` set orderid=1,usetime=NOW() where `kid`='{$res['kid']}'");
 }
 
 }else{

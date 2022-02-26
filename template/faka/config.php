@@ -4,6 +4,20 @@ $template_info = [
 	'version' => 1.1
 ];
 
+//PC用户中心模板文件
+$template_route = [
+	'userreg' => TEMPLATE_ROOT.'faka/user/reg.php',
+	'userlogin' => TEMPLATE_ROOT.'faka/user/login.php',
+	'userfindpwd' => TEMPLATE_ROOT.'faka/user/findpwd.php',
+];
+
+//手机用户中心模板文件
+$template_route_m = [
+	'userreg' => TEMPLATE_ROOT.'faka/user/reg.php',
+	'userlogin' => TEMPLATE_ROOT.'faka/user/login.php',
+	'userfindpwd' => TEMPLATE_ROOT.'faka/user/findpwd.php',
+];
+
 $template_settings = [
 	'template_style' => [
 		'name'=>'选择界面风格',
@@ -43,5 +57,15 @@ $template_settings = [
 		'name'=>'自营商品标签文字',
 		'type'=>'input',
 		'note'=> '不填写默认是“手动”'
+	],
+	'template_about' => [
+		'name'=>'关于页面内容',
+		'type'=>'textarea',
+		'note'=> '支持html代码'
+	],
+	'template_help' => [
+		'name'=>'帮助页面内容',
+		'type'=>'textarea',
+		'note'=> '支持html代码'
 	],
 ];

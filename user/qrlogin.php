@@ -15,6 +15,7 @@ class qq_qrlogin{
 	}
 	public function qrlogin($qrsig){
 		if(empty($qrsig))return array('saveOK'=>-1,'msg'=>'qrsig不能为空');
+		$sig='';
 		$url='https://ssl.ptlogin2.qq.com/ptqrlogin?u1=https%3A%2F%2Fgraph.qq.com%2Foauth2.0%2Flogin_jump&ptqrtoken='.$this->getqrtoken($qrsig).'&ptredirect=0&h=1&t=1&g=1&from_ui=1&ptlang=2052&action=0-0-'.time().'0000&js_ver=21020514&js_type=1&login_sig='.$sig.'&pt_uistyle=40&aid=716027609&daid=383&pt_3rd_aid=101487368&';
 		$ret = $this->get_curl($url,0,$url,'qrsig='.$qrsig.'; ',1);
 		if(preg_match("/ptuiCB\('(.*?)'\)/", $ret, $arr)){

@@ -152,7 +152,7 @@ function ka() {
 function get_data() {
 	$.ajax({
 		type : "get",
-		url : "./index.php?mod=getdatashow",
+		url : "./other/getdatashow.php",
 		async: true,
 		dataType : 'json',
 		success : function(data) {

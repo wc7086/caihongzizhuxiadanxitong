@@ -8,7 +8,7 @@ include './head.php';
 if($islogin==1){}else exit("<script language='javascript'>window.location.href='./login.php';</script>");
 ?>
     <div class="col-sm-12 col-md-10 center-block" style="float: none;">
-<div class="modal fade" align="left" id="search" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal" align="left" id="search" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -17,7 +17,7 @@ if($islogin==1){}else exit("<script language='javascript'>window.location.href='
       </div>
       <div class="modal-body">
       <form action="kmlist.php" method="GET">
-<input type="text" class="form-control" name="kw" placeholder="请输入卡密或ZID"><br/>
+<input type="text" class="form-control" name="kw" placeholder="请输入卡密"><br/>
 <input type="submit" class="btn btn-primary btn-block" value="搜索"></form>
 </div>
       <div class="modal-footer">
@@ -50,7 +50,7 @@ if(!is_numeric($money) || !preg_match('/^[0-9.]+$/', $money))showmsg('金额输�
 echo "<ul class='list-group'><li class='list-group-item active'>成功生成以下卡密</li>";
 for ($i = 0; $i < $num; $i++) {
 	$km=getkm(18);
-	$sql=$DB->exec("insert into `pre_kms` (`km`,`money`,`addtime`) values ('".$km."','".$money."','".$date."')");
+	$sql=$DB->exec("insert into `pre_kms` (`type`,`km`,`money`,`addtime`) values (0,'".$km."','".$money."','".$date."')");
 	if($sql) {
 		echo "<li class='list-group-item'>$km</li>";
 	}
@@ -83,7 +83,7 @@ if(!checkRefererHost())exit();
 echo '<div class="block">
 <div class="block-title w h"><h3 class="panel-title">清空卡密</h3></div>
 <div class=" box">';
-if($DB->exec("DELETE FROM pre_kms WHERE 1")!==false){
+if($DB->exec("DELETE FROM pre_kms WHERE type=0")!==false){
 echo '<div class="box">清空成功.</div>';
 }else{
 echo'<div class="box">清空失败.</div>';
@@ -102,7 +102,7 @@ if(!checkRefererHost())exit();
 echo '<div class="block">
 <div class="block-title w h"><h3 class="panel-title">清空卡密</h3></div>
 <div class=" box">';
-if($DB->exec("DELETE FROM pre_kms WHERE user!=0")!==false){
+if($DB->exec("DELETE FROM pre_kms WHERE type=0 AND status=1")!==false){
 echo '<div class="box">清空成功.</div>';
 }else{
 echo'<div class="box">清空失败.</div>';
@@ -113,12 +113,12 @@ else
 {
 
 if(isset($_GET['kw'])) {
-	$sql=" `km`='{$_GET['kw']}' or `user`='{$_GET['kw']}'";
+	$sql=" type=0 AND `km`='{$_GET['kw']}'";
 	$numrows=$DB->getColumn("SELECT count(*) from pre_kms WHERE{$sql}");
 	$con='包含 '.$_GET['kw'].' 的共有 <b>'.$numrows.'</b> 个卡密';
 }else{
-	$numrows=$DB->getColumn("SELECT count(*) from pre_kms WHERE 1");
-	$sql=" 1";
+	$sql=" type=0";
+	$numrows=$DB->getColumn("SELECT count(*) from pre_kms WHERE{$sql}");
 	$con='共有 <b>'.$numrows.'</b> 个卡密';
 }
 ?>

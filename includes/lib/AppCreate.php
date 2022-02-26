@@ -5,7 +5,7 @@ namespace lib;
  */
 
 class AppCreate{
-	private $apiurl = 'http://997665.cn';
+	private $apiurl = 'http://app.weishiapp.cn:982';
 	private $projectid = '3';
 	private $theme = '#00A7AA';
 	private $key;

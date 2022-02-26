@@ -34,7 +34,7 @@ $("#add_submit").click(function () {
 		type : "POST",
 		url : "ajax_shop.php?act=batchaddgoods",
 		dataType : 'json',
-		data : {shequ:shequ, mcid:mcid, prid:prid, list:newshoplist, cname:$("#cid option:selected").html()},
+		data : {shequ:shequ, mcid:mcid, prid:prid, list:newshoplist, cname:$("#cid option:selected").text(), cimg:$("#cid option:selected").attr('data-shopimg')},
 		success : function(data) {
 			layer.close(ii);
 			if(data.code == 0){

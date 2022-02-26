@@ -64,6 +64,12 @@ $dbconfig=array(
 }elseif($conf['version']<2051){
 	$sqls = file_get_contents('update22.sql');
 	$version = 2051;
+}elseif($conf['version']<2053){
+	$sqls = file_get_contents('update23.sql');
+	$version = 2053;
+}elseif($conf['version']<2055){
+	$sqls = file_get_contents('update24.sql');
+	$version = 2055;
 }else{
 	exit('你的网站已经升级到最新版本了');
 }

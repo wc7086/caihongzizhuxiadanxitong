@@ -7,7 +7,7 @@ $row=$DB->getRow("select * from pre_pay where trade_no='$orderid' limit 1");
 if(!$row)sysmsg('当前订单不存在');
 if($row['status']==1)exit("<script language='javascript'>alert('当前订单已完成支付！');window.location.href='./?buyok=1';</script>");
 
-include_once TEMPLATE_ROOT.'faka/head.php';
+include_once TEMPLATE_ROOT.'faka/inc/head.php';
 
 ?>
 <style>
@@ -136,6 +136,8 @@ if($conf['qqpay_api'])echo '<li data-paytype="qqpay"><i class="payment-icon-qq">
 	</div>
 
 </div>
+
+<?php include_once TEMPLATE_ROOT.'faka/inc/foot.php';?>
 <script src="<?php echo $cdnpublic?>jquery/1.12.4/jquery.min.js"></script>
 <script src="<?php echo $cdnpublic?>layer/2.3/layer.js"></script>
 <script type="text/javascript">
@@ -211,6 +213,5 @@ $("#dopay").click(function(){
 });
 })
 </script>
-<div id="footer">
-    		&copy; <?php echo date("Y")?> <?php echo $conf['sitename']?>
-</div>
+</body>
+</html>

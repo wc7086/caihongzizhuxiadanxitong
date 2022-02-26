@@ -225,12 +225,44 @@ if(isset($_GET['kw'])) {
 
 $numrows=$DB->getColumn("SELECT count(*) from pre_faka WHERE{$sql}");
 ?>
+<div class="modal" align="left" id="output" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">导出未使用的卡密</h4>
+      </div>
+      <div class="modal-body">
+      <form action="download.php" method="GET">
+<input type="hidden" name="act" value="kms">
+<input type="hidden" name="tid" value="<?php echo $tid?>">
+<input type="hidden" name="use" value="0">
+<div class="form-group">
+	<div class="input-group">
+		<input type="number" class="form-control" name="num" placeholder="请输入要导出的数量">
+		<span class="input-group-btn">
+			<select name="isuse" class="form-control" style="width:140px">
+				<option value="0">不改为已使用</option>
+				<option value="1">同时改为已使用</option>
+			</select>
+		</span>
+		
+	</div>
+</div>
+<input type="submit" class="btn btn-primary btn-block" value="导出"></form>
+</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="block">
 	<div class="block-title">
 		<h2><?php echo $row['name']?> - 卡密库存列表</h2>
 	</div>
 	<div class="">
-	<a href="fakakms.php?my=add&tid=<?php echo $tid?>" class="btn btn-success">加卡</a>
+	<a href="fakakms.php?my=add&tid=<?php echo $tid?>" class="btn btn-success"><i class="fa fa-plus"></i>&nbsp;加卡</a>
   <a href="fakakms.php?my=qk&tid=<?php echo $tid?>" class="btn btn-danger">清空</a>
   <a href="fakakms.php?my=qkuse&tid=<?php echo $tid?>" class="btn btn-danger">清空已使用</a>
   <div class="btn-group">
@@ -241,6 +273,7 @@ $numrows=$DB->getColumn("SELECT count(*) from pre_faka WHERE{$sql}");
     <li><a href="download.php?act=kms<?php echo $link?>&use=0">未使用</a></li>
     <li><a href="download.php?act=kms<?php echo $link?>&use=1">已使用</a></li>
     <li><a href="download.php?act=kms<?php echo $link?>">全部</a></li>
+	<li><a href="#" data-toggle="modal" data-target="#output" id="output">指定数量</a></li>
   </ul>
 </div>
   <a href="#" data-toggle="modal" data-target="#search" id="search" class="btn btn-primary">搜索</a>

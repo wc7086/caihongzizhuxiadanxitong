@@ -53,8 +53,7 @@ if(isset($price_obj)){
 if($tool['is_curl']==4){
 	$count = $DB->getColumn("SELECT count(*) FROM pre_faka WHERE tid='{$tool['tid']}' and orderid=0");
 	$fakainput = getFakaInput();
-	if($fakainput!='hide')$tool['input']=$fakainput;
-	else $tool['input']=null;
+	$tool['input']=$fakainput;
 	$isfaka = 1;
 	$stock = '<span class="stock" style="">剩余:<span class="quota">'.$count.'</span>份</span>';
 }elseif($tool['stock']!==null){

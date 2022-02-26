@@ -67,7 +67,7 @@ background-repeat:repeat;}
         <h4 class="modal-title" id="myModalLabel">查询内容是什么？该输入什么？</h4>
       </div>
       	<li class="list-group-item"><font color="red">请在右侧的输入框内输入您下单时，在第一个输入框内填写的信息</font></li>
-      	<li class="list-group-item">例如您购买的是QQ赞类商品，输入下单的QQ账号即可查询订单</li>
+      	<li class="list-group-item">例如您购买的是QQ类商品，输入下单的QQ账号即可查询订单</li>
       	<li class="list-group-item">例如您购买的是邮箱类商品，需要输入您的邮箱号，输入QQ号是查询不到的</li>
       	<li class="list-group-item">例如您购买的是短视频类商品，输入视频链接即可查询，不要带其他中文字符</li>
       	<li class="list-group-item"><font color="red">如果您不知道下单账号是什么，可以不填写，直接点击查询，则会根据浏览器缓存查询</font></li>

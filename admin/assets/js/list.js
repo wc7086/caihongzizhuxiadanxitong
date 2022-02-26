@@ -123,10 +123,11 @@ function showStatus(id) {
 				  area: area,
 				  title: '订单进度查询',
 				  skin: 'layui-layer-rim',
-				  content: item
+				  content: item,
+				  shadeClose: true
 				});
 			}else{
-				layer.alert(data.msg);
+				layer.alert(data.msg, {shadeClose: true});
 			}
 		},
 		error:function(data){
@@ -144,10 +145,10 @@ function djOrder(id) {
 		success : function(data) {
 			layer.close(ii);
 			if(data.code == 0){
-				layer.msg(data.msg);
+				layer.msg(data.msg, {shadeClose: true});
 				listTable();
 			}else{
-				layer.alert(data.msg);
+				layer.alert(data.msg, {shadeClose: true});
 			}
 		},
 		error:function(data){
@@ -169,7 +170,8 @@ function showOrder(id) {
 				  type: 1,
 				  title: '订单详情',
 				  skin: 'layui-layer-rim',
-				  content: data.data
+				  content: data.data,
+				  shadeClose: true
 				});
 			}else{
 				layer.alert(data.msg);
@@ -194,7 +196,8 @@ function inputOrder(id) {
 				  type: 1,
 				  title: '修改数据',
 				  skin: 'layui-layer-rim',
-				  content: data.data
+				  content: data.data,
+				  shadeClose: true
 				});
 			}else{
 				layer.alert(data.msg);
@@ -219,7 +222,8 @@ function inputNum(id) {
 				  type: 1,
 				  title: '修改份数',
 				  skin: 'layui-layer-rim',
-				  content: data.data
+				  content: data.data,
+				  shadeClose: true
 				});
 			}else{
 				layer.alert(data.msg);
@@ -251,9 +255,9 @@ function refund(id) {
 					success : function(data) {
 						layer.close(ii);
 						if(data.code == 0){
-							layer.alert(data.msg, {icon:1}, function(){ listTable() });
+							layer.alert(data.msg, {icon:1, shadeClose: true}, function(){ listTable() });
 						}else{
-							layer.alert(data.msg);
+							layer.alert(data.msg, {shadeClose: true});
 						}
 					},
 					error:function(data){
@@ -307,7 +311,7 @@ function setResult(id,title) {
 		success : function(data) {
 			layer.close(ii);
 			if(data.code == 0){
-				var pro = layer.prompt({title: '填写'+title, value: data.result, formType: 2}, function(text, index){
+				var pro = layer.prompt({title: '填写'+title, value: data.result, formType: 2, shadeClose: true}, function(text, index){
 					var ii = layer.load(2, {shade:[0.1,'#fff']});
 				$.ajax({
 					type : 'POST',
@@ -320,7 +324,7 @@ function setResult(id,title) {
 							layer.close(pro);
 							layer.msg('填写'+title+'成功',{time:500,icon:1});
 						}else{
-							layer.alert(data.msg);
+							layer.alert(data.msg, {shadeClose: true});
 						}
 					},
 					error:function(data){

@@ -52,7 +52,7 @@ img.logo{width:14px;height:14px;margin:0 5px 0 3px;}
 <body>
 <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6 center-block" style="float: none;" id="page">
 <div class="panel panel-info">
-<div class="list-group-item reed" style="background:#64b2ca;"><h3 class="panel-title"><font color="#fff"><i class="fa fa-volume-up"></i>&nbsp;&nbsp;<b>代刷公告</b></font></h3></div>
+<div class="list-group-item reed" style="background:#64b2ca;"><h3 class="panel-title"><font color="#fff"><i class="fa fa-volume-up"></i>&nbsp;&nbsp;<b>网站公告</b></font></h3></div>
 <?php echo $conf['anounce']?>
 </div>
 

@@ -13,6 +13,15 @@ function getCookie(name)
 	else
 		return null;
 }
+function delCookie(name)
+{
+    var exp = new Date();
+    exp.setTime(exp.getTime() - 1);
+    var cval=getCookie(name);
+    if(cval!=null){
+      document.cookie= name + "="+cval+";expires="+exp.toGMTString();
+    }
+}
 function getqrpic(force){
 	force = force || false;
 	cleartime();
@@ -56,15 +65,16 @@ function qrlogin(){
 			$('#qrimg').hide();
 			$('#submit').hide();
 			$('#login').attr("data-lock", "true");
-			$.get("findpwd.php?act=qrlogin&r="+Math.random(1), function(arr) {
+			cleartime();
+			$.get("undefined" != typeof islogin && islogin==1?"connect.php?act=qrlogin&r="+Math.random(1):"findpwd.php?act=qrlogin&r="+Math.random(1), function(arr) {
 				if(arr.code==1) {
 					alert(arr.msg);
 					window.location.href=arr.url;
 				}else{
 					alert(arr.msg);
+					window.location.reload();
 				}
 			}, 'json');
-			cleartime();
 		}else if(d.saveOK ==1){
 			getqrpic(true);
 			$('#loginmsg').html('请重新扫描二维码');
@@ -95,6 +105,8 @@ function loginload(){
 function cleartime(){
 	clearInterval(interval1);
 	clearInterval(interval2);
+	delCookie('qrsig');
+	delCookie('qrimg');
 }
 function mloginurl(){
 	var imagew = $('#qrcodeimg').attr('src');

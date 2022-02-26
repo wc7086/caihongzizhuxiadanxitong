@@ -1,5 +1,6 @@
-.mobile{background-color:#fff;min-width:320px}
-.w{background-color:#fff;float:left;min-width:320px;width:100%}
+html,body{max-width:100%;overflow-x:hidden}
+.mobile{background-color:#fff;width:100%}
+.w{background-color:#fff;min-width:100%;width:100%}
 .m_user{line-height:40px;font-size:16px;color:#666;text-align:center;float:left;width:100%;background-color:#fff}
 .m_userx{line-height:40px;font-size:12px;color:#666;text-align:center;float:left;width:97%;background-color:#fff}
 .menux a{text-decoration:none;color:#eae9e9}
@@ -16,7 +17,7 @@
 .new-a-back span{display:block;height:35px;text-indent:17px;width:50px;color:#fff;font-size:14px;padding-top:8px;margin-left:-10px}
 .new-a-back span img{width:25px}
 .header h2{color:#fff;font-size:16px;font-weight:400;height:44px;line-height:44px;text-align:center;font-weight:700}
-.header .header_right{position:absolute;right:10;top:10}
+.header .header_right{position:absolute;right:10px;top:10px}
 .header .header_right img{height:25px}
 .head_right{position:absolute;top:15px;right:10px}
 .head_right a{color:#fff;font-size:12px;padding-top:5px;text-decoration:none}
@@ -56,9 +57,21 @@
 .top .m_nav a span{width:100%;float:left;line-height:40px;font-size:14px;color:#666;font-family:"Microsoft YaHei",Arial,Helvetica,sans-serif}
 
 .msg{border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:#e4e4e4}
-.msg_title{line-height:40px;float:left;width:100%;background-color:#f0f9ff;color:#585858;border-top:1px solid #e1f3ff;font-size:14px}
-.msg_title2{border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:#eee;line-height:30px;float:left;width:100%;font-size:12px;color:#666;margin-left:6px}
+.msg_title{line-height:40px;width:100%;background-color:#f0f9ff;color:#585858;border-top:1px solid #e1f3ff;font-size:14px}
+.msg_title2{line-height:30px;width:100%;font-size:12px;color:#666;margin-left:6px}
 .msg_title2 h1{font-size:12px;color:#666;margin-left:6px}
-.msg_title2 span{float:right;font-size:12px;color:#666;margin-right:10px}
-.msg_content{float:left;width:96%;padding:10px;font-size:14px;color:#666;line-height:24px}
+.msg_title2 span{font-size:14px;color:#FFF;margin-right:14px}
+.msg_content{float:right;width:96%;padding:10px;font-size:14px;color:#666;line-height:24px}
 .bank{background-image:url(../images/iconfont-i.png);background-repeat:no-repeat;background-position:right center;background-size:25px}
+
+.fui-navbar .nav-item.active,.fui-navbar .nav-item:active{color:#015cb1}
+.fui-navbar .nav-item.btn{color:#fff;border-radius:0}
+.fui-navbar .nav-item{position:relative;display:table-cell;height:2.45rem;text-align:center;vertical-align:middle;width:1%;color:#666}
+.page-goods-detail .fui-navbar .nav-item{height:2.45rem}
+.fui-navbar .nav-item.active,.fui-navbar .nav-item:active{color:#0991ff}
+.fui-navbar .nav-item .label{display:block;font-size:14px;position:relative;top:-.1rem}
+.fui-navbar .nav-item .iconfont{font-size:1.32rem;padding:0}
+.fui-navbar .nav-item .badge{background:red none repeat scroll 0 0;border-radius:.5rem;color:#fff;font-size:.6rem;height:.8rem;left:50%;line-height:.8rem;margin-left:.1rem;min-width:.8rem;padding:0 .2rem;position:absolute;top:.1rem;vertical-align:top;z-index:100}
+.dibucss{position:fixed;bottom:0;left:0;background:linear-gradient(top left,#fff,#cfebff);background:-ms-linear-gradient(top left,#fff,#cfebff);background:-webkit-linear-gradient(top left,#fff,#cfebff);background:-moz-linear-gradient(top left,#fff,#cfebff);background-color:#fff;font-size:14px;color:#7a7a7a;padding:3px;border-top:1px solid #e2e2e2}
+
+.pull-right {float: right !important}

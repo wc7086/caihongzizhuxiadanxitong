@@ -42,7 +42,7 @@ $count2=$DB->getColumn("SELECT count(*) from pre_site where addtime>='$thtime'")
 	<div class="sjx"></div>
 	<div class="text-kuang" style="line-height:20px;">
 		<div style="font-size:13px;text-indent:2em;">
-			分站就是与本站一样的网站！可代刷各种业务的网站！拥有独立后台、自主管理。轻松赚钱的网站！<font color="#f00">如需搭建请点击下方按钮，有疑问联系客服即可↓</font>
+			分站就是与本站一样的网站！可下单各种业务的网站！拥有独立后台、自主管理。轻松赚钱的网站！<font color="#f00">如需搭建请点击下方按钮，有疑问联系客服即可↓</font>
 		</div>
 		<hr class="xu" style="margin:9px 0 12px 0">
 		<center>
@@ -79,7 +79,7 @@ $count2=$DB->getColumn("SELECT count(*) from pre_site where addtime>='$thtime'")
 		<hr>
 		<font class="text-title">为何要选择我们？</font>
 		<div style="font-size:13px;text-indent:2em;">
-我们全网最专业的代刷系统，商品齐全、货源稳定、价格低廉、售后保障。拥有丰富的人脉和资源，我们关注优质商品，实时掌握代刷市场的动态，加入我们，只要你坚持，你不用担心不赚钱，我们即使不敢保证你月入上万！但是在网上赚个零花钱绝对没问题！
+我们全网最专业的商城系统，商品齐全、货源稳定、价格低廉、售后保障。拥有丰富的人脉和资源，我们关注优质商品，实时掌握市场的动态，加入我们，只要你坚持，你不用担心不赚钱，我们即使不敢保证你月入上万！但是在网上赚个零花钱绝对没问题！
 		</div>
 	</div>
 </div>

@@ -14,13 +14,10 @@ if($conf['wxpay_domain'] && $conf['wxpay_domain']!=$_SERVER['HTTP_HOST']){
 	exit;
 }
 
-$ordername = !empty($conf['ordername'])?str_replace('[time]',time(),$conf['ordername']):$row['name'];
+$ordername = !empty($conf['ordername'])?ordername_replace($conf['ordername'],$row['name'],$trade_no):$row['name'];
 
 if($conf['wxpay_api']==3){
 require_once SYSTEM_ROOT."wxpay/WxPay.Api.php";
-require_once SYSTEM_ROOT."wxpay/WxPay.NativePay.php";
-
-$notify = new NativePay();
 $input = new WxPayUnifiedOrder();
 $input->SetBody($ordername);
 $input->SetOut_trade_no($trade_no);
@@ -30,15 +27,11 @@ $input->SetTime_start(date("YmdHis"));
 $input->SetTime_expire(date("YmdHis", time() + 600));
 $input->SetNotify_url($siteurl.'wxpay_notify.php');
 $input->SetTrade_type("MWEB");
-$result = $notify->GetPayUrl($input);
+$result = WxPayApi::unifiedOrder($input);
 if($result["result_code"]=='SUCCESS'){
-	if($conf['wxpay_api']==3){
-		$redirect_url=$siteurl.'wxwap_return.php?trade_no='.$trade_no;
-		$url=$result['mweb_url'].'&redirect_url='.urlencode($redirect_url);
-		exit("<script>window.location.replace('{$url}');</script>");
-	}else{
-		$code_url = $result['code_url'];
-	}
+	$redirect_url=$siteurl.'wxwap_return.php?trade_no='.$trade_no;
+	$url=$result['mweb_url'].'&redirect_url='.urlencode($redirect_url);
+	exit("<script>window.location.replace('{$url}');</script>");
 }elseif(isset($result["err_code"])){
 	sysmsg('微信支付下单失败！['.$result["err_code"].'] '.$result["err_code_des"]);
 }else{
@@ -80,6 +73,7 @@ if($result["result_code"]=='SUCCESS'){
 </div>
 <script src="//cdn.staticfile.org/jquery/1.12.4/jquery.min.js"></script>
 <script src="//cdn.staticfile.org/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+<script src="//cdn.staticfile.org/layer/3.1.1/layer.min.js"></script>
 <script src="//cdn.staticfile.org/clipboard.js/1.7.1/clipboard.min.js"></script>
 <script>
 	var clipboard = new Clipboard('#copy-btn');
@@ -108,13 +102,10 @@ if($result["result_code"]=='SUCCESS'){
             success: function (data, textStatus) {
                 //从服务器得到数据，显示数据并继续查询
                 if (data.code == 1) {
-					if (confirm("您已支付完成，需要跳转到订单页面吗？")) {
-                        window.location.href=data.backurl;
-                    } else {
-                        // 用户取消
-                    }
+					layer.msg('支付成功，正在跳转中...', {icon: 16,shade: 0.1,time: 15000});
+					setTimeout(window.location.href=data.backurl, 1000);
                 }else{
-                    setTimeout("loadmsg()", 4000);
+                    setTimeout("loadmsg()", 3000);
                 }
             },
             //Ajax请求超时，继续查询
@@ -137,12 +128,11 @@ if($result["result_code"]=='SUCCESS'){
             success: function (data, textStatus) {
                 //从服务器得到数据，显示数据并继续查询
                 if (data.code == 1) {
-					if (confirm("您已支付完成，需要跳转到订单页面吗？")) {
-                        window.location.href=data.backurl;
-                    } else {
-                        // 用户取消
-                    }
-                }
+					layer.msg('支付成功，正在跳转中...', {icon: 16,shade: 0.1,time: 15000});
+					setTimeout(window.location.href=data.backurl, 1000);
+                }else{
+					layer.msg('您还未完成付款，请继续付款', {shade: 0,time: 1500});
+				}
             }
         });
     }

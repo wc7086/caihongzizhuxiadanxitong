@@ -9,32 +9,42 @@ while($row = $rs->fetch()){
 }
 $json = json_encode($hideData);
 ?>
-<script src="https://pv.sohu.com/cityjson?ie=utf-8" type="text/javascript"></script>
 <script>
-    var hideData = <?php echo $json?>;
-    p_setRegion();
-    function p_setRegion() {
-        $('#cid option').each(function (i, item) {
-            let key = parseInt($(item).val());
-            if (hideData.hasOwnProperty(key)) {
-                for (let str of hideData[key]) {
-                    if (returnCitySN['cname'].indexOf(str) > -1) {
-                        $(item).remove();
-                        break;
-                    }
-                }
-            }
-        });
-        $.each(hideData, function (key, content) {
-			for (let str of content) {
-                if (returnCitySN['cname'].indexOf(str) > -1) {
-					var tempDom = $('#collapse' + key);
-					if (tempDom.length > 0)
-						tempDom.parent().remove();
-					$('.cid' + key).remove();
-					break;
-				}
+$(document).ready(function(){
+	var hideData = <?php echo $json?>;
+	$.ajax({
+		url: 'https://restapi.amap.com/v3/ip?key=0113a13c88697dcea6a445584d535837',
+		type: "GET",
+		dataType: 'jsonp',
+		jsonp: "callback",
+		success: function (res) {
+			if(res.status != "1"){
+				console.log(res);return false;
 			}
-        });
-    }
+			var loc = res.province+res.city;
+			$('#cid option').each(function (i, item) {
+				let key = parseInt($(item).val());
+				if (hideData.hasOwnProperty(key)) {
+					for (let str of hideData[key]) {
+						if (loc.indexOf(str) > -1) {
+							$(item).remove();
+							break;
+						}
+					}
+				}
+			});
+			$.each(hideData, function (key, content) {
+				for (let str of content) {
+					if (loc.indexOf(str) > -1) {
+						var tempDom = $('#collapse' + key);
+						if (tempDom.length > 0)
+							tempDom.parent().remove();
+						$('.cid' + key).remove();
+						break;
+					}
+				}
+			});
+		}
+	});
+})
 </script>

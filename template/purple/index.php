@@ -62,26 +62,6 @@ if(!defined('IN_CRONLITE'))exit();
   </div>
  </div>
 <!--公告-->
-<!--查单说明开始-->
-<div class="modal fade" align="left" id="cxsm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">查询内容是什么？该输入什么？</h4>
-      </div>
-      	<li class="list-group-item"><font color="red">请在右侧的输入框内输入您下单时，在第一个输入框内填写的信息</font></li>
-      	<li class="list-group-item">例如您购买的是QQ赞类商品，输入下单的QQ账号即可查询订单</li>
-      	<li class="list-group-item">例如您购买的是邮箱类商品，需要输入您的邮箱号，输入QQ号是查询不到的</li>
-      	<li class="list-group-item">例如您购买的是短视频类商品，输入视频链接即可查询，不要带其他中文字符</li>
-      	<li class="list-group-item"><font color="red">如果您不知道下单账号是什么，可以不填写，直接点击查询，则会根据浏览器缓存查询</font></li>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!--查单说明结束-->
 
 <!--顶部导航-->
     <div class="block block-link-hover3" style="box-shadow:0px 5px 10px 0 rgba(0, 0, 0, 0.25);">
@@ -122,8 +102,8 @@ if(!defined('IN_CRONLITE'))exit();
         <ul class="nav nav-tabs nav-tabs-alt" data-toggle="tabs">
             <li style="width: 25%;" align="center" class="active"><a href="#shop" data-toggle="tab"><span style="font-weight:bold"><i class="fa fa-shopping-bag fa-fw"></i> 下单</span></a></li>
             <li style="width: 25%;" align="center"><a href="#search" data-toggle="tab" id="tab-query"><span style="font-weight:bold"><i class="fa fa-search"></i> 查询</span></a></li>
-			<li style="width: 25%;" align="center" <?php if($conf['fenzhan_buy']==0){?>class="hide"<?php }?>><a href="#Substation" data-toggle="tab"><span style="font-weight:bold"><font color="#ff0000"><i class="fa fa-coffee fa-fw"></i> 分站</span></font></a></li>
-			<li style="width: 25%;" align="center" <?php if($conf['gift_open']==0||$conf['fenzhan_buy']==1){?>class="hide"<?php }?>><a href="#gift" data-toggle="tab"><span style="font-weight:bold"><i class="fa fa-gift fa-fw"></i> 抽奖</span></a></li>
+			<?php if($conf['fenzhan_buy']==1){?><li style="width: 25%;" align="center"><a href="#Substation" data-toggle="tab"><span style="font-weight:bold"><font color="#ff0000"><i class="fa fa-coffee fa-fw"></i> 分站</span></font></a></li><?php }?>
+			<?php if($conf['gift_open']==1&&$conf['fenzhan_buy']==0){?><li style="width: 25%;" align="center"><a href="#gift" data-toggle="tab"><span style="font-weight:bold"><i class="fa fa-gift fa-fw"></i> 抽奖</span></a></li><?php }?>
 			<li style="width: 25%;" align="center"><a href="#more" data-toggle="tab"><span style="font-weight:bold"><i class="fa fa-folder-open"></i> 更多</span></a></li>
         </ul>
 <!--TAB标签-->
@@ -159,7 +139,7 @@ if(!defined('IN_CRONLITE'))exit();
 						<select class="form-control" id="searchtype" style="padding: 6px 4px;width:90px"><option value="0">下单账号</option><option value="1">订单号</option></select>
 					</div>
 					<input type="text" name="qq" id="qq3" value="<?php echo $qq?>" class="form-control" placeholder="请输入要查询的内容（留空则显示最新订单）" onkeydown="if(event.keyCode==13){submit_query.click()}" required/>
-					<span class="input-group-btn"><a href="#cxsm" data-toggle="modal" class="btn btn-warning"><i class="glyphicon glyphicon-exclamation-sign"></i></a></span>
+					<span class="input-group-btn"><a tabindex="0" class="btn btn-default" role="button" data-container="body" data-toggle="popover" data-trigger="focus" data-placement="top" title="查询内容是什么？" data-content="请输入您下单时，在第一个输入框内填写的信息。如果您不知道下单账号是什么，可以不填写，直接点击查询，则会根据浏览器缓存查询！"><i class="glyphicon glyphicon-exclamation-sign"></i></a></span>
 				</div>
 			</div>
 			<input type="submit" id="submit_query" class="btn btn-sm btn-success btn-block btn-sm" style="text-shadow: black 1px 1px 1px;" value="查询订单">
@@ -176,7 +156,7 @@ if(!defined('IN_CRONLITE'))exit();
    </div>
 <!--查询订单-->
 <!--开通分站-->
-    <div class="tab-pane" id="Substation">
+    <?php if($conf['fenzhan_buy']==1){?><div class="tab-pane" id="Substation">
 	<table class="table table-borderless animated bounceIn" style="text-align: center;">
     <tbody>
       <tr class="active">
@@ -190,9 +170,8 @@ if(!defined('IN_CRONLITE'))exit();
               <font color="#A0215F">自</font>
               <font color="#8D0E72">己</font>
               <font color="#5400AB">的</font>
-              <font color="#4100BE">代</font>
-              <font color="#2E00D1">刷</font>
-              <font color="#1B00E4">网</font></span>
+              <font color="#4100BE">商</font>
+              <font color="#2E00D1">城</font></span>
           </h4>
         </td>
       </tr>
@@ -211,10 +190,10 @@ if(!defined('IN_CRONLITE'))exit();
       <tr>
     </tbody>
   </table>
-	</div>
+	</div><?php }?>
 <!--开通分站-->
 <!--抽奖-->
-    <div class="tab-pane" id="gift">
+    <?php if($conf['gift_open']==1){?><div class="tab-pane" id="gift">
 		<div class="panel-body text-center">
 		<div id="roll">点击下方按钮开始抽奖</div>
 		<hr>
@@ -225,44 +204,44 @@ if(!defined('IN_CRONLITE'))exit();
 		<div id="result"></div><br/>
 		<div class="giftlist" style="display:none;"><strong>最近中奖记录</strong><ul id="pst_1"></ul></div>
 		</div>
-	</div>
+	</div><?php }?>
 <!--抽奖-->
 <!--更多-->
     <div class="tab-pane fade fade-right" id="more">
-				<div class="col-xs-6 col-sm-4 col-lg-4<?php if($conf['gift_open']==0||$conf['fenzhan_buy']==0){?> hide<?php }?>">
+				<?php if($conf['gift_open']==1){?><div class="col-xs-6 col-sm-4 col-lg-4">
                     <a class="block block-link-hover2 text-center" href="#gift" data-toggle="tab">
                         <div class="block-content block-content-full bg-info">
                             <i class="fa fa-gift fa-3x text-white"></i>
                             <div class="font-w600 text-white-op push-15-t">抽奖</div>
                         </div>
                     </a>
-                </div>
+                </div><?php }?>
 
-				<div class="col-xs-6 col-sm-4 col-lg-4<?php if(empty($conf['appurl'])){?> hide<?php }?>">
+				<?php if(!empty($conf['appurl'])){?><div class="col-xs-6 col-sm-4 col-lg-4">
                     <a class="block block-link-hover2 text-center" href="<?php echo $conf['appurl']; ?>" target="_blank">
                         <div class="block-content block-content-full bg-success">
                             <i class="fa fa-cloud-download fa-3x text-white"></i>
                             <div class="font-w600 text-white-op push-15-t">APP下载</div>
                         </div>
                     </a>
-                </div>
+                </div><?php }?>
          
-                <div class="col-xs-6 col-sm-4 col-lg-4<?php if(empty($conf['daiguaurl'])){?> hide<?php }?>">
+                <?php if(!empty($conf['daiguaurl'])){?><div class="col-xs-6 col-sm-4 col-lg-4">
                     <a class="block block-link-hover2 text-center" href="./?mod=daigua">
                         <div class="block-content block-content-full bg-primary">
                             <i class="fa fa-rocket fa-3x text-white"></i>
                             <div class="font-w600 text-white-op push-15-t">等级代挂</div>
                         </div>
                     </a>
-                </div>
-				<div class="col-xs-6 col-sm-4 col-lg-4<?php if(empty($conf['invite_tid'])){?> hide<?php }?>">
+                </div><?php }?>
+				<?php if(!empty($conf['invite_tid'])){?><div class="col-xs-6 col-sm-4 col-lg-4">
 					<a class="block block-link-hover2 text-center" href="./?mod=invite" target="_blank">
 						<div class="block-content block-content-full bg-warning">
 						  <i class="fa fa-paper-plane-o fa-3x text-white"></i>
 							<div class="font-w600 text-white-op push-15-t">免费领赞</div>
 						  </div>
 					</a>
-				</div>
+				</div><?php }?>
 
                 <div class="col-xs-6 col-sm-4 col-lg-4">
                     <a class="block block-link-hover2 text-center" href="./user/" target="_blank">
@@ -275,7 +254,7 @@ if(!defined('IN_CRONLITE'))exit();
 	</div>
 <!--更多-->
 <!--版本介绍-->
-<div class="modal fade" align="left" id="userjs" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<?php if($conf['fenzhan_buy']==1){?><div class="modal fade" align="left" id="userjs" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
 		<div class="modal-header">
@@ -292,7 +271,7 @@ if(!defined('IN_CRONLITE'))exit();
                     </thead>
 					<tbody>
 						<tr class="active">
-                            <td>专属代刷平台</td>
+                            <td>专属商城平台</td>
                             <td class="text-center">
 								<span class="btn btn-effect-ripple btn-xs btn-success"><i class="fa fa-check"></i></span>
 								<span class="btn btn-effect-ripple btn-xs btn-success"><i class="fa fa-check"></i></span>
@@ -364,7 +343,7 @@ if(!defined('IN_CRONLITE'))exit();
 		</div>
     </div>
   </div>
-</div>
+</div><?php }?>
 <!--版本介绍-->
     </div>
 </div>
@@ -386,7 +365,7 @@ if(!defined('IN_CRONLITE'))exit();
 				</div>
 				<div id="collapseOne" class="panel-collapse in" style="height: auto;">
 					<div class="panel-body">
-					订单显示（已完成）就证明已经提交到服务器内！并不是订单已刷完。<br>
+					订单显示（已完成）就证明已经提交到服务器内！<br>
 					如果长时间没到账请联系客服处理！<br>
 					订单长时间显示（待处理）请联系客服！
 					</div>
@@ -395,13 +374,12 @@ if(!defined('IN_CRONLITE'))exit();
 			<div class="panel panel-default" style="margin-bottom: 6px;">
 				<div class="panel-heading">
 					<h4 class="panel-title">
-						<a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" class="collapsed">QQ会员/钻类等什么时候到账？</a>
+						<a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" class="collapsed">商品什么时候到账？</a>
 					</h4>
 				</div>
 				<div id="collapseTwo" class="panel-collapse collapse" style="height: 0px;">
 					<div class="panel-body">
-					下单后的48小时内到账（会员或钻全部都是一样48小时内到账）！<br>
-					如果超过48小时，请联系客服退款或补单，提供QQ号码！
+					请参考商品简介里面，有关于到账时间的说明。
 					</div>
 				</div>
 			</div>
@@ -479,7 +457,8 @@ $i=0;
 
 <div class="block block-content block-content-mini block-content-full" style="box-shadow:0px 5px 10px 0 rgba(0, 0, 0, 0.25);">
 	<!--网站日志-->
-	<div class="row text-center" <?php if($conf['hide_tongji']==1){?>style="display:none;"<?php }?>>
+	<?php if(!$conf['hide_tongji']){?>
+	<div class="row text-center">
 		<div class="col-xs-4">
 			<h5 class="widget-heading"><small>订单总数</small><br><a href="javascript:void(0)" class="themed-color-flat"><span id="count_orders"></span>条</a></h5>
 		</div>
@@ -490,10 +469,11 @@ $i=0;
 			<h5 class="widget-heading"><small>运营天数</small><br><a href="javascript:void(0)" class="themed-color-flat"><span id="count_yxts"></span>天</a></h5>
 		</div>
 	</div>
+	<?php }?>
 	<!--网站日志-->
 	<!--底部导航-->
 	<div class="block-content text-center border-t">
-		<a href="javascript:void(0);" onclick="AddFavorite('QQ代刷网',location.href)">
+		<a href="javascript:void(0);" onclick="AddFavorite('<?php echo $conf['sitename']?>',location.href)">
   <b style="text-shadow: LightSteelBlue 1px 0px 0px;">
   <i class="fa fa-heart text-danger animation-pulse"></i>
   <font color=#CB0034>本</font>

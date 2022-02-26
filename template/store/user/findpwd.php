@@ -84,7 +84,6 @@ a:hover{
 
 <script src="<?php echo $cdnpublic?>jquery/1.12.4/jquery.min.js"></script>
 <script src="<?php echo $cdnpublic?>layer/2.3/layer.js"></script>
-<script src="<?php echo $cdnpublic ?>layui/2.5.6/layui.all.min.js"></script>
 <script src="../assets/js/qrlogin.js?ver=<?php echo VERSION ?>"></script>
 <script>
 function goback()

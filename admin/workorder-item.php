@@ -47,7 +47,11 @@ function send_msg_mail($id){
 	$sub = $conf['sitename'].'售后支持工单待反馈提醒';
 	$content=explode('*',$rows['content']);
 	$content=mb_substr($content[0], 0, 16, 'utf-8');
-	$msg = '尊敬的'.$siterow['user'].'：<br/>您于'.$rows['addtime'].'提交的售后支持工单(ID:'.$id.') 需要您进一步提供相关信息。请登录网站后台“我的工单”查看详情并回复。若3天内您仍未回复此工单，我们会做完成工单处理。<a href="http://'.$_SERVER['HTTP_HOST'].'/user/workorder.php?my=view&id='.$id.'" target="_blank">点此查看</a><br/><a href="http://'.$_SERVER['HTTP_HOST'].'/user/workorder.php?my=view&id='.$id.'" target="_blank">工单标题：'.$content.'</a><br/>----------------<br/>'.$conf['sitename'];
+	$scriptpath=str_replace('\\','/',$_SERVER['SCRIPT_NAME']);
+	$scriptpath = substr($scriptpath, 0, strrpos($scriptpath, '/'));
+	$scriptpath = substr($scriptpath, 0, strrpos($scriptpath, '/'));
+	$siteurl = (is_https() ? 'https://' : 'http://').$_SERVER['HTTP_HOST'].$scriptpath.'/';
+	$msg = '尊敬的'.$siterow['user'].'：<br/>您于'.$rows['addtime'].'提交的售后支持工单(ID:'.$id.') 需要您进一步提供相关信息。请登录网站后台“我的工单”查看详情并回复。若3天内您仍未回复此工单，我们会做完成工单处理。<a href="'.$siteurl.'user/workorder.php?my=view&id='.$id.'" target="_blank">点此查看</a><br/><a href="'.$siteurl.'user/workorder.php?my=view&id='.$id.'" target="_blank">工单标题：'.$content.'</a><br/>----------------<br/>'.$conf['sitename'];
 	if(checkEmail($mail_name)){
 		send_mail($mail_name,$sub,$msg);
 	}

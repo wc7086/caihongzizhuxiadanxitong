@@ -8,10 +8,10 @@ if(isset($_GET['logout'])){
 	if(!checkRefererHost())exit();
 	setcookie("user_token", "", time() - 604800, '/');
 	@header('Content-Type: text/html; charset=UTF-8');
-	exit("<script language='javascript'>alert('您已成功注销本次登陆！');window.location.href='./login.php';</script>");
+	exit("<script language='javascript'>alert('您已成功注销本次登录！');window.location.href='./login.php';</script>");
 }elseif($islogin2==1){
 	@header('Content-Type: text/html; charset=UTF-8');
-	exit("<script language='javascript'>alert('您已登陆！');window.location.href='./';</script>");
+	exit("<script language='javascript'>alert('您已登录！');window.location.href='./';</script>");
 }
 $title='用户登录';
 include './head2.php';
@@ -59,12 +59,13 @@ include './head2.php';
 			<br/>
 			<?php }?>
             <div class="form-group">
-			  <input type="button" value="立即登陆" id="submit_login" class="btn btn-primary btn-block"/>
+			  <input type="button" value="立即登录" id="submit_login" class="btn btn-primary btn-block"/>
             </div>
 			<hr>
-			<?php if($conf['login_qq']==1){?>
+			<?php if($conf['login_qq']>=1 || $conf['login_wx']>=1){?>
 			<div class="form-group text-center">
-			  <a href="javascript:connect('qq')"><img src="../assets/img/social/qq.png"></a>
+			  <?php if($conf['login_qq']>=1){?><a href="javascript:connect('qq')"><img src="../assets/img/social/qq.png"></a>&nbsp;<?php }?>
+			  <?php if($conf['login_wx']>=1){?><a href="javascript:connect('wx')"><img src="../assets/img/social/wx.png"></a>&nbsp;<?php }?>
             </div>
 			<?php }?>
 			<div class="form-group">
@@ -74,6 +75,7 @@ include './head2.php';
 			<?php }else{?>
 			<a href="regsite.php" class="btn btn-danger btn-rounded" style="float:right;"><i class="fa fa-user-plus"></i>&nbsp;开通分站</a>
 			<?php }?>
+			<?php if($conf['forceloginhome']==1){ echo '<hr/>'.$conf['footer'];}?>
 			</div>
           </form>
     </div>

@@ -1,9 +1,12 @@
-@charset "utf-8";.ui-tab-nav{width:100%;background-color:#fff;display:box;display:-webkit-box;font-size:16px;height:45px;-webkit-box-sizing:border-box;box-sizing:border-box}
-.ui-tab-nav li{height:45px;line-height:45px;min-width:70px;box-flex:1;-webkit-box-flex:1;text-align:center;color:gray;-webkit-box-sizing:border-box;box-sizing:border-box;font-size:14px;border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:#f6f6f6}
-.ui-tab-nav li a{text-decoration:none;color:gray;display:block;float:left;width:100%}
-.ui-tab-nav li.current a{color:#00bb9c;border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:#00bb9c;line-height:45px;height:44px}
-.ui-tab-content{margin-top:0;display:-webkit-box}
-.baoliao_content{float:left;width:100%;margin-top:5px;height:95px;border-bottom-width:5px;border-bottom-style:solid;border-bottom-color:#f5f5f5;background-color:#fff}
+@charset "utf-8";
+body {
+    background-color: #FFFFFF;
+}
+.baoliao_content{float:left;width:100%;margin-top:4px;margin-bottom:4px;height:95px; background-color:#fff;
+
+    border:1px dashed #d8d8d8;
+}
+.baoliao_content .classmenu{float:left;line-height:43px;font-size:18px;color: #006ba2;text-align:center;width:100%;background-color:#eae9e9;border-top:2px solid #d8d8d8}
 .baoliao_content .bl_img{float:left;margin:3px;width:15%}
 .baoliao_content .bl_img img{position:relative;margin:1px 1px 1px 1px;width:60px}
 .baoliao_content .bl_right{float:left;margin-left:10px;width:78%;height:90px}
@@ -38,7 +41,7 @@
 .bl_view_time{font-size:12px;color:#666;text-align:right;float:right;margin-right:1%}
 .go_buy{line-height:40px;height:40px;text-align:center}
 .go_buy a{color:#fff;background-color:#00bb9c;text-align:center;line-height:40px;float:left;width:100%;text-decoration:none;font-size:16px}
-.go_buy input{color:#fff;background-color:#00bb9c;text-align:center;line-height:40px;float:left;width:100%;text-decoration:none;font-size:16px}
+.go_buy input{color:#fff;background-color: #ff7835;text-align:center;line-height:40px;float:left;width:100%;text-decoration:none;font-size:16px}
 .bl_view_content h1{font-size:16px;font-weight:400;color:#f60;line-height:45px;border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:#f3f3f3;text-indent:10px;margin:0;padding:0}
 .bl_view_content h1 span{float:right;font-size:12px;color:#999;margin-right:5px}
 .bl_view_word{padding:10px;font-size:14px;color:#666;line-height:22px;overflow:hidden}
@@ -58,7 +61,7 @@
 .comment_list .pl_user_name{float:left;margin-left:10px;color:#09c;font-size:12px}
 .comment_list .pl_user_time{float:left;margin-left:10px;color:#999;font-size:12px}
 .comment_list .pl_user_comment{width:97%;margin-top:5px;padding-left:2.2%;float:left;text-align:justify;line-height:22px;font-size:12px}
-.menux{line-height:43px;font-size:18px;color:#0595b4;text-align:center;float:left;width:100%;background-color:#eae9e9;border-top:3px solid #00bae2}
+.menux{line-height:43px;font-size:18px;color: #006ba2;text-align:center;float:left;width:100%;background-color:#eae9e9;border-top:2px solid #d8d8d8}
 .menux a{text-decoration:none;color:#0595b4}
 .menuxqu{line-height:38px;font-size:16px;color:#1c92df;text-align:left;float:left;width:97%;background-color:#e7f4fd;border-top:0 solid #c7e8fd;font-size:12px;margin-left:5px}
 .index_bl_type{font-size:12px;color:#fff;padding-top:2px;padding-right:2px;padding-bottom:2px;padding-left:2px;border-radius:0;margin-right:2px;text-align:center}

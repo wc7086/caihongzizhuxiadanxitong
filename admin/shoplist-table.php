@@ -9,13 +9,13 @@ adminpermission('shop', 1);
 $shequlist=$DB->getAll("SELECT id,url FROM pre_shequ order by id asc");
 $shequurls=[];
 foreach($shequlist as $res){
-	$shequurls[$res['id']]=$res['url'];
+	$shequurls[$res['id']]=$res['url'].($res['remark']?' ('.$res['remark'].')':null);
 }
 
 function display_shoptype($type, $shequ=0){
 	global $shequurls;
 	if($type==1||$type==2)
-		return '<span class="btn-warning btn-xs" title="'.$shequurls[$shequ].'">对接</span>';
+		return '<span class="btn-warning btn-xs enable-tooltips" title="'.$shequurls[$shequ].'" data-toggle="tooltip" data-original-title="'.$shequurls[$shequ].'">对接</span>';
 	elseif($type==4)
 		return '<span class="btn-success btn-xs">发卡</span>';
 	else
@@ -44,28 +44,29 @@ $pagesize = isset($_GET['num'])?intval($_GET['num']):30;
 $orderby = 'A.tid desc';
 if(isset($_GET['kw'])){
 	$kw = trim(daddslashes($_GET['kw']));
-	$numrows=$DB->getColumn("SELECT count(*) from pre_tools where name LIKE '%$kw%'");
 	$sql=" A.name LIKE '%$kw%'";
+	if(is_numeric($kw))$sql.=" OR A.tid='$kw'";
+	$numrows=$DB->getColumn("SELECT count(*) from pre_tools A where{$sql}");
 	$con='包含 <b>'.$kw.'</b> 的共有 <b>'.$numrows.'</b> 个商品';
 	$link='&kw='.$kw;
 }elseif(isset($_GET['cid'])){
 	$cid = intval($_GET['cid']);
-	$numrows=$DB->getColumn("SELECT count(*) from pre_tools where cid='$cid'");
 	$sql=" A.cid='$cid'";
+	$numrows=$DB->getColumn("SELECT count(*) from pre_tools A where{$sql}");
 	$con='分类 <a href="../?cid='.$cid.'" target="_blank">'.$shua_class[$cid].'</a> 共有 <b>'.$numrows.'</b> 个商品';
 	$link='&cid='.$cid;
 	$orderby = 'A.sort asc';
 	if($pagesize<$numrows)$pagesize=$numrows;
 }elseif(isset($_GET['prid'])){
 	$prid = intval($_GET['prid']);
-	$numrows=$DB->getColumn("SELECT count(*) from pre_tools where prid='$prid'");
 	$sql=" prid='$prid'";
+	$numrows=$DB->getColumn("SELECT count(*) from pre_tools where{$sql}");
 	$con='加价模板 '.$price_class[$prid].' 共有 <b>'.$numrows.'</b> 个商品';
 	$link='&prid='.$prid;
 }elseif(isset($_GET['tid'])){
 	$tid = intval($_GET['tid']);
-	$numrows=$DB->getColumn("SELECT count(*) from pre_tools where tid='$tid'");
 	$sql=" tid='$tid'";
+	$numrows=$DB->getColumn("SELECT count(*) from pre_tools where{$sql}");
 	$con='商品列表';
 	$link='&tid='.$tid;
 }else{

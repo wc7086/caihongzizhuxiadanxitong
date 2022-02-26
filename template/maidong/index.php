@@ -19,28 +19,10 @@ include_once 'head.php';
     </div>
   </div>
 </div>
-<!--查单说明开始-->
-<div class="modal fade" align="left" id="cxsm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">查询内容是什么？该输入什么？</h4>
-      </div>
-      	<li class="list-group-item"><font color="red">请在右侧的输入框内输入您下单时，在第一个输入框内填写的信息</font></li>
-      	<li class="list-group-item">例如您购买的是QQ赞类商品，输入下单的QQ账号即可查询订单</li>
-      	<li class="list-group-item">例如您购买的是邮箱类商品，需要输入您的邮箱号，输入QQ号是查询不到的</li>
-      	<li class="list-group-item">例如您购买的是短视频类商品，输入视频链接即可查询，不要带其他中文字符</li>
-      	<li class="list-group-item"><font color="red">如果您不知道下单账号是什么，可以不填写，直接点击查询，则会根据浏览器缓存查询</font></li>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!--查单说明结束-->
 <!--版本介绍-->
-<div class="modal fade" id="userjs" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;" align="left"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><h4 class="modal-title" id="myModalLabel">版本介绍</h4></div><div class="block"><div class="table-responsive"><table class="table table-borderless table-vcenter"><thead><tr><th style="width: 100px;">功能</th><th class="text-center" style="width: 20px;">普及版/专业版</th></tr></thead><tbody><tr class="active"><td>专属代刷平台</td><td class="text-center"><span style="overflow: hidden; position: relative;"><i class="fa fa-check"></i></span><span style="overflow: hidden; position: relative;"><i class="fa fa-check"></i></span></td></tr><tr class=""><td>三种在线支付接口</td><td class="text-center"><span style="overflow: hidden; position: relative;"><i class="fa fa-check"></i></span><span style="overflow: hidden; position: relative;"><i class="fa fa-check"></i></span></td></tr><tr class="success"><td>专属网站域名</td><td class="text-center"><span style="overflow: hidden; position: relative;"><i class="fa fa-check"></i></span><span style="overflow: hidden; position: relative;"><i class="fa fa-check"></i></span></td></tr><tr class=""><td>赚取用户提成</td><td class="text-center"><span style="overflow: hidden; position: relative;"><i class="fa fa-check"></i></span><span style="overflow: hidden; position: relative;"><i class="fa fa-check"></i></span></td></tr><tr class="info"><td>赚取下级分站提成</td><td class="text-center"><span style="overflow: hidden; position: relative;"><i class="fa fa-close"></i></span><span style="overflow: hidden; position: relative;"><i class="fa fa-check"></i></span></td></tr><tr class=""><td>设置商品价格</td><td class="text-center"><span style="overflow: hidden; position: relative;"><i class="fa fa-check"></i></span><span style="overflow: hidden; position: relative;"><i class="fa fa-check"></i></span></td></tr><tr class="warning"><td>设置下级分站商品价格</td><td class="text-center"><span style="overflow: hidden; position: relative;"><i class="fa fa-close"></i></span><span style="overflow: hidden; position: relative;"><i class="fa fa-check"></i></span></td></tr><tr class=""><td>搭建下级分站</td><td class="text-center"><span style="overflow: hidden; position: relative;"><i class="fa fa-close"></i></span><span style="overflow: hidden; position: relative;"><i class="fa fa-check"></i></span></td></tr></tbody></table></div><center style="color: #b2b2b2;"><small><em>* 自己的能力决定着你的收入！</em></small></center></div></div></div></div>
+<?php if($conf['fenzhan_buy']==1){?>
+<div class="modal fade" id="userjs" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;" align="left"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><h4 class="modal-title" id="myModalLabel">版本介绍</h4></div><div class="block"><div class="table-responsive"><table class="table table-borderless table-vcenter"><thead><tr><th style="width: 100px;">功能</th><th class="text-center" style="width: 20px;">普及版/专业版</th></tr></thead><tbody><tr class="active"><td>专属商城平台</td><td class="text-center"><span style="overflow: hidden; position: relative;"><i class="fa fa-check"></i></span><span style="overflow: hidden; position: relative;"><i class="fa fa-check"></i></span></td></tr><tr class=""><td>三种在线支付接口</td><td class="text-center"><span style="overflow: hidden; position: relative;"><i class="fa fa-check"></i></span><span style="overflow: hidden; position: relative;"><i class="fa fa-check"></i></span></td></tr><tr class="success"><td>专属网站域名</td><td class="text-center"><span style="overflow: hidden; position: relative;"><i class="fa fa-check"></i></span><span style="overflow: hidden; position: relative;"><i class="fa fa-check"></i></span></td></tr><tr class=""><td>赚取用户提成</td><td class="text-center"><span style="overflow: hidden; position: relative;"><i class="fa fa-check"></i></span><span style="overflow: hidden; position: relative;"><i class="fa fa-check"></i></span></td></tr><tr class="info"><td>赚取下级分站提成</td><td class="text-center"><span style="overflow: hidden; position: relative;"><i class="fa fa-close"></i></span><span style="overflow: hidden; position: relative;"><i class="fa fa-check"></i></span></td></tr><tr class=""><td>设置商品价格</td><td class="text-center"><span style="overflow: hidden; position: relative;"><i class="fa fa-check"></i></span><span style="overflow: hidden; position: relative;"><i class="fa fa-check"></i></span></td></tr><tr class="warning"><td>设置下级分站商品价格</td><td class="text-center"><span style="overflow: hidden; position: relative;"><i class="fa fa-close"></i></span><span style="overflow: hidden; position: relative;"><i class="fa fa-check"></i></span></td></tr><tr class=""><td>搭建下级分站</td><td class="text-center"><span style="overflow: hidden; position: relative;"><i class="fa fa-close"></i></span><span style="overflow: hidden; position: relative;"><i class="fa fa-check"></i></span></td></tr></tbody></table></div><center style="color: #b2b2b2;"><small><em>* 自己的能力决定着你的收入！</em></small></center></div></div></div></div>
+<?php }?>
 <!--版本介绍-->
 <div id="page-container" class="header-fixed-top sidebar-visible-lg-full ">
 	<div id="sidebar">
@@ -70,7 +52,7 @@ include_once 'head.php';
 		</div>
 		<div id="sidebar-extra-info" class="sidebar-content sidebar-nav-mini-hide">
 			<div class="text-center">
-				<small>2020 <i class="fa fa-heart text-danger"></i> <a href="./"> <?php echo $conf['sitename']?></a></small><br>
+				<small><?php echo date("Y")?> <i class="fa fa-heart text-danger"></i> <a href="./"> <?php echo $conf['sitename']?></a></small><br>
 			</div>
 		</div>
 	</div>
@@ -135,7 +117,7 @@ include_once 'head.php';
 <div class="col-sm-12 col-md-9 col-lg-6 center-block" style="float: none;">
 	<div class="widget-content themed-background-flat img-logo-about">
         <p class="desc"><?php echo $conf['sitename']?></p>
-		<p class="descp">　最专业的空间业务代刷平台</p>
+		<p class="descp">　最专业的虚拟商品交易平台</p>
 	</div>
 	<div class="widget-content themed-background-muted text-center"style="margin: 0 0 10px;">
 	
@@ -152,16 +134,10 @@ include_once 'head.php';
 				<div class="modal-content">
 					<div class="modal-header-tabs">
 						<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-						<ul class="nav nav-tabs" data-toggle="tabs">
-							<li class="active"><a href="#zhu-modal">系统公告</a></li>
-							<li><a href="#modal">网站公告</a></li>
-						</ul>
+						<h4 class="modal-title" id="myModalLabel">平台公告</h4>
 					</div>
 					<div class="modal-body">
-						<div class="tab-content">
-							<div class="tab-pane active" id="zhu-modal"><?php echo $conf['anounce']?></div>
-							<div class="tab-pane" id="modal"><?php echo $conf['modal']?></div>
-						</div>
+						<?php echo $conf['anounce']?>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">知道啦</button>
@@ -187,7 +163,7 @@ include_once 'head.php';
 						</div>
 						<div id="collapseOne" class="panel-collapse in" style="height: auto;">
 							<div class="panel-body">
-							订单显示（已完成）就证明已经提交到服务器内！并不是订单已刷完。<br>
+							订单显示（已完成）就证明已经提交到服务器内！<br>
 							如果长时间没到账请联系客服处理！<br>
 							订单长时间显示（待处理）请联系客服！
 							</div>
@@ -196,25 +172,24 @@ include_once 'head.php';
 					<div class="panel panel-default" style="margin-bottom: 6px;">
 						<div class="panel-heading">
 							<h4 class="panel-title">
-								<a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" class="collapsed">QQ会员/钻类等什么时候到账？</a>
+								<a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" class="collapsed">商品什么时候到账？</a>
 							</h4>
 						</div>
 						<div id="collapseTwo" class="panel-collapse collapse" style="height: 0px;">
 							<div class="panel-body">
-							下单后的48小时内到账（会员或钻全部都是一样48小时内到账）！<br>
-							如果超过48小时，请联系客服退款或补单，提供QQ号码！
+							请参考商品简介里面，有关于到账时间的说明。
 							</div>
 						</div>
 					</div>
 					<div class="panel panel-default" style="margin-bottom: 6px;">
 						<div class="panel-heading">
 							<h4 class="panel-title">
-								<a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" class="collapsed">卡密/CDK没有发送我的邮箱？</a>
+								<a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" class="collapsed">卡密没有发送我的邮箱？</a>
 							</h4>
 						</div>
 						<div id="collapseThree" class="panel-collapse collapse" style="height: 0px;">
 							<div class="panel-body">没有收到请检查自己邮箱的垃圾箱！也可以去查单区：输入自己下单时填写的邮箱进行查单。<br>
-							查询到订单后点击（详细）就可以看到自己购买的卡密/cdk！
+							查询到订单后点击（详细）就可以看到自己购买的卡密！
 							</div>
 						</div>
 					</div>
@@ -268,8 +243,8 @@ include_once 'head.php';
 					<ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="myTabDrop1" style="margin-top: 4px;">
 						<li class="dropdown-header">More</li>
 						<li class="divider"></li>
-						<li <?php if(empty($conf['invite_tid'])){?>class="hide"<?php }?>><a href="./?mod=invite" target="_blank">免费领赞</a></li>
-						<li <?php if(empty($conf['daiguaurl']))echo 'class="hide"'?>><a href="./?mod=daigua">QQ等级代挂</a></li>
+						<?php if(!empty($conf['invite_tid'])){?><li><a href="./?mod=invite" target="_blank">免费领赞</a></li><?php }?>
+						<?php if(!empty($conf['daiguaurl'])){?><li><a href="./?mod=daigua">QQ等级代挂</a></li><?php }?>
 					</ul>
 				</li>
 			</ul>
@@ -287,7 +262,7 @@ include_once 'head.php';
 					<select class="form-control" id="searchtype" style="padding: 6px 4px;width:90px"><option value="0">下单账号</option><option value="1">订单号</option></select>
 				</div>
 				<input type="text" name="qq" id="qq3" value="" class="form-control" placeholder="请输入要查询的内容（留空则显示最新订单）" onkeydown="if(event.keyCode==13){submit_query.click()}" required/>
-				<span class="input-group-btn"><a href="#cxsm" data-toggle="modal" class="btn btn-warning"><i class="glyphicon glyphicon-exclamation-sign"></i></a></span>
+				<span class="input-group-btn"><a tabindex="0" class="btn btn-default" role="button" data-container="body" data-toggle="popover" data-trigger="focus" data-placement="top" title="查询内容是什么？" data-content="请输入您下单时，在第一个输入框内填写的信息。如果您不知道下单账号是什么，可以不填写，直接点击查询，则会根据浏览器缓存查询！"><i class="glyphicon glyphicon-exclamation-sign"></i></a></span>
 			</div></div>
 			<input type="submit" id="submit_query" class="btn btn-primary btn-block" value="立即查询"><br/>
 			<div id="result2" class="form-group" style="display:none;">
@@ -313,6 +288,7 @@ include_once 'head.php';
 			</div>
 		</div>
 		
+		<?php if($conf['gift_open']==1){?>
 		<div class="tab-pane fade fade-up in" id="gift">
 			<div class="widget-content themed-background-flat text-right clearfix animation-pullup">  
 			<a id="start" style="display:block;"><img src="http://img.zcool.cn/community/01551058b02bfda801219c77b73408.gif" alt="avatar" class="img-circle img-thumbnail img-thumbnail-avatar pull-left">
@@ -322,13 +298,13 @@ include_once 'head.php';
 			<p></p>
 			<h4 id="roll" class="widget-heading h4"><i class="icon">&#xe600;</i>猛击小人进行抽奖</h4>
 		</div><hr>
-		<li class="list-group-item bord-top">奖品内容：<br>　　个性标签赞、QQ名片赞、空间访客、全民K歌粉丝、超级会员、好莱坞会员<br></li>
+		<li class="list-group-item bord-top">奖品内容：<br>本站已上架随机商品<br></li>
 		<div id="result"></div><br/>
 		<div class="giftlist" style="display:none;"><strong>最近中奖记录</strong><ul id="pst_1"></ul></div>
-		</div>
-		<div class="tab-pane fade fade-up in" id="fenzhan">
+		</div><?php }?>
+
+		<?php if($conf['fenzhan_buy']==1){?><div class="tab-pane fade fade-up in" id="fenzhan">
 		
-		<div class="tab-pane active in" id="Substation">
 		<table class="table table-borderless table-pricing" style="margin-bottom: 0px;">
             <tbody>
                 <tr class="active">
@@ -337,7 +313,7 @@ include_once 'head.php';
                     </td>
                 </tr>
 				<tr>
-                    <td>宝妈、学生等网络兼职首选</td>
+                    <td>宝妈、学生等网络赚钱首选</td>
                 </tr>
                 <tr>
                     <td><strong>轻轻松松日赚100+不是梦</strong></td>
@@ -351,21 +327,18 @@ include_once 'head.php';
                 </tr>
 				</tbody>
 			</table>
-			</div>
+		</div><?php }?>
 
-		</div>
-		
     </div>
 </div>
 
-<div class="col-md-auto box" <?php if($conf['hide_tongji']==1){?>style="display:none;"<?php }?>>
+<div class="col-md-auto box">
 <div class="panel panel-default layui-anim layui-anim-scaleSpring">
 <div class="panel-heading text-center" style="background: linear-gradient(to right,#14b7ff,#5ccdde,#b221ff);">
 <font color="#fff">站点统计</font>
 </div>
+<?php if(!$conf['hide_tongji']){?>
 <div class="panel-body">
-<table class="table table-bordered">
-<tbody>
 <div class="row text-center">
 <div class="col-xs-3">
 <h5 class="widget-heading"><small>订单总数</small><br><a href="javascript:void(0)" class="themed-color-flat"><span id="count_orders"></span>条</a></h5>
@@ -379,6 +352,11 @@ include_once 'head.php';
 <div class="col-xs-3">
 <h5 class="widget-heading"><small>今日交易额</small><br><a href="javascript:void(0)" class="themed-color-flat"><span id="count_money1"></span>元</a></h5>
 </div>
+</div>
+</div>
+<?php }?>
+<div class="panel-body">
+<div class="row text-center">
 <?php echo $conf['footer']?>
 </div>
 </div>
@@ -387,7 +365,7 @@ include_once 'head.php';
 </div>
 </div>
 </div>
-</div
+</div>
 <!--音乐代码-->
 <div id="audio-play" <?php if(empty($conf['musicurl'])){?>style="display:none;"<?php }?>>
   <div id="audio-btn" class="on" onclick="audio_init.changeClass(this,'media')">

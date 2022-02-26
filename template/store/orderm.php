@@ -24,7 +24,8 @@ foreach($inputs as $input){
 	if(strpos($input,'[')!==false && strpos($input,']')!==false){
 		$input = substr($input,0,strpos($input,'['));
 	}
-	$show.='<br/>'.$input.'：'.(strpos($input,'密码')===false?$inputsdata[$i++]:'********');
+	$show.='<br/>'.$input.'：'.(strpos($input,'密码')===false?$inputsdata[$i]:'********');
+	$i++;
 }
 
 if (isset($_GET['set'])) $show = '<font size="3" color="#f4a460">考虑到用户隐私问题，平台已经隐藏该用户下单信息</font>';

@@ -62,6 +62,7 @@ case 'order2':
 	$tool=$DB->getRow("select * from pre_tools where tid='{$rows['tid']}' limit 1");
 	$input=$tool['input']?$tool['input']:'下单ＱＱ';
 	$inputs=explode('|',$tool['inputs']);
+	if(strpos($input,'[')!==false && strpos($input,']')!==false)$input = explode('[',$input)[0];
 	$data = '<div class="form-group"><div class="input-group"><div class="input-group-addon" id="inputname">'.$input.'</div><input type="text" id="inputvalue" value="'.$rows['input'].'" class="form-control" required/></div></div>';
 	$i=2;
 	foreach($inputs as $input){
@@ -133,9 +134,6 @@ case 'operation':
 		if($status==4)$DB->exec("DELETE FROM pre_orders WHERE id='$id'");
 		elseif($status==5){
 			$result = do_goods($id);
-			if(strpos($result,'成功')!==false){
-				$DB->exec("update pre_orders set status='$statuss',djzt='1',result=NULL where id='{$id}'");
-			}
 		}elseif($status==6){
 			$row=$DB->getRow("select * from pre_orders where id='$id' limit 1");
 			if($row && $row['zid']>1 && $row['status']==3 && is_numeric($row['userid'])){
@@ -205,12 +203,16 @@ case 'refund': //退款操作
 		$zid = intval($row['userid']);
 		changeUserMoney($zid, $money, true, '退款', '订单(ID'.$id.')已退款到余额');
 	}
-	rollbackPoint($id);
+	if(rollbackPoint($id)){
+		$addstr = '上级提成扣除成功';
+	}else{
+		$addstr = '但扣除上级提成失败';
+	}
 	$DB->exec("update pre_orders set status='4',result=NULL where id='{$id}'");
 	if(is_numeric($row['userid'])){
-		exit('{"code":0,"msg":"该订单已成功退款给UID'.$zid.'"}');
+		exit('{"code":0,"msg":"该订单已成功退款给UID'.$zid.'！'.$addstr.'"}');
 	}else{
-		exit('{"code":0,"msg":"该订单属于未注册用户，需要手动退款！相关提成已扣除成功"}');
+		exit('{"code":0,"msg":"该订单属于未注册用户，需要手动退款！'.$addstr.'"}');
 	}
 break;
 case 'djOrder': //重新下单
@@ -233,45 +235,43 @@ case 'showStatus': //订单进度查询
 		exit('{"code":-1,"msg":"当前订单不存在！"}');
 	$tool=$DB->getRow("select * from pre_tools where tid='{$row['tid']}' limit 1");
 	$shequ=$DB->getRow("select * from pre_shequ where id='{$tool['shequ']}' limit 1");
-	if($shequ['type']=='yile'){
-		$list = yile_chadan($shequ['url'], $row['djorder'], $shequ['username'], $shequ['password']);
-		$shopurl = 'http://'.$shequ['url'].'/home/order/'.$tool['goods_id'];
-	}elseif($shequ['type']=='jiuwu'){
-		$list = jiuwu_chadan($shequ['url'], $shequ['username'], $shequ['password'], $row['djorder']);
-		$shopurl = 'http://'.$shequ['url'].'/index.php?m=home&c=goods&a=detail&id='.$tool['goods_id'].'&goods_type='.$tool['goods_type'];
-	}elseif($shequ['type']=='shangmeng'){
-		$list = shangmeng_chadan($shequ['username'], $shequ['password'], $row['djorder']);
-	}elseif($shequ['type']=='kashangwl'){
-		$list = kashangwl_chadan($shequ['url'], $shequ['username'], $shequ['password'], $row['djorder']);
-		$shopurl = 'http://'.$shequ['url'].'/buy/'.$tool['goods_id'];
-	}elseif($shequ['type']=='shangzhanwl'){
-		$list = shangzhanwl_chadan($shequ['url'], $shequ['username'], $shequ['password'], $row['djorder']);
-		$shopurl = 'http://'.$shequ['url'].'/product/'.$tool['goods_id'].'.html';
-	}elseif($shequ['type']=='daishua'){
-		$list = this_chadan($shequ['url'], $row['djorder']);
-		$shopurl = 'http://'.$shequ['url'].'/?tid='.$tool['tid'];
-	}elseif($shequ['type']=='liuliangka'){
-		$list = liuliangka_chadan($shequ['url'], $shequ['username'], $shequ['password'], $row['djorder']);
-	}elseif($shequ['type']=='zhike'){
-		$list = zhike_chadan($shequ['url'], $shequ['username'], $shequ['password'], $row['djorder']);
-		$shopurl = 'http://'.$shequ['url'].'/shop/goods/detail/?sn='.$tool['goods_param'];
-		$tool['goods_id'] = $tool['goods_param'];
-	}elseif($shequ['type']=='extend'){
-		if(class_exists("ExtendAPI", false) && method_exists('ExtendAPI','chadan')){
-			$list = ExtendAPI::chadan($shequ['url'], $shequ['username'], $shequ['password'], $row['djorder'], $tool['goods_id'], [$row['input'], $row['input2'], $row['input3'], $row['input4'], $row['input5']]);
-		}else{
-			exit('{"code":-1,"msg":"该对接类型暂不支持查询订单进度"}');
-		}
-	}else{
+	$list = third_call($shequ['type'], $shequ, 'query_order', [$row['djorder'], $tool['goods_id'], [$row['input'], $row['input2'], $row['input3'], $row['input4'], $row['input5']]]);
+	if($list === false){
 		exit('{"code":-1,"msg":"该对接类型暂不支持查询订单进度"}');
 	}
-	if(($list['order_state']=='已完成'||$list['order_state']=='订单已完成'||$list['订单状态']=='已完成'||$list['订单状态']=='已发货'||$list['订单状态']=='交易成功') && $row['status']==2){
-		$DB->exec("UPDATE `pre_orders` SET `status`=1 WHERE id='{$id}'");
-	}
-	if((strpos($list['order_state'],'异常')!==false||strpos($list['order_state'],'退单')!==false||$list['订单状态']=='异常'||$list['订单状态']=='已退单') && $row['status']<3){
-		$DB->exec("UPDATE `pre_orders` SET `status`=3 WHERE id='{$id}'");
-	}
 	if(is_array($list)){
+		$shopurl = '';
+		if($shequ['type']=='yile'){
+			$shopurl = 'http://'.$shequ['url'].'/home/order/'.$tool['goods_id'];
+		}elseif($shequ['type']=='jiuwu'){
+			$shopurl = 'http://'.$shequ['url'].'/index.php?m=home&c=goods&a=detail&id='.$tool['goods_id'].'&goods_type='.$tool['goods_type'];
+		}elseif($shequ['type']=='shangmeng'){
+			$shopurl = 'http://'.$shequ['url'].'/#/goodsDetail?id='.$tool['goods_id'];
+		}elseif($shequ['type']=='kashangwl'){
+			$shopurl = 'http://'.$shequ['url'].'/buy/'.$tool['goods_id'];
+		}elseif($shequ['type']=='shangzhanwl'||$shequ['type']=='mengchuang'){
+			$shopurl = 'http://'.$shequ['url'].'/product/'.$tool['goods_id'].'.html';
+		}elseif($shequ['type']=='daishua'){
+			$shopurl = 'http://'.$shequ['url'].'/?tid='.$tool['tid'];
+		}elseif($shequ['type']=='zhike'){
+			$shopurl = 'http://'.$shequ['url'].'/shop/goods/detail/?sn='.$tool['goods_param'];
+		}elseif($shequ['type']=='xingouka'){
+			$shopurl = 'http://'.$shequ['url'].'/buy/'.$tool['goods_id'].'.html';
+		}elseif($shequ['type']=='kakayun'){
+			$shopurl = 'http://'.$shequ['url'].'/pg/'.$tool['goods_id'].'.html';
+		}elseif($shequ['type']=='yunbao'){
+			$shopurl = 'http://'.$shequ['url'].'/index/p/id/'.$tool['goods_id'];
+		}elseif($shequ['type']=='skysq'){
+			$shopurl = 'http://'.$shequ['url'].'/home/order/'.$tool['goods_id'];
+		}elseif($shequ['type']=='fanqin'){
+			$shopurl = 'http://'.$shequ['url'].'/goods/showGoodsDetail?shopGoodsId='.$tool['goods_id'];
+		}
+		if(($list['order_state']=='已完成'||$list['order_state']=='订单已完成'||$list['订单状态']=='已完成'||$list['订单状态']=='已发货'||$list['订单状态']=='交易成功'||$list['订单状态']=='已支付') && $row['status']==2){
+			$DB->exec("UPDATE `pre_orders` SET `status`=1 WHERE id='{$id}'");
+		}
+		if((strpos($list['order_state'],'异常')!==false||strpos($list['order_state'],'退单')!==false||strpos($list['order_state'],'退款')!==false||$list['订单状态']=='异常'||$list['订单状态']=='已退单'||$list['订单状态']=='支付失败') && $row['status']<3){
+			$DB->exec("UPDATE `pre_orders` SET `status`=3 WHERE id='{$id}'");
+		}
 		$list['orderid'] = $row['djorder'];
 		$result=array('code'=>0,'msg'=>'succ','domain'=>$shequ['url'],'shopid'=>$tool['goods_id'],'shopurl'=>$shopurl,'list'=>$list);
 	}elseif($list){

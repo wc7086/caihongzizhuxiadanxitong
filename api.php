@@ -166,7 +166,7 @@ elseif($act == 'goodslist')
 		}
 		if($res['is_curl']==4){
 			$count = $DB->getColumn("SELECT count(*) FROM pre_faka WHERE tid='{$res['tid']}' AND orderid=0");
-			if($count==0)$res['close']=1;
+			//if($count==0)$res['close']=1;
 			$isfaka = 1;
 		}else{
 			$count = $res['stock'];
@@ -268,13 +268,13 @@ elseif($act == 'pay')
 	$num = isset($_POST['num']) ? intval($_POST['num']) : 1;
 	$tool = $DB->getRow("SELECT * FROM `pre_tools` WHERE `tid` = {$tid} LIMIT 1");
 	if ($tool && $tool['active'] == 1) {
-		if($tool['close']==1)exit('{"code":-1,"msg":"当前商品维护中，停止下单！"}');
+		if($tool['close']==1)exit('{"code":-1,"message":"当前商品维护中，停止下单！"}');
 		$inputs=explode('|',$tool['inputs']);
 		if($inputs[0] && empty($input2) || $inputs[1] && empty($input3) || $inputs[2] && empty($input4) || $inputs[3] && empty($input5)){
-			exit('{"code":-1,"msg":"请确保各项不能为空"}');
+			exit('{"code":-1,"message":"请确保各项不能为空"}');
 		}
 		if(!$inputs[0] && !empty($input2) || !$inputs[1] && !empty($input3) || !$inputs[2] && !empty($input4) || !$inputs[3] && !empty($input5)){
-			exit('{"code":-1,"msg":"验证失败"}');
+			exit('{"code":-1,"message":"验证失败"}');
 		}
 		$userrow = $DB->getRow("SELECT * FROM `pre_site` WHERE `user` = '{$user}' LIMIT 1");
 		if ($userrow && $userrow['user'] == $user && $userrow['pwd'] == $pass && $userrow['status'] == 1) {
@@ -283,39 +283,59 @@ elseif($act == 'pay')
 			if($tool['is_curl']==4){
 				$count = $DB->getColumn("SELECT count(*) FROM pre_faka WHERE tid='$tid' AND orderid=0");
 				$nums=($tool['value']>1?$tool['value']:1)*$num;
-				if($count==0)exit('{"code":-1,"msg":"该商品库存卡密不足，请联系站长加卡！"}');
-				if($nums>$count)exit('{"code":-1,"msg":"你所购买的数量超过库存数量！"}');
+				if($count==0)exit('{"code":-1,"message":"该商品库存卡密不足，请联系站长加卡！"}');
+				if($nums>$count)exit('{"code":-1,"message":"你所购买的数量超过库存数量！"}');
 			}
 			elseif($tool['stock']!==null){
-				if($tool['stock']==0)exit('{"code":-1,"msg":"该商品库存不足，请联系站长增加库存！"}');
-				if($num>$tool['stock'])exit('{"code":-1,"msg":"你所购买的数量超过库存数量！"}');
+				if($tool['stock']==0)exit('{"code":-1,"message":"该商品库存不足，请联系站长增加库存！"}');
+				if($num>$tool['stock'])exit('{"code":-1,"message":"你所购买的数量超过库存数量！"}');
+			}
+			elseif($tool['repeat']==0){
+				$thtime=date("Y-m-d").' 00:00:00';
+				$row=$DB->getRow("SELECT id,input,status,addtime FROM pre_orders WHERE tid=:tid AND input=:input ORDER BY id DESC LIMIT 1", [':tid'=>$tid, ':input'=>$inputvalue]);
+				if($row['input'] && $row['status']==0)
+					exit('{"code":-1,"message":"您今天添加的'.$tool['name'].'正在排队中，请勿重复提交！"}');
+				elseif($row['addtime']>$thtime)
+					exit('{"code":-1,"message":"您今天已添加过'.$tool['name'].'，请勿重复提交！"}');
 			}
 			if($tool['validate']==1 && is_numeric($input1)){
-				if(validate_qzone($input1)==false) exit('{"code":-1,"msg":"你的QQ空间设置了访问权限，无法下单！"}');
+				if(validate_qzone($input1)==false) exit('{"code":-1,"message":"你的QQ空间设置了访问权限，无法下单！"}');
 			}elseif(($tool['validate']==2 || $tool['validate']==3) && is_numeric($input1)){
 				$services = getservices($input1);
-				if($services['code']!=0)exit('{"code":-1,"msg":"'.$services['msg'].'"}');
+				if($services['code']!=0)exit('{"code":-1,"message":"'.$services['msg'].'"}');
 				$qqservices = ['vip'=>'QQ会员','svip'=>'超级会员','bigqqvip'=>'大会员','red'=>'红钻贵族','green'=>'绿钻贵族','sgreen'=>'绿钻豪华版','yellow'=>'黄钻贵族','syellow'=>'豪华黄钻','hollywood'=>'腾讯视频VIP','qqmsey'=>'付费音乐包','qqmstw'=>'豪华付费音乐包','weiyun'=>'微云会员','sweiyun'=>'微云超级会员'];
 				if(in_array($tool['valiserv'], $services['data'])){
 					if($tool['validate']==2){
-						exit('{"code":-1,"msg":"您的QQ已经开通了'.$qqservices[$tool['valiserv']].'，该商品无法购买！"}');
+						exit('{"code":-1,"message":"您的QQ已经开通了'.$qqservices[$tool['valiserv']].'，该商品无法购买！"}');
 					}else{
 						$blockdj=1;
 					}
 				}
 			}
 			if($tool['multi'] == 0 || $num < 1) $num = 1;
-			if($tool['multi']==1 && $tool['min']>0 && $num<$tool['min'])exit('{"code":-1,"msg":"当前商品最小下单数量为'.$tool['min'].'"}');
-			if($tool['multi']==1 && $tool['max']>0 && $num>$tool['max'])exit('{"code":-1,"msg":"当前商品最大下单数量为'.$tool['max'].'"}');
+			if($tool['multi']==1 && $tool['min']>0 && $num<$tool['min'])exit('{"code":-1,"message":"当前商品最小下单数量为'.$tool['min'].'"}');
+			if($tool['multi']==1 && $tool['max']>0 && $num>$tool['max'])exit('{"code":-1,"message":"当前商品最大下单数量为'.$tool['max'].'"}');
 
 			$islogin2 = 1;
 			$price_obj = new \lib\Price($userrow['zid'],$userrow);
 			$price_obj->setToolInfo($tid,$tool);
 			$price = $price_obj->getToolPrice($tid);
 			$price=$price_obj->getFinalPrice($price, $num);
-			if(!$price)exit('{"code":-1,"msg":"当前商品批发价格优惠设置不正确"}');
+			if(!$price)exit('{"code":-1,"message":"当前商品批发价格优惠设置不正确"}');
 
-			$need = $price * $num;
+			$i=2;
+			$neednum = $num;
+			foreach($inputs as $inputname){
+				if(strpos($inputname,'[multi]')!==false && isset(${'inputvalue'.$i}) && is_numeric(${'inputvalue'.$i})){
+					$val = intval(${'inputvalue'.$i});
+					if($val>0){
+						$neednum = $neednum * $val;
+					}
+				}
+				$i++;
+			}
+
+			$need = $price * $neednum;
 			if($need == 0) exit('{"code":-2,"message":"不支持免费商品对接"}');
 			if ($userrow['rmb'] < $need) exit('{"code":-2,"message":"余额不足，购买此商品还差' . ($need - $userrow['rmb']) . '元"}');
 
@@ -373,40 +393,24 @@ elseif($act == 'pay')
 elseif($act == 'search') 
 {
 	$result['code'] = -1;
-	$id = intval($_GET['id']);
+	$id = isset($_POST['id'])?intval($_POST['id']):intval($_GET['id']);
 	$row = $DB->getRow("SELECT * FROM `pre_orders` WHERE `id` = {$id} LIMIT 1");
 	if ($row){
 		$tool = $DB->getRow("SELECT * FROM pre_tools WHERE tid='{$row['tid']}' LIMIT 1");
 		if($tool['is_curl']==2){
 			$shequ = $DB->getRow("SELECT * FROM pre_shequ WHERE id='{$tool['shequ']}' LIMIT 1");
-			if($shequ['type']=='yile'){
-				$list = yile_chadan($shequ['url'], $tool['goods_id'], $row['input'], $row['djorder']);
-			}elseif($shequ['type']=='jiuwu'){
-				$list = jiuwu_chadan($shequ['url'], $shequ['username'], $shequ['password'], $row['djorder']);
-			}elseif($shequ['type']=='shangmeng'){
-				$list = shangmeng_chadan($shequ['username'], $shequ['password'], $row['djorder']);
-			}elseif($shequ['type']=='kashangwl'){
-				$list = kashangwl_chadan($shequ['url'], $shequ['username'], $shequ['password'], $row['djorder']);
-			}elseif($shequ['type']=='shangzhanwl'){
-				$list = shangzhanwl_chadan($shequ['url'], $shequ['username'], $shequ['password'], $row['djorder']);
-			}elseif($shequ['type']=='zhike'){
-				$list = zhike_chadan($shequ['url'], $shequ['username'], $shequ['password'], $row['djorder']);
-			}elseif($shequ['type']=='daishua'){
-				$list = this_chadan($shequ['url'], $row['djorder']);
-			}elseif($shequ['type']=='liuliangka'){
-				$list = liuliangka_chadan($shequ['url'], $shequ['username'], $shequ['password'], $row['djorder']);
-			}elseif($shequ['type']=='extend'){
-				if(class_exists("ExtendAPI", false) && method_exists('ExtendAPI','chadan')){
-					$list = ExtendAPI::chadan($shequ['url'], $shequ['username'], $shequ['password'], $row['djorder'], $tool['goods_id'], $row['input']);
+			$list = third_call($shequ['type'], $shequ, 'query_order', [$row['djorder'], $tool['goods_id'], [$row['input'], $row['input2'], $row['input3'], $row['input4'], $row['input5']]]);
+			if($list && is_array($list)){
+				if(($list['order_state']=='已完成'||$list['order_state']=='订单已完成'||$list['订单状态']=='已完成'||$list['订单状态']=='已发货'||$list['订单状态']=='交易成功'||$list['订单状态']=='已支付') && $row['status']==2){
+					$DB->exec("UPDATE `pre_orders` SET `status`=1 WHERE id='{$id}'");
+					$row['status'] = 1;
 				}
-			}
-			if(($list['order_state']=='已完成'||$list['order_state']=='订单已完成'||$list['订单状态']=='已完成'||$list['订单状态']=='已发货'||$list['订单状态']=='交易成功') && $row['status']==2){
-				$DB->exec("UPDATE `pre_orders` SET `status`=1 WHERE id='{$id}'");
-				$row['status'] = 1;
-			}
-			if((strpos($list['order_state'],'异常')!==false||strpos($list['order_state'],'退单')!==false||$list['订单状态']=='异常'||$list['订单状态']=='已退单') && $row['status']<3){
-				$DB->exec("UPDATE `pre_orders` SET `status`=3 WHERE id='{$id}'");
-				$row['status'] = 3;
+				if((strpos($list['order_state'],'异常')!==false||strpos($list['order_state'],'退单')!==false||$list['订单状态']=='异常'||$list['订单状态']=='已退单') && $row['status']<3){
+					$DB->exec("UPDATE `pre_orders` SET `status`=3 WHERE id='{$id}'");
+					$row['status'] = 3;
+				}
+			}else{
+				$list = false;
 			}
 		}
 		if($row['result']){

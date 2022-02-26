@@ -61,7 +61,7 @@ body{ font-size:14px; padding:0;margin:0 auto; position:relative; }
 		<div class="cnt" style="margin:5px 17% 10px 17%;padding-bottom:10px;border-bottom:#ff8000 solid 2px;color:#f00;">
 本站于：<?php echo $conf['build']?> 正式成立
 		</div>
-		<div>我们是全网最专业的代刷系统，商品齐全、货源稳定、价格低廉、售后保障。拥有丰富的人脉和资源，我们专注于优质商品，实时掌握代刷市场的动态。</div>
+		<div>我们是全网最专业的商城系统，商品齐全、货源稳定、价格低廉、售后保障。拥有丰富的人脉和资源，我们专注于优质商品，实时掌握市场的动态。</div>
 		<div style="padding:8px 0; text-align:center;">
 			<a href="./user/reg.php">
 			<img style="width:80px; margin-right:20px;" src="./assets/beautify/img/gg-hyff.jpg">

@@ -32,14 +32,25 @@ case 'setpwd':
 		exit('{"code":-1,"msg":"保存失败！'.$DB->error().'"}');
 	}
 break;
+case 'reset_price':
+	$cid=isset($_POST['cid'])?intval($_POST['cid']):0;
+	$DB->exec("UPDATE pre_site SET price=NULL WHERE zid='{$userrow['zid']}'");
+	exit('{"code":0}');
+break;
 case 'up_price':
 	unset($islogin2);
 	$price_obj = new \lib\Price($userrow['zid'],$userrow);
 	$up=intval($_POST['up']);
+	$cid=isset($_POST['cid'])?intval($_POST['cid']):0;
 	if($up<=0)exit('{"code":-1,"msg":"输入值不正确"}');
 	if($conf['fenzhan_pricelimit']==1 && $up>100)exit('{"code":-1,"msg":"商品售价最高不能超过原售价的2倍"}');
-	$sql=$DB->query("select * from pre_tools where active=1");
-	$data=array();
+	if($cid){
+		$sql=$DB->query("select * from pre_tools where active=1 and cid={$cid}");
+		$data=unserialize($userrow['price']);
+	}else{
+		$sql=$DB->query("select * from pre_tools where active=1");
+		$data=array();
+	}
 	while($row=$sql->fetch()){
 		if($row['price']==0){
 			continue;
@@ -59,7 +70,10 @@ break;
 case 'create_url':
 	$force = trim(daddslashes($_GET['force']));
 	if(!$userrow['domain'])exit('{"code":-1,"msg":"当前分站还未绑定域名"}');
-	$url = 'http://'.$userrow['domain'].'/';
+	$scriptpath = str_replace('\\','/',$_SERVER['SCRIPT_NAME']);
+	$scriptpath = substr($scriptpath, 0, strrpos($scriptpath, '/'));
+	$scriptpath = substr($scriptpath, 0, strrpos($scriptpath, '/'));
+	$url = 'http://'.$userrow['domain'].$scriptpath.'/';
 	if($force==1){
 		$turl = fanghongdwz($url,true);
 	}else{
@@ -231,7 +245,7 @@ break;
 case 'usekm':
 	if(!$conf['fenzhan_jiakuanka'])exit('{"code":-1,"msg":"未开启使用加款卡功能"}');
 	$km=trim(daddslashes($_POST['km']));
-	$myrow=$DB->getRow("SELECT * FROM pre_kms WHERE km='$km' LIMIT 1");
+	$myrow=$DB->getRow("SELECT * FROM pre_kms WHERE km='$km' AND type=0 LIMIT 1");
 	if(!$myrow)
 	{
 		exit('{"code":-1,"msg":"此卡密不存在！"}');
@@ -334,6 +348,28 @@ case 'tixian_note':
 	$id=intval($_POST['id']);
 	$rows=$DB->getRow("select * from pre_tixian where id='$id' and zid='{$userrow['zid']}' limit 1");
 	$result=array("code"=>0,"msg"=>"succ","result"=>$rows['note']);
+	exit(json_encode($result));
+break;
+case 'transfer':
+	exit();
+	$account=trim($_POST['account']);
+	$money=trim($_POST['money']);
+	if(empty($account) || empty($money))exit('{"code":-1,"msg":"请确保各项不能为空！"}');
+	if(!is_numeric($money) || !preg_match('/^[0-9.]+$/', $money))exit('{"code":-1,"msg":"转账金额参数错误！"}');
+	if($account == $userrow['user'])exit('{"code":-1,"msg":"无法给自己转账！"}');
+
+	$rows=$DB->getRow("select * from pre_site where user='$account' limit 1");
+	if(!$rows)exit('{"code":-1,"msg":"对方账号不存在"}');
+	if($rows['status']==0)exit('{"code":-1,"msg":"对方账号状态异常"}');
+
+	$userrow = $DB->getRow("SELECT * FROM pre_site WHERE zid='{$userrow['zid']}' LIMIT 1 FOR UPDATE");
+	if($money>$userrow['rmb'] || $money<=0){
+		exit('{"code":-1,"msg":"所输入的转账金额大于你所拥有的余额！"}');
+	}
+	changeUserMoney($userrow['zid'], $money, false, '转账', '转账'.$money.'元给用户'.$account);
+	changeUserMoney($rows['zid'], $money, true, '转账', '收到用户'.$userrow['user'].'的'.$money.'元转账');
+	
+	$result=array("code"=>0,"msg"=>'成功转账'.$money.'元给用户'.$account,"result"=>$rows['note']);
 	exit(json_encode($result));
 break;
 default:

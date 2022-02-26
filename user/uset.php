@@ -36,9 +36,11 @@ if($mod=='user_n'){
 <div class="panel-heading font-bold" style="background-color: #9999CC;color: white;" >用户资料设置</div>
 <div class="panel-body">
   <form action="./uset.php?mod=user_n" method="post" role="form">
+  <?php if($conf['login_qq']==1){?>
   <div class="form-group">
     <label><img src="https://qzonestyle.gtimg.cn/qzone/vas/opensns/res/img/bt_blue_24X24.png">&nbsp;QQ快捷登录：</label><?php if($userrow['qq_openid']){?><font color="green">已绑定</font>&nbsp;<a class="btn btn-xs btn-default" href="javascript:unbind('qq')">解绑</a><?php }else{?><font color="red">未绑定</font>&nbsp;<a class="btn btn-xs btn-success" href="javascript:connect('qq')">立即绑定</a><?php }?>
   </div>
+  <?php }?>
 	<div class="form-group">
 	  <label>登录用户名:</label><br/>
 	  <input type="text" value="<?php echo $userrow['user']; ?>" class="form-control" disabled/>
@@ -171,7 +173,7 @@ if($mod=='user_n'){
 	  <label>客服ＱＱ</label><br>
 		<input type="text" name="kfqq" value="<?php echo $userrow['kfqq']; ?>" class="form-control" placeholder="留空自动同步主站客服ＱＱ（推荐）"/>
 	</div>
-	<?php if($newuser){?>
+	<?php if($newuserhead){?>
 	<div class="form-group">
 	  <label>客服微信</label><br>
 		<div class="input-group"><input type="text" name="kfwx" value="<?php echo $userrow['kfwx']; ?>" class="form-control" placeholder="留空自动同步主站客服微信或只显示QQ（推荐）"/><span class="input-group-btn"><a href="./uset.php?mod=upwxqrcode" class="btn btn-default">上传二维码</a></span></div>

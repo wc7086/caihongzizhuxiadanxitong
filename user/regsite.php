@@ -130,7 +130,7 @@ if(empty($select))showmsg('请先到后台分站设置，填写可选分站域�
                                    data-parsley-length="[2,10]"
                                    placeholder="输入网站名称">
                         </div>
-						<?php if($conf['fenzhan_regalert']){?><small style="color:red"><i class="fa fa-info-circle"></i>&nbsp;例如：XX业务网，XX代刷网，XX百货商城，XX换成您想要的名字！</small><?php }?>
+						<?php if($conf['fenzhan_regalert']){?><small style="color:red"><i class="fa fa-info-circle"></i>&nbsp;例如：XX业务网，XX百货商城，自定义你想要的名字！</small><?php }?>
                     </div>
                     <input type="button" id="submit_buy" value="点此立即拥有分站" class="btn btn-danger btn-block">
 					<hr>
@@ -160,14 +160,7 @@ if(empty($select))showmsg('请先到后台分站设置，填写可选分站域�
                     </thead>
 					<tbody>
 						<tr class="active">
-                            <td>专属代刷平台</td>
-                            <td class="text-center">
-								<span class="btn btn-effect-ripple btn-xs btn-success"><i class="fa fa-check"></i></span>
-								<span class="btn btn-effect-ripple btn-xs btn-success"><i class="fa fa-check"></i></span>
-							</td>
-                        </tr>
-                        <tr class="">
-                            <td>三种在线支付接口</td>
+                            <td>专属商城平台</td>
                             <td class="text-center">
 								<span class="btn btn-effect-ripple btn-xs btn-success"><i class="fa fa-check"></i></span>
 								<span class="btn btn-effect-ripple btn-xs btn-success"><i class="fa fa-check"></i></span>
@@ -216,7 +209,7 @@ if(empty($select))showmsg('请先到后台分站设置，填写可选分站域�
 							</td>
                         </tr>
 						<tr class="danger">
-                            <td>赠送专属精致APP</td>
+                            <td>赠送专属APP</td>
                             <td class="text-center">
 								<span class="btn btn-effect-ripple btn-xs btn-danger"><i class="fa fa-close"></i></span>
 								<span class="btn btn-effect-ripple btn-xs btn-success"><i class="fa fa-check"></i></span>
@@ -282,36 +275,24 @@ if(empty($select))showmsg('请先到后台分站设置，填写可选分站域�
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<h4 class="panel-title">
-							<a data-toggle="collapse" data-parent="#accordion" href="#collapseFourth" class="collapsed" aria-expanded="false">这个和卡盟一样吗？有什么区别？</a>
-						</h4>
-					</div>
-					<div id="collapseFourth" class="panel-collapse collapse" style="height: 0px;" aria-expanded="false">
-						<div class="panel-body">
-							完全不同，销售提成最高享受商品售价的30%，货源更精，无需注册,无需预存，在线支付，更简单快捷！
-						</div>
-					</div>
-				</div>
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h4 class="panel-title">
 							<a data-toggle="collapse" data-parent="#accordion" href="#collapseFive" class="collapsed" aria-expanded="false">可以自己上架商品吗？可以修改售价吗？</a>
 						</h4>
 					</div>
 					<div id="collapseFive" class="panel-collapse collapse" style="height: 0px;" aria-expanded="false">
 						<div class="panel-body">
-							所有分站暂时都不支持自己上架商品，但可以修改销售价格，我们会在这方面后期做出相对于的更新服务！
+							所有分站都不支持自己上架商品，但可以修改销售价格！
 						</div>
 					</div>
 				</div>
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<h4 class="panel-title">
-								<a data-toggle="collapse" data-parent="#accordion" href="#collapseSix" class="collapsed" aria-expanded="false">那么多代刷网有分站，为什么选择你们呢？</a>
+								<a data-toggle="collapse" data-parent="#accordion" href="#collapseSix" class="collapsed" aria-expanded="false">那么多网站有分站，为什么选择你们呢？</a>
 						</h4>
 					</div>
 					<div id="collapseSix" class="panel-collapse collapse" style="height: 0px;" aria-expanded="false">
 						<div class="panel-body">
-							全网最专业的代刷系统，商品齐全、货源稳定、价格低廉、售后保障。实体工作室运营，拥有丰富的人脉和资源，我们的货源全部精挑细选全网性价比最高的，实时掌握代刷市场的动态，加入我们，只要你坚持，你不用担心不赚钱，不用担心货源不好，更不用担心我们跑路，我们即使不敢保证你月入上万，在网上赚个零花钱绝对没问题！
+							全网最专业的商城系统，商品齐全、货源稳定、价格低廉、售后保障。实体工作室运营，拥有丰富的人脉和资源，我们的货源全部精挑细选全网性价比最高的，实时掌握市场的动态，加入我们，只要你坚持，你不用担心不赚钱，不用担心货源不好，更不用担心我们跑路，我们即使不敢保证你月入上万，在网上赚个零花钱绝对没问题！
 						</div>
 					</div>
 				</div>

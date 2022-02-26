@@ -3,6 +3,8 @@ $is_defend=true;
 if (version_compare(PHP_VERSION, '5.4.0', '<')) {
     die('require PHP > 5.4 !');
 }
+if (isset($_SERVER) && $_SERVER['REQUEST_URI'] == '/favicon.ico')exit;
+
 include("./includes/common.php");
 
 if($conf['invite_tid'] && isset($_GET['i']) && $_GET['i']!=$_COOKIE['invitecode']){
@@ -37,7 +39,7 @@ if($is_fenzhan==true && file_exists(ROOT.'assets/img/logo_'.$conf['zid'].'.png')
 if($conf['cdnpublic']==1){
 	$cdnpublic = '//lib.baomitu.com/';
 }elseif($conf['cdnpublic']==2){
-	$cdnpublic = '//cdn.bootcss.com/';
+	$cdnpublic = 'https://cdn.bootcdn.net/ajax/libs/';
 }elseif($conf['cdnpublic']==4){
 	$cdnpublic = '//s1.pstatp.com/cdn/expire-1-M/';
 }else{

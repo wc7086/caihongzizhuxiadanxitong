@@ -11,7 +11,7 @@ if($conf['wxpay_api']!=1 && $conf['wxpay_api']!=3)exit('当前支付接口未开
 $row=$DB->getRow("SELECT * FROM pre_pay WHERE trade_no='{$trade_no}' LIMIT 1");
 if(!$row)exit('该订单号不存在，请返回来源地重新发起请求！');
 
-$ordername = !empty($conf['ordername'])?str_replace('[time]',time(),$conf['ordername']):$row['name'];
+$ordername = !empty($conf['ordername'])?ordername_replace($conf['ordername'],$row['name'],$trade_no):$row['name'];
 
 require_once SYSTEM_ROOT."wxpay/WxPay.Api.php";
 require_once SYSTEM_ROOT."wxpay/WxPay.JsApiPay.php";
@@ -23,16 +23,18 @@ if($conf['wxpay_domain'] && $conf['wxpay_domain']!=$_SERVER['HTTP_HOST']){
 //①、获取用户openid
 $tools = new JsApiPay();
 $openId = $tools->GetOpenid();
+if(!$openId)sysmsg('OpenId获取失败('.$tools->data['errmsg'].')');
+
 //②、统一下单
 $input = new WxPayUnifiedOrder();
 $input->SetBody($ordername);
 $input->SetOut_trade_no($trade_no);
 $input->SetTotal_fee($row['money']*100);
+$input->SetSpbill_create_ip($clientip);
 $input->SetTime_start(date("YmdHis"));
 $input->SetTime_expire(date("YmdHis", time() + 600));
 $input->SetNotify_url($siteurl.'wxpay_notify.php');
 $input->SetTrade_type("JSAPI");
-$input->SetProduct_id("01001");
 $input->SetOpenid($openId);
 $order = WxPayApi::unifiedOrder($input);
 
@@ -67,10 +69,11 @@ if($_GET['d']==1){
 <i class="icon ion-information-circled" style="font-size: 80px;"></i><br>
 <span>正在跳转...</span>
 <script src="//cdn.staticfile.org/jquery/1.12.4/jquery.min.js"></script>
+<script src="//cdn.staticfile.org/layer/3.1.1/layer.min.js"></script>
 <script>
-	$(document).on('touchmove',function(e){
-		e.preventDefault();
-	});
+	document.body.addEventListener('touchmove', function (event) {
+		event.preventDefault();
+	},{ passive: false });
     //调用微信JS api 支付
 	function jsApiCall()
 	{
@@ -123,13 +126,10 @@ if($_GET['d']==1){
             success: function (data, textStatus) {
                 //从服务器得到数据，显示数据并继续查询
                 if (data.code == 1) {
-					if (confirm("您已支付完成，需要跳转到订单页面吗？")) {
-                        window.location.href=<?php echo $redirect_url?>;
-                    } else {
-                        // 用户取消
-                    }
+					layer.msg('支付成功，正在跳转中...', {icon: 16,shade: 0.1,time: 15000});
+					window.location.href=<?php echo $redirect_url?>;
                 }else{
-                    setTimeout("loadmsg()", 4000);
+                    setTimeout("loadmsg()", 2000);
                 }
             },
             //Ajax请求超时，继续查询
@@ -137,7 +137,7 @@ if($_GET['d']==1){
                 if (textStatus == "timeout") {
                     setTimeout("loadmsg()", 1000);
                 } else { //异常
-                    alert('创建连接失败！');
+                    setTimeout("loadmsg()", 4000);
                 }
             }
         });

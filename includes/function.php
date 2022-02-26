@@ -123,9 +123,9 @@ function checkEmail($value)
 }
 /**
  * 取中间文本
- * @param unknown $str
- * @param number $leftStr
- * @param number $rightStr
+ * @param string $str
+ * @param string $leftStr
+ * @param string $rightStr
  */
 function getSubstr($str, $leftStr, $rightStr)
 {
@@ -246,7 +246,7 @@ if(!function_exists("is_https")){
 	function is_https() {
 		if(isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443){
 			return true;
-		}elseif(isset($_SERVER['HTTPS']) && (strtolower($_SERVER['HTTPS']) == 'on' || $server['HTTPS'] == '1')){
+		}elseif(isset($_SERVER['HTTPS']) && (strtolower($_SERVER['HTTPS']) == 'on' || $_SERVER['HTTPS'] == '1')){
 			return true;
 		}elseif(isset($_SERVER['HTTP_X_CLIENT_SCHEME']) && $_SERVER['HTTP_X_CLIENT_SCHEME'] == 'https'){
 			return true;
@@ -281,29 +281,6 @@ function yile_getSign($param, $key)
     $signPars = trim($signPars, '&');
     $signPars .= $key;
     $sign = md5($signPars);
-    return $sign;
-}
-function kashangwl_getSign($param, $key)
-{
-    $signPars = "";
-    ksort($param);
-    foreach ($param as $k => $v) {
-        if ("sign" != $k && "" != $v) {
-            $signPars .= $k. $v;
-        }
-    }
-    $signPars = $key.$signPars;
-    $sign = md5($signPars);
-    return $sign;
-}
-function liuliangka_getSign($param, $key)
-{
-    ksort($param);
-	$str = $key . '';
-    foreach ($param as $k => $v) {
-		$str .= $k . "=" . $v . "&";
-    }
-    $sign = strtoupper(md5($str . 'key=' . $key));
     return $sign;
 }
 function getServerIp(){

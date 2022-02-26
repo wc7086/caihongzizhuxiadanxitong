@@ -61,7 +61,9 @@ case 'getcount':
 			$yesterday_total_money += ($v['money'] - $v['cost']);
 		}
 
-		$result=array("code"=>0,"yxts"=>$yxts,"count1"=>$count1,"count2"=>$count2,"count3"=>$count3,"count4"=>$count4,"count5"=>round($count5,2),"count6"=>$count6,"count7"=>$count7,"count8"=>round($count8,2),"count9"=>round($count9,2),"count10"=>round($count10,2),"count11"=>round($count11,2),"count12"=>round($count12,2),"count13"=>round($count13,2),"count14"=>round($count14,2),"count15"=>round($today_total_money,2),"count16"=>round($yesterday_total_money,2),"chart"=>getDatePoint());
+		$count17=$DB->getColumn("SELECT count(*) FROM pre_workorder where status=0 or status=1");
+
+		$result=array("code"=>0,"yxts"=>$yxts,"count1"=>$count1,"count2"=>$count2,"count3"=>$count3,"count4"=>$count4,"count5"=>round($count5,2),"count6"=>$count6,"count7"=>$count7,"count8"=>round($count8,2),"count9"=>round($count9,2),"count10"=>round($count10,2),"count11"=>round($count11,2),"count12"=>round($count12,2),"count13"=>round($count13,2),"count14"=>round($count14,2),"count15"=>round($today_total_money,2),"count16"=>round($yesterday_total_money,2),"count17"=>$count17,"chart"=>getDatePoint());
 		$CACHE->save('getcount', serialize(['time' => time(), 'data' => $result]));
 	}
 	exit(json_encode($result));
@@ -427,6 +429,14 @@ case 'set':
 	$ad=$CACHE->clear();
 	if($ad)exit('{"code":0,"msg":"succ"}');
 	else exit('{"code":-1,"msg":"修改设置失败['.$DB->error().']"}');
+break;
+case 'thirdloginunbind':
+	adminpermission('set', 2);
+	$type = isset($_POST['type'])?$_POST['type']:exit;
+	$key = $type=='wx'?'thirdlogin_wx':'thirdlogin_qq';
+	saveSetting($key, '');
+	$CACHE->clear();
+	exit('{"code":0,"msg":"succ"}');
 break;
 case 'getServerIp':
 	$ip = getServerIp();

@@ -6,7 +6,7 @@ $row=$DB->getRow("select * from pre_pay where trade_no='$orderid' limit 1");
 if(!$row)sysmsg('当前订单不存在');
 if($row['status']==1)exit("<script language='javascript'>alert('当前订单已完成支付！');window.location.href='./?buyok=1';</script>");
 
-include_once TEMPLATE_ROOT.'faka/head2.php';
+include_once TEMPLATE_ROOT.'faka/inc/waphead.php';
 
 ?>
 <style>
@@ -72,9 +72,11 @@ em, i {
 }
 </style>
 
+<div style="margin:10px;margin-top:55px;">
+
 	<div class="view w">
 	   
-	<div class="bl_view_title"><div align="center"><strong><font color="#009f1e"  size="3">订单生成成功，请完成支付！</font></strong></div></div>
+	<div class="bl_view_title"><div align="center"><strong><font color="#009f1e"  size="3">订单创建成功，请选择支付方式！</font></strong></div></div>
     <div class="bl_view_title">订单号码：<?php echo $orderid?></div>
 	<div class="bl_view_title">商品名称：<a href="./?mod=buy&tid=<?php echo $row['tid']?>" target="_blank"><?php echo $row['name']?></a></div>
 	<div class="bl_view_title">订单金额： <b><?php echo $row['money']?>元</b><?php if($islogin2==1){?> &nbsp;&nbsp; <font color="#ee6500"  size="2">可用余额：<?php echo $userrow['rmb']?>元</font> 【<a href="./user/#chongzhi">充值余额</a>】<?php }?></div>
@@ -102,16 +104,14 @@ if($conf['qqpay_api'])echo '<option value="qqpay">QQ钱包支付</option>';
  			</SELECT>
         </div>
 		</div>
-		<div class="go_buy"><input type="submit" id="dopay" value="立即付款" /></div><br/><font color="#FF0000"  size="2"> 付款后请不要关闭窗口，等网页转跳会自动转跳到卡密页面。</font>
+		<div class="go_buy"><input type="submit" id="dopay" value="立即付款" /></div><br/><font color="#FF0000"  size="2"> 付款后请不要关闭窗口，等网页转跳会自动转跳到订单页面。</font>
         </div>
-
-<div class="m_user w">
-<a href="#">返回顶部</a>
+</div>
+<div class="m_user" style="height:100px">
+    <a href="#">返回顶部</a>
 </div>
 
-<div class="copyright">Copyright &copy; <?php echo date("Y")?> <?php echo $conf['sitename']?></div>
-</div>
-<script src="<?php echo $cdnpublic?>jquery/1.12.4/jquery.min.js"></script>
+<?php include TEMPLATE_ROOT.'faka/inc/wapfoot.php';?>
 <script src="<?php echo $cdnpublic?>layer/2.3/layer.js"></script>
 <script type="text/javascript">
 function dopay(type,orderid){

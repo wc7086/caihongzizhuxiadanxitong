@@ -73,12 +73,13 @@ $(document).ready(function(){
 		var zid=$("input[name='zid']").val();
 		var actdo=$("select[name='do']").val();
 		var rmb=$("input[name='rmb']").val();
+		var remark=$("input[name='remark']").val();
 		if(rmb==''){layer.alert('请输入金额');return false;}
 		var ii = layer.load(2, {shade:[0.1,'#fff']});
 		$.ajax({
 			type : "POST",
 			url : "ajax_site.php?act=siteRecharge",
-			data : {zid:zid,actdo:actdo,rmb:rmb},
+			data : {zid:zid,actdo:actdo,rmb:rmb,remark:remark},
 			dataType : 'json',
 			success : function(data) {
 				layer.close(ii);

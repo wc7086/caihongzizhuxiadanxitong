@@ -84,7 +84,7 @@ if(!defined('IN_CRONLITE'))exit();
 					</div>      <center> <br>
   <p></p>
 <strong style="color:#b#eaf0cce;font-family:微软雅黑, 宋体;font-size:12px">
-<font color="#FF0000">平</font><font color="#F5000A">台</font><font color="#EB0014">誓</font><font color="#E1001E">言</font><font color="#D70028">：</font><font color="#CD0032">真</font><font color="#C3003C">诚</font><font color="#B90046">服</font><font color="#AF0050">务</font><font color="#A5005A">，</font><font color="#9B0064">努</font><font color="#91006E">力</font><font color="#870078">打</font><font color="#7D0082">造</font><font color="#73008C">全</font><font color="#690096">网</font><font color="#5F00A0">最</font><font color="#5500AA">强</font><font color="#4B00B4">代</font><font color="#4100BE">刷</font><font color="#3700C8">货</font><font color="#2D00D2">源</font><font color="#2300DC">站</font><font color="#1900E6">！</font><strong><p></p>
+<font color="#FF0000">平</font><font color="#F5000A">台</font><font color="#EB0014">誓</font><font color="#E1001E">言</font><font color="#D70028">：</font><font color="#CD0032">真</font><font color="#C3003C">诚</font><font color="#B90046">服</font><font color="#AF0050">务</font><font color="#A5005A">，</font><font color="#9B0064">努</font><font color="#91006E">力</font><font color="#870078">打</font><font color="#7D0082">造</font><font color="#73008C">全</font><font color="#690096">网</font><font color="#5F00A0">最</font><font color="#5500AA">强</font><font color="#4B00B4">业</font><font color="#4100BE">务</font><font color="#3700C8">货</font><font color="#2D00D2">源</font><font color="#2300DC">站</font><font color="#1900E6">！</font><strong><p></p>
 </center>
 <?php echo $conf['anounce']?>
                   <p></p><center>
@@ -96,55 +96,7 @@ if(!defined('IN_CRONLITE'))exit();
 	  <!-- 公告结束 !-->
 
 
-<!--查单说明开始-->
-<div class="modal fade" align="left" id="cxsm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">查询内容是什么？该输入什么？</h4>
-      </div>
-      	<li class="list-group-item"><font color="red">请在右侧的输入框内输入您下单时，在第一个输入框内填写的信息</font></li>
-      	<li class="list-group-item">例如您购买的是QQ赞类商品，输入下单的QQ账号即可查询订单</li>
-      	<li class="list-group-item">例如您购买的是邮箱类商品，需要输入您的邮箱号，输入QQ号是查询不到的</li>
-      	<li class="list-group-item">例如您购买的是短视频类商品，输入视频链接即可查询，不要带其他中文字符</li>
-      	<li class="list-group-item"><font color="red">如果您不知道下单账号是什么，可以不填写，直接点击查询，则会根据浏览器缓存查询</font></li>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!--查单说明结束-->
 <div class="widget">
-<!--面值-->
-<div class="modal fade" align="left" id="1circles" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-   <div class="modal-dialog">
-    <div class="modal-content">
-         <div class="list-group-item reed" style="background:#FFD700;">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">x</span><span class="sr-only">Close</span></button>
-    <center><h4 class="modal-title" id="myModalLabel"><b><font color="#fff">下单时显示的“数量”是什么</font></b></h4></center>
-      </div>	  
-      <BR> 
-      <center>
-	  <font color="red">商品的面值×数量=下单数量（数量默认为1）</font>
-	  <hr>
-	   例如您购买：100个快手粉丝<br>下单数量选5，就是总共会获得500个粉丝
-	  <hr>
-	   例如您购买：1000个QQ名片赞<br>下单数量选3，就是总共会获得3000个名片赞 
-	  <hr>
-	  例如您购买：1000个全民K歌粉丝<br>下单数量选10，就是总共会获得10000个粉丝
-	  <hr>
-	  <font color="red">以此类推 本站其他商品都是如此，希望给您最好的购物体验</font>
-      <br /> 
-      </center>
-      <div class="modal-footer">
-      <button type="button" class="btn btn-default" data-dismiss="modal">我知道了</button>
-     </div>
-    </div>
-   </div>
-  </div>
-<!--面值-->
 <!--logo-->
     <div class="widget-content themed-background-flat text-center" style="background-image: url(assets/simple/img/head5.jpg);background-size: 100% 100%;">
       <a href="javascript:void(0)">
@@ -174,32 +126,7 @@ if(!defined('IN_CRONLITE'))exit();
 				<?php }?>
 </div></div></div>
 <!--logo下面按钮-->
-      
 
-<!--免费拉圈-->
-<div class="modal fade" align="left" id="circles" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">免费拉圈圈99+</h4>
-      </div>
-      <div class="modal-body">
-		<div class="form-group">
-			<div class="input-group"><div class="input-group-addon">请输入QQ</div>
-				<input type="text" name="qq" id="qq4" value="" class="form-control" required/>
-			</div>
-		</div>
-		<input type="submit" id="submit_lqq" class="btn btn-primary btn-block" value="立即提交">
-		<div id="result3" class="form-group text-center" style="display:none;"></div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!--免费拉圈-->
 </div>
 <div class="block full2">
 <!--TAB标签-->
@@ -208,9 +135,9 @@ if(!defined('IN_CRONLITE'))exit();
         <ul class="nav nav-tabs" data-toggle="tabs" style="background: linear-gradient(to right,pink ,#ffb6c1,#ffb6c1,#ffb6c1);">
             <li style="width: 25%;" align="center" class="active"><a href="#shop" data-toggle="tab"><span style="font-weight:bold"><i class="fa fa-shopping-cart fa-fw"></i>下单</span></a></li>
             <li style="width: 25%;" align="center"><a href="#search" data-toggle="tab" id="tab-query"><span style="font-weight:bold"><i class="fa fa-search fa-fw"></i>查询</span></a></li>
-	    <li style="width: 25%;" align="center" ><a href="#Substation" data-toggle="tab"><span style="font-weight:bold"><font color="#ff0000"><i class="fa fa-sitemap fa-fw"></i>分站</span></font></a></li>
-	    <li style="width: 25%;" align="center" <?php if($conf['gift_open']==0||$conf['fenzhan_buy']==1){?>class="hide"<?php }?>><a href="#gift" data-toggle="tab"><span style="font-weight:bold"><i class="fa fa-gift fa-fw"></i>抽奖</span></a></li>
-	     <li style="width: 25%;" align="center" <?php if($conf['fenzhan_buy']==1||$conf['gift_open']==1){?>class="hide"<?php }?>><a href="./user/"><span style="font-weight:bold"><i class="fa fa-user fa-fw"></i> 登录</span></a></li>
+	    <?php if($conf['fenzhan_buy']==1){?><li style="width: 25%;" align="center" ><a href="#Substation" data-toggle="tab"><span style="font-weight:bold"><font color="#ff0000"><i class="fa fa-sitemap fa-fw"></i>分站</span></font></a></li><?php }?>
+	    <?php if($conf['gift_open']==1&&$conf['fenzhan_buy']==0){?><li style="width: 25%;" align="center"><a href="#gift" data-toggle="tab"><span style="font-weight:bold"><i class="fa fa-gift fa-fw"></i>抽奖</span></a></li><?php }?>
+	    <?php if($conf['fenzhan_buy']==0&&$conf['gift_open']==0){?><li style="width: 25%;" align="center"><a href="./user/"><span style="font-weight:bold"><i class="fa fa-user fa-fw"></i> 登录</span></a></li><?php }?>
 			<li style="width: 25%;" align="center"><a href="#more" data-toggle="tab"><span style="font-weight:bold"><font color="#FF7F00"><span style="font-weight:bold"><span class="glyphicon glyphicon-gift"></span> 更多</font></span></a></li>
         </ul>
     </div>
@@ -285,73 +212,58 @@ if($select_count==0)$hideclass = true;
   <div class="modal-dialog panel panel-primary  animation-fadeInQuick2">
     <div class="modal-content">
 
-<div class="panel-body">
+<div class="panel-body" id="accordion">
      <h4 style="color:red;font-size:17px;text-align:center;">请查看你的订单问题是否需要联系客服</h4><hr>
-<center>
-<div id="demo-acc-faq" class="panel-group accordion">
-<div class="panel panel-trans pad-top">
-<a href="#demo-acc-faq11" class="text-semibold text-lg text-main collapsed" data-toggle="collapse" data-parent="#demo-acc-faq" aria-expanded="false">①ＱＱ刷名片赞好久都没开始刷？</a>
-<div id="demo-acc-faq11" class="mar-ver collapse" aria-expanded="false" style="height: 0px;">
-<hr>1.名片赞不刷通常是刷了一会停了，这说明是腾讯频繁限制了，等会即可！</br>
-2.名片赞很慢说明您下的是便宜赞，因价格低订单很大，所以就会慢点啦！<hr>
-</div></div>
-
-<div class="panel panel-trans pad-top">
-<a href="#demo-acc-faq22" class="text-semibold text-lg text-main collapsed" data-toggle="collapse" data-parent="#demo-acc-faq" aria-expanded="false">②ＱＱ空间业务好久没都开始刷？</a>
-<div id="demo-acc-faq22" class="mar-ver collapse" aria-expanded="false" style="height: 0px;">
-<hr>1.目前访客是24小时内开刷，特殊情况延迟<br>
-2.空间必须设置允许任何人可访问<br>
-3.空间被单封的不要下单（非好友进不去的）<hr>
-</div></div>
-
-<div class="panel panel-trans pad-top">
-<a href="#demo-acc-faq33" class="text-semibold text-lg text-main collapsed" data-toggle="collapse" data-parent="#demo-acc-faq" aria-expanded="false">③快手代刷业务好久都没开始刷？</a>
-<div id="demo-acc-faq33" class="mar-ver collapse" aria-expanded="false" style="height: 0px;">
-<hr>1.目前快手限制的比较厉害，刷的慢 请耐心等待<br>
-2.快手粉丝/播放/评论  都是当天到账<br>
-3.快手双击 24小时内都会到账 勿催！<hr>
-</div></div>
-
-<div class="panel panel-trans pad-top">
-<a href="#demo-acc-faq88" class="text-semibold text-lg text-main collapsed" data-toggle="collapse" data-parent="#demo-acc-faq" aria-expanded="false">④抖音业务业务好久都没开始刷？</a>
-<div id="demo-acc-faq88" class="mar-ver collapse" aria-expanded="false" style="height: 0px;">
-<hr>1.目前抖音业务基本上下单秒刷，小部分30分钟之内<br>
-2.如超过5小时还没到账,请仔细查看商品说明<br>
-3.请勿使用短链接直接下单！不懂得联系客服处理<hr>
-</div></div>
-
-<div class="panel panel-trans pad-top">
-<a href="#demo-acc-faq44" class="text-semibold text-lg text-main collapsed" data-toggle="collapse" data-parent="#demo-acc-faq" aria-expanded="false">⑤ＱＱ永久钻会员好久没有到账？</a>
-<div id="demo-acc-faq44" class="mar-ver collapse" aria-expanded="false" style="height: 0px;">
-<hr>1.钻会员下单后72小时内到账，勿催！<br>
-2.钻会员下单后72小时内到账，勿催！<br>
-3.钻会员下单后72小时内到账，勿催！<hr>
-</div></div>
-
-<div class="panel panel-trans pad-top">
-<a href="#demo-acc-faq55" class="text-semibold text-lg text-main collapsed" data-toggle="collapse" data-parent="#demo-acc-faq" aria-expanded="false">⑥卡密CDK没有发送到我的邮箱？</a>
-<div id="demo-acc-faq55" class="mar-ver collapse" aria-expanded="false" style="height: 0px;">
-<hr>1.先点击网站上的“查单”按钮<br>
-2.再输入自己下单时时填的ＱＱ邮箱<br>
-3.查到订单后再点击“详细”即可看到<hr>
-</div></div>
-
-<div class="panel panel-trans pad-top">
-<a href="#demo-acc-faq66" class="text-semibold text-lg text-main collapsed" data-toggle="collapse" data-parent="#demo-acc-faq" aria-expanded="false">⑦已付款成功为什么查不到订单？</a>
-<div id="demo-acc-faq66" class="mar-ver collapse" aria-expanded="false" style="height: 0px;">
-<hr>1.如果出现这种问题，请联系客服处理<br>
-2.提供“付款截图”“下单商品名称”“下单账号”<br>
-3.直接把这三个信息发给客服，然后等待客服回复处理！<hr>
-</div></div>
-
-<div class="panel panel-trans pad-top">
-<a href="#demo-acc-faq77" class="text-semibold text-lg text-main collapsed" data-toggle="collapse" data-parent="#demo-acc-faq" aria-expanded="false">⑧以上帮助并不能解决我的问题？</a>
-<div id="demo-acc-faq77" class="mar-ver collapse" aria-expanded="false" style="height: 0px;">
-<hr>亲，很抱歉我们没有及时为您解决问题，业务基本24小时内到账，QQ钻类订单72小时之内到账，具体到账时间请去看商品介绍，超过时间未到账的请联系下面的人工客服。</br>
-<font color="red">注意：有问题请联系客服，直接说明你遇到的问题，2小时客服没回复，请重新发送消息（禁止语音/抖动/骂人）</font>
-</div></div>
-</div>
-</center> <hr> 
+			<div class="panel panel-default" style="margin-bottom: 6px;">
+				<div class="panel-heading">
+					<h4 class="panel-title">
+						<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">为什么订单显示已完成了却一直没到账？</a>
+					</h4>
+				</div>
+				<div id="collapseOne" class="panel-collapse in" style="height: auto;">
+					<div class="panel-body">
+					订单显示（已完成）就证明已经提交到服务器内！<br>
+					如果长时间没到账请联系客服处理！<br>
+					订单长时间显示（待处理）请联系客服！
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-default" style="margin-bottom: 6px;">
+				<div class="panel-heading">
+					<h4 class="panel-title">
+						<a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" class="collapsed">商品什么时候到账？</a>
+					</h4>
+				</div>
+				<div id="collapseTwo" class="panel-collapse collapse" style="height: 0px;">
+					<div class="panel-body">
+					请参考商品简介里面，有关于到账时间的说明。
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-default" style="margin-bottom: 6px;">
+				<div class="panel-heading">
+					<h4 class="panel-title">
+						<a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" class="collapsed">卡密/CDK没有发送我的邮箱？</a>
+					</h4>
+				</div>
+				<div id="collapseThree" class="panel-collapse collapse" style="height: 0px;">
+					<div class="panel-body">没有收到请检查自己邮箱的垃圾箱！也可以去查单区：输入自己下单时填写的邮箱进行查单。<br>
+					查询到订单后点击（详细）就可以看到自己购买的卡密/cdk！
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-default" style="margin-bottom: 6px;">
+				<div class="panel-heading">
+					<h4 class="panel-title">
+						<a data-toggle="collapse" data-parent="#accordion" href="#collapseFourth" class="collapsed">已付款了没有查询到我订单？</a>
+					</h4>
+				</div>
+				<div id="collapseFourth" class="panel-collapse collapse" style="height: 0px;">
+					<div class="panel-body" style="margin-bottom: 6px;">联系客服处理，请提供（付款详细记录截图）（下单商品名称）（下单账号）<br>直接把三个信息发给客服，然后等待客服回复处理（请不要发抖动窗口或者QQ电话）！
+					</div>
+				</div>
+			</div>
+			<hr> 
 <table class="table table-striped table-borderless table-vcenter remove-margin-bottom">
          <tbody>
             <tr class="animation-fadeInQuick2">
@@ -415,7 +327,7 @@ if($select_count==0)$hideclass = true;
 						<select class="form-control" id="searchtype" style="padding: 6px 4px;width:90px"><option value="0">下单账号</option><option value="1">订单号</option></select>
 				</div>
 					<input type="text" name="qq" id="qq3" value="" class="form-control" placeholder="请输入要查询的内容（留空则显示最新订单）" onkeydown="if(event.keyCode==13){submit_query.click()}" required="">
-					<span class="input-group-btn"><a href="#cxsm"  data-toggle="modal" class="btn btn-warning"><i class="glyphicon glyphicon-exclamation-sign"></i></a></span>
+					<span class="input-group-btn"><a tabindex="0" class="btn btn-default" role="button" data-container="body" data-toggle="popover" data-trigger="focus" data-placement="top" title="查询内容是什么？" data-content="请输入您下单时，在第一个输入框内填写的信息。如果您不知道下单账号是什么，可以不填写，直接点击查询，则会根据浏览器缓存查询！"><i class="glyphicon glyphicon-exclamation-sign"></i></a></span>
 				</div>
 			</div>		
 			<input type="submit" id="submit_query" class="btn btn-primary btn-block btn-rounded" style="background: linear-gradient(to right,#87CEFA,#6495ED);color:#fff;" value="立即查询">		
@@ -432,20 +344,7 @@ if($select_count==0)$hideclass = true;
 			</div>
 
 <!--查询订单-->
-		
-		<!--网站日志-->
-		<div class="row text-center" <?php if($conf['hide_tongji']==1){?>style="display:none;"<?php }?>>
-			<div class="col-xs-4">
-				<h5 class="widget-heading"><small>订单总数</small><br><a href="javascript:void(0)" class="themed-color-flat"><span id="count_orders"></span>条</a></h5>
-			</div>
-			<div class="col-xs-4">
-				 <h5 class="widget-heading"><small>今日订单</small><br><a href="javascript:void(0)" class="themed-color-flat"><span id="count_orders2"></span>条</a></h5>
-			</div>
-			<div class="col-xs-4">
-				<h5 class="widget-heading"><small>运营天数</small><br><a href="javascript:void(0)" class="themed-color-flat"><span id="count_yxts"></span>天</a></h5>
-			</div>
-<!--网站日志-->
-	</div>
+
    </div>
 <!--查询订单-->
 <!--开通分站-->
@@ -512,7 +411,7 @@ if($select_count==0)$hideclass = true;
     <div class="tab-pane" id="more">
 	 
 	<div class="row">
-		<div class="col-sm-6<?php if($conf['gift_open']==0){?> hide<?php }?>">
+		<?php if($conf['gift_open']==1){?><div class="col-sm-6">
             <a href="#gift" data-toggle="tab" class="widget">
                <div class="widget-content themed-background-info text-right clearfix" style="background: linear-gradient(to right,#f093fb,#f5576c);color:#fff;">
                     <div class="widget-icon pull-left">
@@ -524,9 +423,9 @@ if($select_count==0)$hideclass = true;
                     <span>在线抽奖领取免费商品</span>
                 </div>
             </a>
-        </div>
+        </div><?php }?>
 
-		<div class="col-sm-6<?php if(empty($conf['appurl']) || $conf['gift_open']==1 || $is_fenzhan){?> hide<?php }?>">
+		<?php if(!empty($conf['appurl']) && $conf['gift_open']==0 && !$is_fenzhan){?><div class="col-sm-6">
             <a href="<?php echo $conf['appurl']; ?>" target="_blank" class="widget">
               <div class="widget-content themed-background-warning text-right clearfix" style="background: linear-gradient(to right,#ff9a9e,#fecfef);color:#fff;">
                     <div class="widget-icon pull-left">
@@ -538,8 +437,8 @@ if($select_count==0)$hideclass = true;
                     <span>下载APP，让您下单更方便</span>
                 </div>
             </a>
-        </div>
-		<div class="col-sm-6<?php if(empty($conf['invite_tid'])){?> hide<?php }?>">
+        </div><?php }?>
+		<?php if(!empty($conf['invite_tid'])){?><div class="col-sm-6">
             <a  href="./?mod=invite" target="_blank" class="widget">
                  <div class="widget-content themed-background-success text-right clearfix" style="background: linear-gradient(to right,#f6d365,#fda085);color:#fff;">
                     <div class="widget-icon pull-left">
@@ -551,7 +450,7 @@ if($select_count==0)$hideclass = true;
                     <span>推广本站免费领名片赞</span>
                 </div>
             </a>
-        </div>
+        </div><?php }?>
 
         <div class="col-sm-6">
             <a href="./user" target="_blank" class="widget">
@@ -567,7 +466,7 @@ if($select_count==0)$hideclass = true;
             </a>
         </div>
 
-		<div class="col-sm-6<?php if(empty($conf['daiguaurl'])){?> hide<?php }?>">
+		<?php if(!empty($conf['daiguaurl'])){?><div class="col-sm-6">
             <a href="./?mod=daigua" class="widget">
                 <div class="widget-content themed-background-success text-right clearfix" style="color: #fff;">
                     <div class="widget-icon pull-left">
@@ -579,8 +478,23 @@ if($select_count==0)$hideclass = true;
                     <span>管理自己的QQ代挂</span>
                 </div>
             </a>
-        </div>
+        </div><?php }?>
 	</div>
+	<!--网站日志-->
+		<?php if(!$conf['hide_tongji']){?>
+		<div class="row text-center">
+			<div class="col-xs-4">
+				<h5 class="widget-heading"><small>订单总数</small><br><a href="javascript:void(0)" class="themed-color-flat"><span id="count_orders"></span>条</a></h5>
+			</div>
+			<div class="col-xs-4">
+				 <h5 class="widget-heading"><small>今日订单</small><br><a href="javascript:void(0)" class="themed-color-flat"><span id="count_orders2"></span>条</a></h5>
+			</div>
+			<div class="col-xs-4">
+				<h5 class="widget-heading"><small>运营天数</small><br><a href="javascript:void(0)" class="themed-color-flat"><span id="count_yxts"></span>天</a></h5>
+			</div>
+		</div>
+		<?php }?>
+<!--网站日志-->
 	</div>
 <!--更多按钮-->
 
@@ -602,7 +516,7 @@ if($select_count==0)$hideclass = true;
                     </thead>
 					<tbody>
 						<tr class="active">
-                            <td>专属代刷平台</td>
+                            <td>专属商城平台</td>
                             <td class="text-center">
 								<span class="btn btn-effect-ripple btn-xs btn-success"><i class="fa fa-check"></i></span>
 								<span class="btn btn-effect-ripple btn-xs btn-success"><i class="fa fa-check"></i></span>
@@ -673,30 +587,6 @@ if($select_count==0)$hideclass = true;
 
     </div>
 </div>
-<!--关于我们弹窗-->
-<div class="modal fade" align="left" id="about" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-			<h4 class="modal-title" id="myModalLabel">新手下单帮助</h4>
-		</div>
-		<div class="modal-body">
-			<a href="javascript:void(0)" class="widget">
-				<center>
-						<strong><font size="3">站长ＱＱ：<?php echo $conf['kfqq'];?></font> </strong>
-                      	 <br /> 
-						<strong><font size="2">本站域名：<?php echo $_SERVER['HTTP_HOST'];?></font> </strong>
-					</center>
-					<center>
-<div id="demo-acc-faq" class="panel-group accordion"><div class="panel panel-trans pad-top"><a href="#demo-acc-faq1" class="text-semibold text-lg text-main collapsed" data-toggle="collapse" data-parent="#demo-acc-faq" aria-expanded="false">下单很久了都没有开始刷呢？</a><div id="demo-acc-faq1" class="mar-ver collapse" aria-expanded="false" style="height: 0px;">由于本站采用全自动订单处理，难免会出现漏单，部分单子处理时间可能会稍长一点，不过都会完成，最终解释权归本站所有。超过24小时没处理请联系客服！</div></div><div class="panel panel-trans pad-top"><a href="#demo-acc-faq2" class="text-semibold text-lg text-main collapsed" data-toggle="collapse" data-parent="#demo-acc-faq" aria-expanded="false">ＱＱ空间业务类下单方法讲解</a><div id="demo-acc-faq2" class="mar-ver collapse" aria-expanded="false">1.下单前：空间必须是所有人可访问,必须自带1~4条原创说说!<br>2.代刷期间，禁止关闭访问权限，或者删除说说，删除说说的一律由自行负责，不给予补偿。</div></div><div class="panel panel-trans pad-top"><a href="#demo-acc-faq3" class="text-semibold text-lg text-main collapsed" data-toggle="collapse" data-parent="#demo-acc-faq" aria-expanded="false">空间说说赞相关下单方法讲解</a><div id="demo-acc-faq3" class="mar-ver collapse" aria-expanded="false">1.下单前：空间必须是所有人可访问,必须自带1条原创说说!转发的说说不能刷！<br>2.在“QQ号码”栏目输入QQ号码，点击下面的获取说说ID并选择你需要刷的说说的ID，下单即可。<br>3.代刷期间，禁止关闭访问权限，或者删除说说，删除说说的一律由自行负责，不给予补偿。</div></div><div class="panel panel-trans pad-top"><a href="#demo-acc-faq4" class="text-semibold text-lg text-main collapsed" data-toggle="collapse" data-parent="#demo-acc-faq" aria-expanded="false">视频/音乐业务类下单方法讲解</a><div id="demo-acc-faq4" class="mar-ver collapse" aria-expanded="false">1.打开你的视频/音乐APP<br>2.复制里面需要刷的视频/歌曲链接<br>3.然后把链接填入到输入框里面，然后提交购买。</div></div><div class="panel panel-trans pad-top"><a href="#demo-acc-faq5" class="text-semibold text-lg text-main collapsed" data-toggle="collapse" data-parent="#demo-acc-faq" aria-expanded="false">永久ＱＱ会员/钻下单方法讲解</a><div id="demo-acc-faq5" class="mar-ver collapse" aria-expanded="false">1.下单之前，先确认输的信息是不是正确的!<br>2.Q会员/钻因为需要人工处理，所以每天不定时开刷，24小时-48小时内到账！</div></div></div>
-             </center>                                                           
-			</a>
-		</div>
-    </div>
-  </div>
-</div>
-<!--关于我们弹窗-->
 
 <?php if($conf['articlenum']>0){
 $limit = intval($conf['articlenum']);
@@ -732,7 +622,7 @@ host = window.location.host;
 document.write(""+host)
 </script>
 </font>
-<font color="#890037">（</font><font color="#7E0042">欢</font><font color="#73004D">迎</font><font color="#680058">收</font><font color="#5D0063"></font><font color="#52006E">藏</font><font color="#470079">）</font></b><br><span style="font-weight:bold"><font color="#C00000">C</font><font color="#B5000B">o</font><font color="#AA0016">p</font><font color="#9F0021">y</font><font color="#94002C">R</font><font color="#890037">i</font><font color="#7E0042">g</font><font color="#73004D">h</font><font color="#680058">t</font><font color="#5D0063"></font> <i class="fa fa-heart text-danger"></i> <font color="#52006E">2</font><font color="#470079">0</font><font color="#3C0084">2</font><font color="#31008F">0</font><font color="#26009A"> | </font></span><a class="" href="#about" data-toggle="modal"><span style="font-weight:bold">新手下单帮助</span></a><br/>
+<font color="#890037">（</font><font color="#7E0042">欢</font><font color="#73004D">迎</font><font color="#680058">收</font><font color="#5D0063"></font><font color="#52006E">藏</font><font color="#470079">）</font></b><br><span style="font-weight:bold"><font color="#C00000">C</font><font color="#B5000B">o</font><font color="#AA0016">p</font><font color="#9F0021">y</font><font color="#94002C">R</font><font color="#890037">i</font><font color="#7E0042">g</font><font color="#73004D">h</font><font color="#680058">t</font><font color="#5D0063"></font> <i class="fa fa-heart text-danger"></i> <font color="#52006E">2</font><font color="#470079">0</font><font color="#3C0084">2</font><font color="#31008F">1</font></span><br/>
 <?php echo $conf['footer']?>
            <center>
 <div style="display:none">

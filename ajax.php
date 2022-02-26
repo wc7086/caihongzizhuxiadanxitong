@@ -321,11 +321,23 @@ case 'pay':
 			if(!$price)exit('{"code":-1,"msg":"当前商品批发价格优惠设置不正确"}');
 		}else $price=$tool['price'];
 
-		$need=round($price*$num, 2);
+		$i=2;
+		$neednum = $num;
+		foreach($inputs as $inputname){
+			if(strpos($inputname,'[multi]')!==false && isset(${'inputvalue'.$i}) && is_numeric(${'inputvalue'.$i})){
+				$val = intval(${'inputvalue'.$i});
+				if($val>0){
+					$neednum = $neednum * $val;
+				}
+			}
+			$i++;
+		}
+
+		$need=round($price*$neednum, 2);
 		if($need==0 && $tid!=$_SESSION['gift_tid']){
 			if($method == 'cart_add' || $method == 'cart_edit')exit('{"code":-1,"msg":"免费商品请直接点击领取"}');
 			$thtime=date("Y-m-d").' 00:00:00';
-			if($_SESSION['blockfree']==true || $DB->getColumn("SELECT count(*) FROM `pre_pay` WHERE `tid`='{$tid}' AND `money`=0 AND `ip`='$clientip' AND `status`=1 AND `addtime`>'$thtime'")>=1){
+			if($_SESSION['blockfree']==true || $DB->getColumn("SELECT count(*) FROM `pre_pay` WHERE `money`=0 AND `ip`='$clientip' AND `status`=1 AND `addtime`>'$thtime'")>=1){
 				exit('{"code":-1,"msg":"您今天已领取过，请明天再来！"}');
 			}
 			if($conf['captcha_open_free']==1 && $conf['captcha_open']==1){
@@ -385,21 +397,18 @@ case 'pay':
 			}
 		}
 		//下单对接预检查
-		if($tool['shequ']>0 && $tool['is_curl']==2 && in_array($tool['cid'],explode(",",$conf['pricejk_cid'])) && time()-$tool['uptime']>=$conf['pricejk_time']){
+		if($need>0 && $tool['shequ']>0 && $tool['is_curl']==2 && in_array($tool['cid'],explode(",",$conf['pricejk_cid'])) && time()-$tool['uptime']>=$conf['pricejk_time']){
 			$shequ=$DB->getRow("select * from pre_shequ where id='{$tool['shequ']}' limit 1");
-			if($shequ['type'] == 'yile'){
-				if($conf['pricejk_yile']==0 && $need>0 && $tool['prid']>0){
-					$num_change = pricejk_yile_one($shequ, $tool);
-					if($num_change>0){
-						exit('{"code":3,"msg":"当前商品价格发生变化，请刷新页面重试","change":"'.$num_change.'"}');
-					}
+			$allowType = explode(',',$CACHE->read('pricejk_type2'));
+			if($conf['pricejk_yile']==0 && in_array($shequ['type'],$allowType) && $tool['prid']>0){
+				$num_change = third_call($shequ['type'], $shequ, 'pricejk_one', [$tool]);
+				if($num_change>0){
+					exit('{"code":3,"msg":"当前商品价格发生变化，请刷新页面重试","change":"'.$num_change.'"}');
 				}
-			}elseif($shequ['type'] == 'extend'){
-				if(class_exists("ExtendAPI", false) && method_exists('ExtendAPI','precheck')){
-					$apireturn = ExtendAPI::precheck($shequ, $tool, $num);
-					if($apireturn['code']==-1){
-						exit('{"code":3,"msg":"'.$apireturn['msg'].'"}');
-					}
+			}else{
+				$apireturn = third_call($shequ['type'], $shequ, 'pre_check', [$tool, $num]);
+				if($apireturn && $apireturn['code']==-1){
+					exit('{"code":3,"msg":"'.$apireturn['msg'].'"}');
 				}
 			}
 		}
@@ -434,8 +443,8 @@ case 'pay':
 					$DB->exec("UPDATE `pre_giftlog` SET `status`=1,`tradeno`=:tradeno,`input`=:input WHERE `id`=:id", [':tradeno'=>$trade_no, ':input'=>$inputvalue, ':id'=>$gift_id]);
 					unset($_SESSION['gift_id']);
 					unset($_SESSION['gift_tid']);
+					$_SESSION['blockfree']=true;
 				}
-				$_SESSION['blockfree']=true;
 				$srow['tid']=$tid;
 				$srow['input']=$input;
 				$srow['num']=$num;
@@ -444,7 +453,7 @@ case 'pay':
 				$srow['trade_no']=$trade_no;
 				$srow['money']=0;
 				if($orderid=processOrder($srow)){
-					exit('{"code":1,"msg":"下单成功！你可以在进度查询中查看代刷进度","orderid":"'.$orderid.'"}');
+					exit('{"code":1,"msg":"下单成功！你可以在进度查询中查看订单进度","orderid":"'.$orderid.'"}');
 				}else{
 					exit('{"code":-1,"msg":"下单失败！'.$DB->error().'"}');
 				}
@@ -477,6 +486,102 @@ case 'pay':
 		exit('{"code":-2,"msg":"该商品不存在"}');
 	}
 	break;
+case 'pays':
+	if(!$conf['openbatchorder'])exit('{"code":-1,"msg":"未开启批量下单功能"}');
+	$inputvalues=$_POST['inputvalues'];
+	$hashsalt=isset($_POST['hashsalt'])?$_POST['hashsalt']:null;
+	$tid=intval($_POST['tid']);
+	$num=isset($_POST['num'])?intval($_POST['num']):1;
+	$tool=$DB->getRow("SELECT A.*,B.blockpay FROM pre_tools A LEFT JOIN pre_class B ON A.cid=B.cid WHERE tid='$tid' LIMIT 1");
+	if($tool && $tool['active']==1){
+		if($tool['close']==1)exit('{"code":-1,"msg":"当前商品维护中，停止下单！"}');
+		if(($conf['forcermb']==1 || $conf['forcelogin']==1) && !$islogin2)exit('{"code":4,"msg":"你还未登录"}');
+		if(!empty($tool['blockpay']) && !$islogin2){
+			$blockpay = explode(',',$tool['blockpay']);
+			if(in_array('alipay',$blockpay) && in_array('qqpay',$blockpay) && in_array('wxpay',$blockpay))exit('{"code":4,"msg":"当前商品需要登录后才能下单"}');
+		}
+		if($conf['verify_open']==1 && (empty($_SESSION['addsalt']) || $hashsalt!=$_SESSION['addsalt'])){
+			exit('{"code":-1,"msg":"验证失败，请刷新页面重试"}');
+		}
+		$inputvalues = str_replace(array("\r\n", "\r", "\n"), "[br]", $inputvalues);
+		$match = explode("[br]",$inputvalues);
+		$count=0;
+		$inputs=[];
+		foreach($match as $val)
+		{
+			$inputvalue = htmlspecialchars(trim(strip_tags(daddslashes($val))));
+			if($val=='')continue;
+			$inputs[] = $inputvalue;
+			$count++;
+		}
+		if($count==0)exit('{"code":-1,"msg":"下单账号不能为空"}');
+		$totalnum = $count * $num;
+
+		if($tool['is_curl']==4){
+			$count = $DB->getColumn("SELECT count(*) FROM pre_faka WHERE tid='$tid' AND orderid=0");
+			$nums=($tool['value']>1?$tool['value']:1)*$totalnum;
+			if($count==0)exit('{"code":-1,"msg":"该商品库存卡密不足，请联系站长加卡！"}');
+			if($nums>$count)exit('{"code":-1,"msg":"你所购买的数量超过库存数量！"}');
+		}
+		elseif($tool['stock']!==null){
+			if($tool['stock']==0)exit('{"code":-1,"msg":"该商品库存不足，请联系站长增加库存！"}');
+			if($totalnum>$tool['stock'])exit('{"code":-1,"msg":"你所购买的数量超过库存数量！"}');
+		}
+		if(isset($price_obj)){
+			$price_obj->setToolInfo($tid,$tool);
+			$price=$price_obj->getToolPrice($tid);
+			$price=$price_obj->getFinalPrice($price, $totalnum);
+			if(!$price)exit('{"code":-1,"msg":"当前商品批发价格优惠设置不正确"}');
+		}else $price=$tool['price'];
+
+		if($price==0){
+			exit('{"code":-1,"msg":"免费商品不支持批量下单"}');
+		}
+		$need=round($price*$totalnum, 2);
+		
+		//下单对接预检查
+		if($need>0 && $tool['shequ']>0 && $tool['is_curl']==2 && in_array($tool['cid'],explode(",",$conf['pricejk_cid'])) && time()-$tool['uptime']>=$conf['pricejk_time']){
+			$shequ=$DB->getRow("select * from pre_shequ where id='{$tool['shequ']}' limit 1");
+			$allowType = explode(',',$CACHE->read('pricejk_type2'));
+			if($conf['pricejk_yile']==0 && in_array($shequ['type'],$allowType) && $tool['prid']>0){
+				$num_change = third_call($shequ['type'], $shequ, 'pricejk_one', [$tool]);
+				if($num_change>0){
+					exit('{"code":3,"msg":"当前商品价格发生变化，请刷新页面重试","change":"'.$num_change.'"}');
+				}
+			}else{
+				$apireturn = third_call($shequ['type'], $shequ, 'pre_check', [$tool, $totalnum]);
+				if($apireturn && $apireturn['code']==-1){
+					exit('{"code":3,"msg":"'.$apireturn['msg'].'"}');
+				}
+			}
+		}
+
+		$ids = array();
+		foreach($inputs as $input){
+			$need2=round($price*$num, 2);
+			$sql="INSERT INTO `pre_cart` (`userid`,`zid`,`tid`,`input`,`num`,`money`,`addtime`,`blockdj`,`status`) VALUES (:userid, :zid, :tid, :input, :num, :money, NOW(), :blockdj, 1)";
+			$data = [':userid'=>$cookiesid, ':zid'=>$siterow['zid']?$siterow['zid']:1, ':tid'=>$tid, ':input'=>$input, ':num'=>$num, ':money'=>$need2, ':blockdj'=>0];
+			$DB->exec($sql, $data);
+			$ids[] = $DB->lastInsertId();
+		}
+		$input = implode('|',$ids);
+
+		$trade_no=date("YmdHis").rand(111,999);
+		$sql="INSERT INTO `pre_pay` (`trade_no`,`tid`,`zid`,`input`,`num`,`name`,`money`,`ip`,`userid`,`inviteid`,`addtime`,`status`) VALUES (:trade_no, :tid, :zid, :input, :num, :name, :money, :ip, :userid, :inviteid, NOW(), 0)";
+		$data = [':trade_no'=>$trade_no, ':tid'=>-3, ':zid'=>$siterow['zid']?$siterow['zid']:1, ':input'=>$input, ':num'=>count($ids), ':name'=>$tool['name'], ':money'=>$need, ':ip'=>$clientip, ':userid'=>$cookiesid, ':inviteid'=>$invite_id];
+		if($DB->exec($sql, $data)){
+			unset($_SESSION['addsalt']);
+			if($conf['forcermb']==1){$conf['alipay_api']=0;$conf['wxpay_api']=0;$conf['qqpay_api']=0;}
+			$result = ['code'=>0, 'msg'=>'提交订单成功！', 'trade_no'=>$trade_no, 'need'=>$need, 'num'=>$count, 'pay_alipay'=>$conf['alipay_api'], 'pay_wxpay'=>$conf['wxpay_api'], 'pay_qqpay'=>$conf['qqpay_api'], 'pay_rmb'=>$islogin2, 'user_rmb'=>$userrow['rmb'], 'paymsg'=>$conf['paymsg']];
+			exit(json_encode($result));
+		}else{
+			exit('{"code":-1,"msg":"提交订单失败！'.$DB->error().'"}');
+		}
+
+	}else{
+		exit('{"code":-2,"msg":"该商品不存在"}');
+	}
+	break;
 case 'cancel':
 	$orderid=isset($_POST['orderid'])?trim($_POST['orderid']):exit('{"code":-1,"msg":"订单号未知"}');
 	$hashsalt=isset($_POST['hashsalt'])?$_POST['hashsalt']:null;
@@ -489,6 +594,113 @@ case 'cancel':
 		}
 	}
 	exit('{"code":0,"msg":"ok"}');
+	break;
+case 'card_check':
+	if($conf['iskami']==0)exit('{"code":-1,"msg":"当前站点未开启卡密下单"}');
+	$km=trim(daddslashes($_POST['km']));
+	$hashsalt=isset($_POST['hashsalt'])?$_POST['hashsalt']:null;
+	$myrow=$DB->getRow("SELECT * FROM pre_kms WHERE km='$km' AND type=1 LIMIT 1");
+	if(!$myrow) exit('{"code":-1,"msg":"此卡密不存在！"}');
+	if($myrow['status']==1) exit('{"code":-1,"msg":"此卡密已被使用！"}');
+	$res=$DB->getRow("SELECT * FROM pre_tools WHERE tid='{$myrow['tid']}' AND active=1 LIMIT 1");
+	if(!$res)exit('{"code":-1,"msg":"当前卡密对应的商品不存在"}');
+	if($res['is_curl']==4){
+		$isfaka = 1;
+		$res['input'] = getFakaInput();
+	}else{
+		$isfaka = 0;
+	}
+	$result=array("code"=>0,"num"=>$myrow['num'],"data"=>array('tid'=>$res['tid'],'cid'=>$res['cid'],'sort'=>$res['sort'],'name'=>$res['name'],'value'=>$res['value'],'price'=>$price,'input'=>$res['input'],'inputs'=>$res['inputs'],'desc'=>$res['desc'],'alert'=>$res['alert'],'shopimg'=>$res['shopimg'],'repeat'=>$res['repeat'],'multi'=>$res['multi'],'close'=>$res['close'],'prices'=>$res['prices'],'min'=>$res['min'],'max'=>$res['max'],'sales'=>$res['sales'],'isfaka'=>$isfaka,'stock'=>$res['stock']));
+	exit(json_encode($result));
+	break;
+case 'card_pay':
+	if($conf['iskami']==0)exit('{"code":-1,"msg":"当前站点未开启卡密下单"}');
+	$km=trim(daddslashes($_POST['km']));
+	$inputvalue=htmlspecialchars(trim(strip_tags(daddslashes($_POST['inputvalue']))));
+	$inputvalue2=htmlspecialchars(trim(strip_tags(daddslashes($_POST['inputvalue2']))));
+	$inputvalue3=htmlspecialchars(trim(strip_tags(daddslashes($_POST['inputvalue3']))));
+	$inputvalue4=htmlspecialchars(trim(strip_tags(daddslashes($_POST['inputvalue4']))));
+	$inputvalue5=htmlspecialchars(trim(strip_tags(daddslashes($_POST['inputvalue5']))));
+	$hashsalt=isset($_POST['hashsalt'])?$_POST['hashsalt']:null;
+	$myrow=$DB->getRow("SELECT * FROM pre_kms WHERE km='$km' AND type=1 LIMIT 1");
+	if(!$myrow) exit('{"code":-1,"msg":"此卡密不存在！"}');
+	if($myrow['status']==1) exit('{"code":-1,"msg":"此卡密已被使用！"}');
+	$num = $myrow['num']?$myrow['num']:1;
+	$tid = $myrow['tid'];
+	$tool=$DB->getRow("SELECT * FROM pre_tools WHERE tid='$tid' LIMIT 1");
+	if($tool && $tool['active']==1){
+		if($tool['close']==1)exit('{"code":-1,"msg":"当前商品维护中，停止下单！"}');
+		if($conf['forcelogin']==1 && !$islogin2)exit('{"code":4,"msg":"你还未登录"}');
+		if($conf['verify_open']==1 && (empty($_SESSION['addsalt']) || $hashsalt!=$_SESSION['addsalt'])){
+			exit('{"code":-1,"msg":"验证失败，请刷新页面重试"}');
+		}
+		$inputs=explode('|',$tool['inputs']);
+		if(empty($inputvalue) || $inputs[0] && empty($inputvalue2) || $inputs[1] && empty($inputvalue3) || $inputs[2] && empty($inputvalue4) || $inputs[3] && empty($inputvalue5)){
+			exit('{"code":-1,"msg":"请确保各项不能为空"}');
+		}
+		if(!$inputs[0] && !empty($inputvalue2) || !$inputs[1] && !empty($inputvalue3) || !$inputs[2] && !empty($inputvalue4) || !$inputs[3] && !empty($inputvalue5)){
+			exit('{"code":-1,"msg":"验证失败"}');
+		}
+		if(in_array($inputvalue,explode("|",$conf['blacklist'])))exit('{"code":-1,"msg":"你的下单账号已被拉黑，无法下单！"}');
+		if($tool['is_curl']==4){
+			if(!$islogin2 && $conf['faka_input']==0 && !checkEmail($inputvalue)){
+				exit('{"code":-1,"msg":"邮箱格式不正确"}');
+			}
+			$count = $DB->getColumn("SELECT count(*) FROM pre_faka WHERE tid='$tid' AND orderid=0");
+			$nums=($tool['value']>1?$tool['value']:1)*$num;
+			if($count==0)exit('{"code":-1,"msg":"该商品库存卡密不足，请联系站长加卡！"}');
+			if($nums>$count)exit('{"code":-1,"msg":"你所购买的数量超过库存数量！"}');
+		}
+		elseif($tool['stock']!==null){
+			if($tool['stock']==0)exit('{"code":-1,"msg":"该商品库存不足，请联系站长增加库存！"}');
+			if($num>$tool['stock'])exit('{"code":-1,"msg":"你所购买的数量超过库存数量！"}');
+		}
+		elseif($tool['repeat']==0){
+			$thtime=date("Y-m-d").' 00:00:00';
+			$row=$DB->getRow("SELECT id,input,status,addtime FROM pre_orders WHERE tid=:tid AND input=:input ORDER BY id DESC LIMIT 1", [':tid'=>$tid, ':input'=>$inputvalue]);
+			if($row['input'] && $row['status']==0)
+				exit('{"code":-1,"msg":"您今天添加的'.$tool['name'].'正在排队中，请勿重复提交！"}');
+			elseif($row['addtime']>$thtime)
+				exit('{"code":-1,"msg":"您今天已添加过'.$tool['name'].'，请勿重复提交！"}');
+		}
+		if($tool['validate']==1 && is_numeric($inputvalue)){
+			if(validate_qzone($inputvalue)==false)
+				exit('{"code":-1,"msg":"你的QQ空间设置了访问权限，无法下单！"}');
+		}elseif(($tool['validate']==2 || $tool['validate']==3) && is_numeric($inputvalue)){
+			$services = getservices($inputvalue);
+			if($services['code']!=0)exit('{"code":-1,"msg":"'.$services['msg'].'"}');
+			$qqservices = ['vip'=>'QQ会员','svip'=>'超级会员','bigqqvip'=>'大会员','red'=>'红钻贵族','green'=>'绿钻贵族','sgreen'=>'绿钻豪华版','yellow'=>'黄钻贵族','syellow'=>'豪华黄钻','hollywood'=>'腾讯视频VIP','qqmsey'=>'付费音乐包','qqmstw'=>'豪华付费音乐包','weiyun'=>'微云会员','sweiyun'=>'微云超级会员'];
+			if(in_array($tool['valiserv'], $services['data'])){
+				if($tool['validate']==2){
+					exit('{"code":-1,"msg":"您的QQ已经开通了'.$qqservices[$tool['valiserv']].'，该商品无法购买！"}');
+				}else{
+					$blockdj=1;
+				}
+			}
+		}
+		if($tool['multi']==0 || $num<1)$num = 1;
+		if($tool['multi']==1 && $tool['min']>0 && $num<$tool['min'])exit('{"code":-1,"msg":"当前商品最小下单数量为'.$tool['min'].'"}');
+		if($tool['multi']==1 && $tool['max']>0 && $num>$tool['max'])exit('{"code":-1,"msg":"当前商品最大下单数量为'.$tool['max'].'"}');
+
+		$trade_no='kid:'.$myrow['kid'];
+		$input=$inputvalue.($inputvalue2?'|'.$inputvalue2:null).($inputvalue3?'|'.$inputvalue3:null).($inputvalue4?'|'.$inputvalue4:null).($inputvalue5?'|'.$inputvalue5:null);
+		$srow['tid']=$tid;
+		$srow['input']=$input;
+		$srow['num']=$num;
+		$srow['zid']=$siterow['zid']?$siterow['zid']:1;
+		$srow['userid']=$cookiesid;
+		$srow['trade_no']=$trade_no;
+		$srow['money']=0;
+		if($orderid=processOrder($srow)){
+			unset($_SESSION['addsalt']);
+			$DB->query("UPDATE `pre_kms` SET `status`=1,`orderid`='$orderid',`usetime`=NOW() where `kid`='{$myrow['kid']}'");
+			exit('{"code":1,"msg":"下单成功！你可以在进度查询中查看订单进度","orderid":"'.$orderid.'"}');
+		}else{
+			exit('{"code":-1,"msg":"下单失败！'.$DB->error().'"}');
+		}
+	}else{
+		exit('{"code":-2,"msg":"该商品不存在"}');
+	}
 	break;
 case 'query':
 	$type=intval($_POST['type']);
@@ -548,34 +760,18 @@ case 'order': //订单进度查询
 		}
 	}elseif($tool['is_curl']==2){
 		$shequ=$DB->getRow("SELECT * FROM pre_shequ WHERE id='{$tool['shequ']}' LIMIT 1");
-		if($shequ['type']=='yile'){
-			$list = yile_chadan($shequ['url'], $row['djorder'], $shequ['username'], $shequ['password']);
-		}elseif($shequ['type']=='jiuwu'){
-			$list = jiuwu_chadan($shequ['url'], $shequ['username'], $shequ['password'], $row['djorder']);
-		}elseif($shequ['type']=='shangmeng'){
-			$list = shangmeng_chadan($shequ['username'], $shequ['password'], $row['djorder']);
-		}elseif($shequ['type']=='kashangwl'){
-			$list = kashangwl_chadan($shequ['url'], $shequ['username'], $shequ['password'], $row['djorder']);
-		}elseif($shequ['type']=='shangzhanwl'){
-			$list = shangzhanwl_chadan($shequ['url'], $shequ['username'], $shequ['password'], $row['djorder']);
-		}elseif($shequ['type']=='zhike'){
-			$list = zhike_chadan($shequ['url'], $shequ['username'], $shequ['password'], $row['djorder']);
-		}elseif($shequ['type']=='daishua'){
-			$list = this_chadan($shequ['url'], $row['djorder']);
-		}elseif($shequ['type']=='liuliangka'){
-			$list = liuliangka_chadan($shequ['url'], $shequ['username'], $shequ['password'], $row['djorder']);
-		}elseif($shequ['type']=='extend'){
-			if(class_exists("ExtendAPI", false) && method_exists('ExtendAPI','chadan')){
-				$list = ExtendAPI::chadan($shequ['url'], $shequ['username'], $shequ['password'], $row['djorder'], $tool['goods_id'], [$row['input'], $row['input2'], $row['input3'], $row['input4'], $row['input5']]);
+		$list = third_call($shequ['type'], $shequ, 'query_order', [$row['djorder'], $tool['goods_id'], [$row['input'], $row['input2'], $row['input3'], $row['input4'], $row['input5']]]);
+		if($list && is_array($list)){
+			if(($list['order_state']=='已完成'||$list['order_state']=='订单已完成'||$list['订单状态']=='已完成'||$list['订单状态']=='已发货'||$list['订单状态']=='交易成功'||$list['订单状态']=='已支付') && $row['status']==2){
+				$DB->exec("UPDATE `pre_orders` SET `status`=1 WHERE id='{$id}'");
+				$row['status']=1;
 			}
-		}
-		if(($list['order_state']=='已完成'||$list['order_state']=='订单已完成'||$list['订单状态']=='已完成'||$list['订单状态']=='已发货') && $row['status']==2){
-			$DB->exec("UPDATE `pre_orders` SET `status`=1 WHERE id='{$id}'");
-			$row['status']=1;
-		}
-		if((strpos($list['order_state'],'异常')!==false||strpos($list['order_state'],'退单')!==false||$list['订单状态']=='异常'||$list['订单状态']=='已退单') && $row['status']<3){
-			$DB->exec("UPDATE `pre_orders` SET `status`=3 WHERE id='{$id}'");
-			$row['status']=3;
+			if((strpos($list['order_state'],'异常')!==false||strpos($list['order_state'],'退单')!==false||strpos($list['order_state'],'退款')!==false||$list['订单状态']=='异常'||$list['订单状态']=='已退单') && $row['status']<3){
+				$DB->exec("UPDATE `pre_orders` SET `status`=3 WHERE id='{$id}'");
+				$row['status']=3;
+			}
+		}else{
+			$list = false;
 		}
 	}elseif($tool['is_curl']==5 && empty($row['result'])){
 		$row['result'] = $tool['goods_param'];
@@ -599,8 +795,28 @@ case 'order': //订单进度查询
 		}
 		$i++;
 	}
-	$result=array('code'=>0,'msg'=>'succ','name'=>$tool['name'],'money'=>$row['money'],'date'=>$row['addtime'],'inputs'=>$inputsdata,'list'=>$list,'kminfo'=>$kmdata,'alert'=>$tool['alert'],'desc'=>$tool['desc'],'status'=>$row['status'],'result'=>$row['result'],'complain'=>intval($conf['show_complain']),'islogin'=>$islogin2);
+	$result=array('code'=>0,'msg'=>'succ','name'=>$tool['name'],'money'=>$row['money'],'date'=>$row['addtime'],'inputs'=>$inputsdata,'list'=>$list,'kminfo'=>$kmdata,'alert'=>$tool['alert'],'desc'=>$tool['desc'],'status'=>$row['status'],'result'=>$row['result'],'complain'=>intval($conf['show_complain']),'islogin'=>$islogin2,'selfrefund'=>$conf['selfrefund']);
 	exit(json_encode($result));
+	break;
+case 'apply_refund':
+	if(!$conf['selfrefund'])exit('{"code":-1,"msg":"当前站点未开启自助申请退款"}');
+	if(!$islogin2)exit('{"code":-1,"msg":"未登录"}');
+	$id=intval($_POST['id']);
+	if(md5($id.SYS_KEY.$id)!==$_POST['skey'])exit('{"code":-1,"msg":"验证失败"}');
+	$DB->beginTransaction();
+	$row=$DB->getRow("SELECT * FROM pre_orders WHERE id='$id' AND userid='{$userrow['zid']}' LIMIT 1 FOR UPDATE");
+	if(!$row)
+		exit('{"code":-1,"msg":"当前订单不存在！"}');
+	if($row['status']!=0 && $row['status']!=3) exit('{"code":-1,"msg":"只有未处理和异常的订单才支持退款"}');
+	if($row['status']==4)exit('{"code":-1,"msg":"该订单已退款请勿重复提交"}');
+	if(!rollbackPoint($id)){
+		$DB->rollBack();
+		exit('{"code":-1,"msg":"该订单扣除上级提成失败，无法自助申请退款"}');
+	}
+	changeUserMoney($userrow['zid'], $row['money'], true, '退款', '订单(ID'.$id.')已退款到余额');
+	$DB->exec("update pre_orders set status='4' where id='{$id}'");
+	$DB->commit();
+	exit(json_encode(['code'=>0, 'msg'=>'succ', 'money'=>$row['money']]));
 	break;
 case 'changepwd':
 	$orderid=daddslashes($_POST['id']);
@@ -608,9 +824,10 @@ case 'changepwd':
 	if(md5($orderid.SYS_KEY.$orderid)!==$_POST['skey'])exit('{"code":-1,"msg":"验证失败"}');
 	$pwd=htmlspecialchars(trim(strip_tags(daddslashes($_POST['pwd']))));
 	if(strlen($pwd)<5)exit('{"code":-1,"msg":"请输入正确的密码"}');
-	$row=$DB->getRow("SELECT id FROM pre_orders WHERE id='$orderid' LIMIT 1");
+	$row=$DB->getRow("SELECT id,status FROM pre_orders WHERE id='$orderid' LIMIT 1");
+	if($row['status']==1)exit('{"code":-1,"msg":"该订单已完成，无法修改密码"}');
 	if($row){
-		if($DB->exec("UPDATE `pre_orders` SET `input2` ='{$pwd}' WHERE `id`='{$orderid}'")!==false){
+		if($DB->exec("UPDATE `pre_orders` SET `input2` ='{$pwd}',status=0 WHERE `id`='{$orderid}'")!==false){
 			$result=array("code"=>0,"msg"=>"已成功修改密码");
 		}else{
 			$result=array("code"=>0,"msg"=>"修改密码失败");
@@ -640,13 +857,6 @@ case 'checklogin':
 	if($islogin2==1)exit('{"code":1}');
 	else exit('{"code":0}');
 	break;
-case 'lqq':
-	$qq=trim(daddslashes($_POST['qq']));
-	if(empty($qq) || empty($_SESSION['addsalt']) || $_POST['salt']!=$_SESSION['addsalt'])exit('{"code":-5,"msg":"非法请求"}');
-	get_curl($conf['lqqapi'].$qq);
-	$result=array("code"=>0,"msg"=>"succ");
-	exit(json_encode($result));
-	break;
 case 'getshuoshuo':
 	$uin=trim(daddslashes($_GET['uin']));
 	$page=intval($_GET['page']);
@@ -655,7 +865,7 @@ case 'getshuoshuo':
 		exit('{"code":-1,"msg":"验证失败，请刷新页面重试"}');
 	}
 	if(empty($uin))exit('{"code":-5,"msg":"QQ号不能为空"}');
-	$result = get_shuoshuo($uin,$page);
+	$result = getshuoshuo($uin,$page);
 	exit(json_encode($result));
 	break;
 case 'getrizhi':
@@ -677,6 +887,21 @@ case 'getshareid':
 	}
 	if(empty($url))exit('{"code":-5,"msg":"url不能为空"}');
 	$result = getshareid($url);
+	exit(json_encode($result));
+	break;
+case 'getshareids':
+	$urls=$_POST['urls'];
+	$hashsalt=isset($_POST['hashsalt'])?$_POST['hashsalt']:null;
+	if($conf['verify_open']==1 && (empty($_SESSION['addsalt']) || $hashsalt!=$_SESSION['addsalt'])){
+		exit('{"code":-1,"msg":"验证失败，请刷新页面重试"}');
+	}
+	if(!is_array($urls) || count($urls)==0)exit('{"code":-5,"msg":"url不能为空"}');
+	$list = [];
+	foreach($urls as $url){
+		$res = getshareid($url);
+		if($res['code']==0) $list[] = $res['songid'];
+	}
+	$result = ['code'=>0,'data'=>$list];
 	exit(json_encode($result));
 	break;
 case 'gift_start':
@@ -933,6 +1158,7 @@ case 'invite_verify':
 	if($invite_row && $invite_row['status']==0){
 		$shop = $DB->getRow("SELECT * FROM `pre_inviteshop` WHERE `id`=:id LIMIT 1", [':id'=>$invite_row['nid']]);
 		if($shop && $shop['active']==1 && $shop['type']==1){
+			//if($invite_row['click']/$shop['value']>=0.8)exit(json_encode(array('code' => 0, 'msg' => 'succ', 'key'=>$key)));
 			if($DB->getColumn("SELECT count(*) FROM `pre_invitelog` WHERE `ip`=:ip", [':ip'=>$clientip])==0){
 				$DB->exec("INSERT INTO `pre_invitelog`(`iid`,`type`,`date`,`ip`,`status`) VALUES (:iid, 1, NOW(), :ip, 0)", [':iid'=>$invite_row['id'], ':ip'=>$clientip]);
 				$DB->exec("UPDATE `pre_invite` SET `click`=`click`+1 WHERE `id`=:id", [':id'=>$invite_row['id']]);
@@ -1097,7 +1323,7 @@ case 'cart_cancel':
 	exit('{"code":0,"msg":"ok"}');
 break;
 case 'cart_empty':
-	if($DB->exec("DELETE FROM pre_cart WHERE userid='$cookiesid' AND status=0")!==false){
+	if($DB->exec("DELETE FROM pre_cart WHERE userid='$cookiesid' AND (status=0 OR status=1)")!==false){
 		exit('{"code":0,"msg":"清空购物车成功！"}');
 	}else{
 		exit('{"code":-1,"msg":"清空购物车失败！'.$DB->error().'"}');

@@ -29,29 +29,6 @@ if($type=='alipay'&&$conf['alipay_api']==5 || $type=='qqpay'&&$conf['qqpay_api']
 	$DB->exec("UPDATE `pre_pay` SET `type`=:type,channel=:channel WHERE `trade_no`=:trade_no", [':type'=>$type, ':channel'=>'codepay', ':trade_no'=>$orderid]);
 	echo "<script>window.location.href='./codepay.php?type={$type}&trade_no={$orderid}';</script>";
 
-}elseif($type=='alipay'&&$conf['alipay_api']==6 || $type=='wxpay'&&$conf['wxpay_api']==6){ //小微支付
-	$DB->exec("UPDATE `pre_pay` SET `type`=:type,channel=:channel WHERE `trade_no`=:trade_no", [':type'=>$type, ':channel'=>'micro', ':trade_no'=>$orderid]);
-	if(strpos($conf['micropay_mchid'],',')){
-		$arrs = explode(',',$conf['micropay_mchid']);
-		$conf['micropay_mchid'] = $type == 'alipay'?$arrs[0]:$arrs[1];
-	}
-	require_once(SYSTEM_ROOT."epay/micro.config.php");
-	require_once(SYSTEM_ROOT."epay/micro_submit.class.php");
-	$parameter = array(
-		"appid" => trim($alipay_config['appid']),
-		"name"	=> $row['name'],
-		"type" => $type=='alipay'?'alipay':'cashier',
-		"money"	=> $row['money'],
-		"out_trade_no"	=> $orderid,
-		"notify_url"	=> $siteurl.'micro_notify.php',
-		"return_url"	=> $siteurl.'micro_return.php',
-		"mchid"	=> trim($alipay_config['mchid'])
-	);
-	//建立请求
-	$alipaySubmit = new AlipaySubmit($alipay_config);
-	$html_text = $alipaySubmit->buildRequestForm($parameter,"POST", "正在跳转");
-	echo $html_text;
-
 }elseif($type=='alipay'&&$conf['alipay_api']==2 || $type=='qqpay'&&$conf['qqpay_api']==2 || $type=='wxpay'&&$conf['wxpay_api']==2 || $type=='qqpay'&&$conf['qqpay_api']==8 || $type=='wxpay'&&$conf['wxpay_api']==8 || $type=='wxpay'&&$conf['wxpay_api']==9){ //易支付
 	$pay_config = get_pay_api($type);
 	$DB->exec("UPDATE `pre_pay` SET `type`=:type,channel=:channel WHERE `trade_no`=:trade_no", [':type'=>$type, ':channel'=>$pay_config['channel'], ':trade_no'=>$orderid]);
@@ -69,8 +46,13 @@ if($type=='alipay'&&$conf['alipay_api']==5 || $type=='qqpay'&&$conf['qqpay_api']
 	);
 	//建立请求
 	$alipaySubmit = new AlipaySubmit($alipay_config);
-	$html_text = $alipaySubmit->buildRequestForm($parameter,"POST", "正在跳转");
-	echo $html_text;
+	if(is_https() && substr($alipay_config['apiurl'],0,7)=='http://'){
+		$jump_url = $alipaySubmit->buildRequestUrl($parameter);
+		echo "<script>window.location.replace('{$jump_url}');</script>";
+	}else{
+		$html_text = $alipaySubmit->buildRequestForm($parameter, 'POST', "正在跳转");
+		echo $html_text;
+	}
 
 }elseif($type=='alipay' && $conf['alipay_api']==7){ //卡易信
 	if(strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger')!==false){
@@ -112,7 +94,7 @@ if($type=='alipay'&&$conf['alipay_api']==5 || $type=='qqpay'&&$conf['qqpay_api']
 		exit;
 	}
 	$DB->exec("UPDATE `pre_pay` SET `type`=:type,channel=:channel WHERE `trade_no`=:trade_no", [':type'=>$type, ':channel'=>'alipay', ':trade_no'=>$orderid]);
-	$ordername = !empty($conf['ordername'])?str_replace('[time]',time(),$conf['ordername']):$row['name'];
+	$ordername = !empty($conf['ordername'])?ordername_replace($conf['ordername'],$row['name'],$trade_no):$row['name'];
 
 	if(checkmobile()==true){
 		require_once(SYSTEM_ROOT."alipay/model/builder/AlipayTradeWapPayContentBuilder.php");
@@ -142,18 +124,18 @@ if($type=='alipay'&&$conf['alipay_api']==5 || $type=='qqpay'&&$conf['qqpay_api']
 }elseif($type=='wxpay' && ($conf['wxpay_api']==1 || $conf['wxpay_api']==3)){ //微信
 	$DB->exec("UPDATE `pre_pay` SET `type`=:type,channel=:channel WHERE `trade_no`=:trade_no", [':type'=>$type, ':channel'=>'wxpay', ':trade_no'=>$orderid]);
 	if(strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger')!==false){
-		echo "<script>window.location.href='./wxjspay.php?trade_no={$orderid}&d=1';</script>";
+		echo "<script>window.location.replace('./wxjspay.php?trade_no={$orderid}&d=1');</script>";
 	}elseif(checkmobile()==true){
-		echo "<script>window.location.href='./wxwappay.php?trade_no={$orderid}';</script>";
+		echo "<script>window.location.replace('./wxwappay.php?trade_no={$orderid}');</script>";
 	}else{
-		echo "<script>window.location.href='./wxpay.php?trade_no={$orderid}';</script>";
+		echo "<script>window.location.replace('./wxpay.php?trade_no={$orderid}');</script>";
 	}
 }elseif($type=='qqpay' && $conf['qqpay_api']==1){ //QQ
 	$DB->exec("UPDATE `pre_pay` SET `type`=:type,channel=:channel WHERE `trade_no`=:trade_no", [':type'=>$type, ':channel'=>'qqpay', ':trade_no'=>$orderid]);
 	if(checkmobile()==true){
-		echo "<script>window.location.href='./qqwappay.php?trade_no={$orderid}';</script>";
+		echo "<script>window.location.replace('./qqwappay.php?trade_no={$orderid}');</script>";
 	}else{
-		echo "<script>window.location.href='./qqpay.php?trade_no={$orderid}';</script>";
+		echo "<script>window.location.replace('./qqpay.php?trade_no={$orderid}');</script>";
 	}
 }else{
 	exit('该支付方式已关闭');

@@ -6,8 +6,11 @@ $verifycode = 1;//验证码开关
 
 if(!function_exists("imagecreate") || !file_exists('code.php'))$verifycode=0;
 include("../includes/common.php");
-include("../includes/admin.config.php");
 if(isset($_POST['user']) && isset($_POST['pass'])){
+	if($conf['thirdlogin_closepwd']==1 && $conf['thirdlogin_open']==1){
+		@header('Content-Type: text/html; charset=UTF-8');
+		exit("<script language='javascript'>alert('已关闭密码登录，请使用快捷登录！');history.go(-1);</script>");
+	}
 	$user=daddslashes($_POST['user']);
 	$pass=daddslashes($_POST['pass']);
 	$code=daddslashes($_POST['code']);
@@ -15,11 +18,7 @@ if(isset($_POST['user']) && isset($_POST['pass'])){
 		unset($_SESSION['vc_code']);
 		@header('Content-Type: text/html; charset=UTF-8');
 		exit("<script language='javascript'>alert('验证码错误！');history.go(-1);</script>");
-	}elseif($user===ADMIN_USERNAME && $pass===ADMIN_PASSWORD) {
-		if (ADMIN_KEY != '') {
-			$key = daddslashes($_POST['key']);
-			if ($key != ADMIN_KEY) exit("<script language='javascript'>alert('后台口令不正确！');history.go(-1);</script>");
-		}
+	}elseif($user===$conf['admin_user'] && $pass===$conf['admin_pwd']) {
 		unset($_SESSION['vc_code']);
 		$session=md5($user.$pass.$password_hash);
 		$token=authcode("0\t{$user}\t{$session}", 'ENCODE', SYS_KEY);
@@ -48,6 +47,40 @@ if(isset($_POST['user']) && isset($_POST['pass'])){
 		@header('Content-Type: text/html; charset=UTF-8');
 		exit("<script language='javascript'>alert('用户名或密码不正确！');history.go(-1);</script>");
 	}
+}elseif(isset($_GET['act']) && $_GET['act']=='qrlogin'){
+	if(!checkRefererHost())exit();
+	if(!$_SESSION['thirdlogin_type']||!$_SESSION['thirdlogin_uin'])exit('{"code":-4,"msg":"校验失败，请重新登录"}');
+	$type = $_SESSION['thirdlogin_type'];
+	$uin = $_SESSION['thirdlogin_uin'];
+	if($islogin==1){
+		adminpermission('set', 2);
+		if($type == 'qq'){
+			saveSetting('thirdlogin_qq', $uin);
+			$typename = 'QQ';
+		}else{
+			saveSetting('thirdlogin_wx', $uin);
+			$typename = '微信';
+		}
+		$CACHE->clear();
+		unset($_SESSION['thirdlogin_type']);
+		unset($_SESSION['thirdlogin_uin']);
+		exit('{"code":1,"msg":"'.$typename.'绑定成功！","url":"reload"}');
+	}else{
+		if(!$conf['thirdlogin_open'])exit('{"code":-4,"msg":"未开启快捷登录"}');
+		$typename = $type == 'qq' ? 'QQ' : '微信';
+		if(isset($conf['thirdlogin_qq']) && $type == 'qq' && $uin == $conf['thirdlogin_qq'] || isset($conf['thirdlogin_wx']) && $type == 'wx' && $uin == $conf['thirdlogin_wx']){
+			unset($_SESSION['thirdlogin_type']);
+			unset($_SESSION['thirdlogin_uin']);
+			$session=md5($conf['admin_user'].$conf['admin_pwd'].$password_hash);
+			$token=authcode("0\t{$conf['admin_user']}\t{$session}", 'ENCODE', SYS_KEY);
+			setcookie("admin_token", $token, time() + 604800);
+			saveSetting('adminlogin',$date);
+			log_result('后台登录', 'IP:'.$clientip, null, 1);
+			exit('{"code":1,"msg":"登陆管理中心成功！","url":"./"}');
+		}else{
+			exit('{"code":-1,"msg":"登录失败，该'.$typename.'未绑定！"}');
+		}
+	}
 }elseif(isset($_GET['logout'])){
 	if(!checkRefererHost())exit();
 	setcookie("admin_token", "", time() - 604800);
@@ -59,6 +92,13 @@ if(isset($_POST['user']) && isset($_POST['pass'])){
 }
 $title='用户登录';
 include './head.php';
+if($conf['thirdlogin_open'] == 1 && $conf['thirdlogin_closepwd'] == 1){
+	$mode = 3;
+}elseif($conf['thirdlogin_open'] == 1){
+	$mode = 2;
+}else{
+	$mode = 1;
+}
 ?>
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
@@ -68,7 +108,8 @@ include './head.php';
         <h4 class="modal-title">找回管理员密码方法</h4>
       </div>
       <div class="modal-body">
-        <p>重设密码请编辑[includes]目录下的[admin.config.php]文件</p>
+        <p>进入数据库管理器（phpMyAdmin），点击进入当前网站所在数据库，然后查看shua_config表即可找回管理员密码。</p>
+		<?php if($mode==3){?>如需开启密码登录，请执行以下SQL：UPDATE shua_config SET v='0' WHERE k='thirdlogin_closepwd';UPDATE shua_cache SET v='' WHERE k='config';<?php }?>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -86,7 +127,29 @@ include './head.php';
 		<button type="button" class="btn btn-effect-ripple btn-primary" data-toggle="modal" data-target="#myModal" title="忘记密码？"><i class="fa fa-exclamation-circle"></i></button>
 		</div>
 			<h2>管理员后台登录</h2>
+		<?php if($mode==2){?><ul class="nav nav-tabs text-center" data-toggle="tabs">
+			<li class="active" style="width:50%"><a href="#block-tabs-home" onclick="getqrpic()"><span class="fa fa-qrcode"></span> 扫描二维码登录</a></li>
+			<li style="width:50%"><a href="#block-tabs-profile" onclick="cleartime()"><span class="fa fa-lock"></span> 帐号密码登录</a></li>
+		</ul><?php }?>
 		</div>
+<?php if($mode==2){?>
+<div class="tab-content">
+	<div class="tab-pane active" id="block-tabs-home">
+<?php } if($mode>1){?>
+		<div class="list-group text-center">
+          <div class="list-group-item" style="font-weight: bold;" id="login">
+            <span id="loginmsg">请使用微信或QQ扫描二维码</span><span id="loginload" style="padding-left: 10px;color: #790909;">.</span>
+          </div>
+          <div class="list-group-item" id="qrimg" title="点击刷新二维码">
+          </div>
+          <div class="list-group-item" id="mobile" style="display:none;"><button type="button" id="mlogin" onclick="mloginurl()" class="btn btn-warning btn-block">跳转QQ快捷登录</button><br/><button type="button" onclick="qrlogin()" class="btn btn-success btn-block">我已完成登录</button><br/>
+		  <span class="text-muted">提示：手机用户如需微信扫码，可截图保存二维码，在微信内扫一扫，从相册识别二维码。</span>
+		  </div>
+        </div>
+<?php } if($mode==2){?>
+	</div>
+	<div class="tab-pane" id="block-tabs-profile">
+<?php } if($mode<3){?>
 		<form id="form-login" action="login.php" method="post" class="form-horizontal">
 			<div class="form-group">
 				<div class="col-xs-12">
@@ -104,16 +167,6 @@ include './head.php';
 					</div>
 				</div>
 			</div>
-			<?php if (ADMIN_KEY != '') { ?>
-			<div class="form-group">
-				<div class="col-xs-12">
-					<div class="input-group">
-						<span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
-						<input type="password" id="key" name="key" class="form-control" placeholder="口令，员工无需填写">
-					</div>
-				</div>
-			</div>
-			<?php } ?>
 			<?php if($verifycode==1){?>
 			<div class="form-group">
 				<div class="col-xs-12">
@@ -133,10 +186,19 @@ include './head.php';
 				</div>
 			</div>
 		</form>
+<?php } if($mode==2){?>
 	</div>
+</div>
+<?php }?>
+</div>
 	<footer class="text-muted text-center animation-pullUp">
 	<small><span id="year-copy"></span> &copy; <a href="#"><?php echo $conf['sitename']?></a></small>
 	</footer>
 </div>
+<?php if($mode>1){?>
+<script>var isbind = false;</script>
+<script src="//cdn.staticfile.org/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+<script src="./assets/js/qrlogin.js"></script>
+<?php }?>
 </body>
 </html>

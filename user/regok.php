@@ -43,7 +43,8 @@ if(isset($_GET['orderid'])){
 		$qq = daddslashes($input[6]);
 		$endtime = daddslashes($input[7]);
 	}
-	$url = 'http://'.$domain.'/';
+	$sitepath = str_replace('/user','',$sitepath);
+	$url = 'http://'.$domain.$sitepath.'/';
 }elseif(isset($_GET['zid'])){
 	$zid = intval($_GET['zid']);
 	$row=$DB->getRow("SELECT * FROM pre_site WHERE zid='{$zid}' LIMIT 1");
@@ -55,7 +56,8 @@ if(isset($_GET['orderid'])){
 	$name = $row['sitename'];
 	$qq = $row['qq'];
 	$endtime = $row['endtime'];
-	$url = 'http://'.$domain.'/';
+	$sitepath = str_replace('/user','',$sitepath);
+	$url = 'http://'.$domain.$sitepath.'/';
 }else{
 	showmsg('缺少参数',4);
 }

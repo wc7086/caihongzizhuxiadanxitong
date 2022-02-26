@@ -132,7 +132,7 @@ if($flag==1 && $conf['template_style']!=1){echo '</div><div class="col-md-4">
 	</div>
 </div>
 
-<p style="text-align:center"><span style="font-weight:bold">CopyRight <i class="fa fa-heart text-danger"></i> 2020 <a href="/"><?php echo $conf['sitename']?></a></span></p>
+<p style="text-align:center"><span style="font-weight:bold">CopyRight <i class="fa fa-heart text-danger"></i> <?php echo date("Y")?> <a href="/"><?php echo $conf['sitename']?></a></span></p>
 <p style="text-align:center"><?php echo $conf['footer']?></p>
 
 <ul class="layui-fixbar" id="alert_cart" style="display:none;">

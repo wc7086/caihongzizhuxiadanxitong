@@ -91,42 +91,6 @@ function getPoint() {
 			$('#inputvalue2').attr("placeholder", "填写作品链接后点击→");
 			$("#inputvalue2").attr('disabled', true);
 		}
-	}else if($("#inputname").html() == '火山ID'||$("#inputname").html() == '火山作品ID'||$("#inputname").html() == '火山视频ID'||$("#inputname").html() == '火山ＩＤ'){
-		$('#inputvalue').attr("placeholder", "在此输入火山视频的链接 可自动获取");
-		$('#inputname').attr("gettype", "huoshan");
-	}else if($("#inputname").html() == '微视ID'||$("#inputname").html() == '微视作品ID'||$("#inputname").html() == '微视ＩＤ'){
-		$('#inputvalue').attr("placeholder", "在此输入微视的作品链接 可自动获取");
-		$('#inputname').attr("gettype", "weishi");
-	}else if($("#inputname").html() == '微视主页ID'){
-		$('#inputvalue').attr("placeholder", "在此输入微视的主页链接 可自动获取");
-		$('#inputname').attr("gettype", "weishi");
-	}else if($("#inputname").html() == '小红书ID'||$("#inputname").html() == '小红书作品ID'){
-		$('#inputvalue').attr("placeholder", "在此输入小红书的作品链接 可自动获取");
-		$('#inputname').attr("gettype", "xiaohongshu");
-	}else if($("#inputname").html() == '皮皮虾ID'||$("#inputname").html() == '皮皮虾作品ID'){
-		$('#inputvalue').attr("placeholder", "在此输入皮皮虾的作品链接 可自动获取");
-		$('#inputname').attr("gettype", "pipixia");
-	}else if($("#inputname").html() == '头条ID'||$("#inputname").html() == '头条ＩＤ'){
-		$('#inputvalue').attr("placeholder", "在此输入今日头条的链接 可自动获取");
-		$('#inputname').attr("gettype", "toutiao");
-	}else if($("#inputname").html() == '美拍ID'||$("#inputname").html() == '美拍ＩＤ'||$("#inputname").html() == '美拍作品ID'||$("#inputname").html() == '美拍视频ID'){
-		$('#inputvalue').attr("placeholder", "在此输入美拍视频链接 可自动获取");
-		$('#inputname').attr("gettype", "meipai");
-	}else if($("#inputname").html() == '哔哩哔哩视频ID'||$("#inputname").html() == '哔哩哔哩ID'||$("#inputname").html() == '哔哩视频ID'){
-		$('#inputvalue').attr("placeholder", "在此输入哔哩哔哩视频链接 可自动获取");
-		$('#inputname').attr("gettype", "bilibili");
-	}else if($("#inputname").html() == '最右帖子ID'){
-		$('#inputvalue').attr("placeholder", "在此输入最右帖子链接 可自动获取");
-		$('#inputname').attr("gettype", "zuiyou");
-	}else if($("#inputname").html() == '全民视频ID'||$("#inputname").html() == '全民小视频ID'){
-		$('#inputvalue').attr("placeholder", "在此输入全民小视频链接 可自动获取");
-		$('#inputname').attr("gettype", "quanmin");
-	}else if($("#inputname").html() == '美图作品ID'||$("#inputname").html() == '美图视频ID'){
-		$('#inputvalue').attr("placeholder", "在此输入美图作品链接 可自动获取");
-		$('#inputname').attr("gettype", "meitu");
-	}else if($("#inputname").html() == '绿洲作品ID'||$("#inputname").html() == '绿洲视频ID'){
-		$('#inputvalue').attr("placeholder", "在此输入绿洲作品分享链接 可自动获取");
-		$('#inputname').attr("gettype", "oasis");
 	}else if($("#inputname").html() == '作品链接'||$("#inputname").html() == '视频链接'||$("#inputname").html() == '分享链接'||inputnametype=='shareurl'){
 		$('#inputvalue').attr("placeholder", "在此输入复制后的链接 可自动转换");
 		$('#inputname').attr("gettype", "shareurl");
@@ -181,17 +145,9 @@ function get_shuoshuo(id,uin,km,page){
 				var nextpage = page+1;
 				var lastpage = page>1?page-1:1;
 				if($('#show_shuoshuo').length > 0){
-					if(km==1){
-						$('#show_shuoshuo').html('<div class="input-group"><div class="input-group-addon onclick" title="上一页" onclick="get_shuoshuo(\''+id+'\',$(\'#km_inputvalue\').val(),'+km+','+lastpage+')"><i class="fa fa-chevron-left"></i></div><select id="shuoid" class="form-control" onchange="set_shuoshuo(\''+id+'\');">'+addstr+'</select><div class="input-group-addon onclick" title="下一页" onclick="get_shuoshuo(\''+id+'\',$(\'#km_inputvalue\').val(),'+km+','+nextpage+')"><i class="fa fa-chevron-right"></i></div></div>');
-					}else{
-						$('#show_shuoshuo').html('<div class="input-group"><div class="input-group-addon onclick" title="上一页" onclick="get_shuoshuo(\''+id+'\',$(\'#inputvalue\').val(),'+km+','+lastpage+')"><i class="fa fa-chevron-left"></i></div><select id="shuoid" class="form-control" onchange="set_shuoshuo(\''+id+'\');">'+addstr+'</select><div class="input-group-addon onclick" title="下一页" onclick="get_shuoshuo(\''+id+'\',$(\'#inputvalue\').val(),'+km+','+nextpage+')"><i class="fa fa-chevron-right"></i></div></div>');
-					}
+					$('#show_shuoshuo').html('<div class="input-group"><div class="input-group-addon onclick" title="上一页" onclick="get_shuoshuo(\''+id+'\',$(\'#inputvalue\').val(),'+km+','+lastpage+')"><i class="fa fa-chevron-left"></i></div><select id="shuoid" class="form-control" onchange="set_shuoshuo(\''+id+'\');">'+addstr+'</select><div class="input-group-addon onclick" title="下一页" onclick="get_shuoshuo(\''+id+'\',$(\'#inputvalue\').val(),'+km+','+nextpage+')"><i class="fa fa-chevron-right"></i></div></div>');
 				}else{
-					if(km==1){
-						$('#km_inputsname').append('<div class="form-group" id="show_shuoshuo"><div class="input-group"><div class="input-group-addon onclick" title="上一页" onclick="get_shuoshuo(\''+id+'\',$(\'#km_inputvalue\').val(),'+km+','+lastpage+')"><i class="fa fa-chevron-left"></i></div><select id="shuoid" class="form-control" onchange="set_shuoshuo(\''+id+'\');">'+addstr+'</select><div class="input-group-addon onclick" title="下一页" onclick="get_shuoshuo(\''+id+'\',$(\'#km_inputvalue\').val(),'+km+','+nextpage+')"><i class="fa fa-chevron-right"></i></div></div></div>');
-					}else{
-						$('#inputsname').append('<div class="form-group" id="show_shuoshuo"><div class="input-group"><div class="input-group-addon onclick" title="上一页" onclick="get_shuoshuo(\''+id+'\',$(\'#inputvalue\').val(),'+km+','+lastpage+')"><i class="fa fa-chevron-left"></i></div><select id="shuoid" class="form-control" onchange="set_shuoshuo(\''+id+'\');">'+addstr+'</select><div class="input-group-addon onclick" title="下一页" onclick="get_shuoshuo(\''+id+'\',$(\'#inputvalue\').val(),'+km+','+nextpage+')"><i class="fa fa-chevron-right"></i></div></div></div>');
-					}
+					$('#inputsname').append('<div class="form-group" id="show_shuoshuo"><div class="input-group"><div class="input-group-addon onclick" title="上一页" onclick="get_shuoshuo(\''+id+'\',$(\'#inputvalue\').val(),'+km+','+lastpage+')"><i class="fa fa-chevron-left"></i></div><select id="shuoid" class="form-control" onchange="set_shuoshuo(\''+id+'\');">'+addstr+'</select><div class="input-group-addon onclick" title="下一页" onclick="get_shuoshuo(\''+id+'\',$(\'#inputvalue\').val(),'+km+','+nextpage+')"><i class="fa fa-chevron-right"></i></div></div></div>');
 				}
 				set_shuoshuo(id);
 			}else{
@@ -227,11 +183,7 @@ function get_rizhi(id,uin,km,page){
 				if($('#show_rizhi').length > 0){
 					$('#show_rizhi').html('<div class="input-group"><div class="input-group-addon onclick" onclick="get_rizhi(\''+id+'\',$(\'#inputvalue\').val(),'+km+','+lastpage+')"><i class="fa fa-chevron-left"></i></div><select id="blogid" class="form-control" onchange="set_rizhi(\''+id+'\');">'+addstr+'</select><div class="input-group-addon onclick" onclick="get_rizhi(\''+id+'\',$(\'#inputvalue\').val(),'+km+','+nextpage+')"><i class="fa fa-chevron-right"></i></div></div>');
 				}else{
-					if(km==1){
-						$('#km_inputsname').append('<div class="form-group" id="show_rizhi"><div class="input-group"><div class="input-group-addon onclick" onclick="get_rizhi(\''+id+'\',$(\'#km_inputvalue\').val(),'+km+','+lastpage+')"><i class="fa fa-chevron-left"></i></div><select id="blogid" class="form-control" onchange="set_rizhi(\''+id+'\');">'+addstr+'</select><div class="input-group-addon onclick" onclick="get_rizhi(\''+id+'\',$(\'#km_inputvalue\').val(),'+km+','+nextpage+')"><i class="fa fa-chevron-right"></i></div></div></div>');
-					}else{
-						$('#inputsname').append('<div class="form-group" id="show_rizhi"><div class="input-group"><div class="input-group-addon onclick" onclick="get_rizhi(\''+id+'\',$(\'#inputvalue\').val(),'+km+','+lastpage+')"><i class="fa fa-chevron-left"></i></div><select id="blogid" class="form-control" onchange="set_rizhi(\''+id+'\');">'+addstr+'</select><div class="input-group-addon onclick" onclick="get_rizhi(\''+id+'\',$(\'#inputvalue\').val(),'+km+','+nextpage+')"><i class="fa fa-chevron-right"></i></div></div></div>');
-					}
+					$('#inputsname').append('<div class="form-group" id="show_rizhi"><div class="input-group"><div class="input-group-addon onclick" onclick="get_rizhi(\''+id+'\',$(\'#inputvalue\').val(),'+km+','+lastpage+')"><i class="fa fa-chevron-left"></i></div><select id="blogid" class="form-control" onchange="set_rizhi(\''+id+'\');">'+addstr+'</select><div class="input-group-addon onclick" onclick="get_rizhi(\''+id+'\',$(\'#inputvalue\').val(),'+km+','+nextpage+')"><i class="fa fa-chevron-right"></i></div></div></div>');
 				}
 				set_rizhi(id);
 			}else{
@@ -244,19 +196,6 @@ function set_rizhi(id){
 	var blogid = $('#blogid').val();
 	$('#'+id).val(blogid);
 }
-function fillOrder(id,skey){
-	if(!confirm('是否确定补交订单？'))return;
-	$.ajax({
-		type : "POST",
-		url : "ajax.php?act=fill",
-		data : {orderid:id,skey:skey},
-		dataType : 'json',
-		success : function(data) {
-			layer.alert(data.msg);
-			$("#submit_query").click();
-		}
-	});
-}
 function getsongid(){
 	var songurl=$("#inputvalue").val();
 	if(songurl==''){layer.alert('请确保每项不能为空！');return false;}
@@ -266,238 +205,6 @@ function getsongid(){
 		layer.msg('ID获取成功！下单即可');
 	}catch(e){
 		layer.alert('请输入正确的歌曲的分享链接！');return false;
-	}
-	$('#inputvalue').val(songid);
-}
-function gethuoshanid(){
-	var songurl=$("#inputvalue").val();
-	if(songurl==''){layer.alert('请确保每项不能为空！');return false;}
-	if(songurl.indexOf('.huoshan.com')<0){layer.alert('请输入正确的链接！');return false;}
-	if(songurl.indexOf('/s/')>0){
-		var ii = layer.load(2, {shade:[0.1,'#fff']});
-		$.ajax({
-			type : "POST",
-			url : "ajax.php?act=gethuoshan",
-			data : {url:songurl},
-			dataType : 'json',
-			success : function(data) {
-				layer.close(ii);
-				if(data.code == 0){
-					$('#inputvalue').val(data.songid);
-					layer.msg('ID获取成功！下单即可');
-				}else{
-					layer.alert(data.msg);return false;
-				}
-			}
-		});
-	}else{
-		try{
-			if(songurl.indexOf('video/')>0){
-				var songid = songurl.split('video/')[1].split('/')[0];
-			}else if(songurl.indexOf('item/')>0){
-				var songid = songurl.split('item/')[1].split('/')[0];
-			}else if(songurl.indexOf('room/')>0){
-				var songid = songurl.split('room/')[1].split('/')[0];
-			}else{
-				var songid = songurl.split('user/')[1].split('/')[0];
-			}
-			layer.msg('ID获取成功！下单即可');
-		}catch(e){
-			layer.alert('请输入正确的链接！');return false;
-		}
-		$('#inputvalue').val(songid);
-	}
-}
-function getdouyinid(){
-	var songurl=$("#inputvalue").val();
-	if(songurl==''){layer.alert('请确保每项不能为空！');return false;}
-	if(songurl.indexOf('.douyin.com')<0 && songurl.indexOf('.iesdouyin.com')<0){layer.alert('请输入正确的链接！');return false;}
-	if(songurl.indexOf('/v.douyin.com/')>0){
-		var ii = layer.load(2, {shade:[0.1,'#fff']});
-		$.ajax({
-			type : "POST",
-			url : "ajax.php?act=getdouyin",
-			data : {url:songurl},
-			dataType : 'json',
-			success : function(data) {
-				layer.close(ii);
-				if(data.code == 0){
-					$('#inputvalue').val(data.songid);
-					layer.msg('ID获取成功！下单即可');
-				}else{
-					layer.alert(data.msg);return false;
-				}
-			}
-		});
-	}else{
-	try{
-		if(songurl.indexOf('video/')>0){
-			var songid = songurl.split('video/')[1].split('/')[0];
-		}else if(songurl.indexOf('music/')>0){
-			var songid = songurl.split('music/')[1].split('/')[0];
-		}else{
-			var songid = songurl.split('user/')[1].split('/')[0];
-		}
-		layer.msg('ID获取成功！下单即可');
-	}catch(e){
-		layer.alert('请输入正确的链接！');return false;
-	}
-	$('#inputvalue').val(songid);
-	}
-}
-function gettoutiaoid(){
-	var songurl=$("#inputvalue").val();
-	if(songurl==''){layer.alert('请确保每项不能为空！');return false;}
-	if(songurl.indexOf('.toutiao.com')<0){layer.alert('请输入正确的链接！');return false;}
-	try{
-		if(songurl.indexOf('user/')>0){
-			var songid = songurl.split('user/')[1].split('/')[0];
-		}else{
-			var songid = songurl.split('profile/')[1].split('/')[0];
-		}
-		layer.msg('ID获取成功！下单即可');
-	}catch(e){
-		layer.alert('请输入正确的链接！');return false;
-	}
-	$('#inputvalue').val(songid);
-}
-function getweishiid(){
-	var songurl=$("#inputvalue").val();
-	if(songurl==''){layer.alert('请确保每项不能为空！');return false;}
-	if(songurl.indexOf('.qq.com')<0){layer.alert('请输入正确的链接！');return false;}
-	try{
-		if(songurl.indexOf('feed/')>0){
-			var songid = songurl.split('feed/')[1].split('/')[0];
-		}else if(songurl.indexOf('personal/')>0){
-			var songid = songurl.split('personal/')[1].split('/')[0];
-		}else{
-			var songid = songurl.split('id=')[1].split('&')[0];
-		}
-		layer.msg('ID获取成功！下单即可');
-	}catch(e){
-		layer.alert('请输入正确的链接！');return false;
-	}
-	$('#inputvalue').val(songid);
-}
-function getxiaohongshuid(){
-	var songurl=$("#inputvalue").val();
-	if(songurl==''){layer.alert('请确保每项不能为空！');return false;}
-	if(songurl.indexOf('/t.cn/')>0||songurl.indexOf('/xhsurl.com/')>0){
-		var ii = layer.load(2, {shade:[0.1,'#fff']});
-		$.ajax({
-			type : "POST",
-			url : "ajax.php?act=getxiaohongshu",
-			data : {url:songurl},
-			dataType : 'json',
-			success : function(data) {
-				layer.close(ii);
-				if(data.code == 0){
-					$('#inputvalue').val(data.songid);
-					layer.msg('ID获取成功！下单即可');
-				}else{
-					layer.alert(data.msg);return false;
-				}
-			}
-		});
-	}else{
-	if(songurl.indexOf('xiaohongshu.com')<0 && songurl.indexOf('pipix.com')<0){layer.alert('请输入正确的链接！');return false;}
-	try{
-		var songid = songurl.split('item/')[1].split('?')[0];
-		layer.msg('ID获取成功！下单即可');
-	}catch(e){
-		layer.alert('请输入正确的链接！');return false;
-	}
-	}
-	$('#inputvalue').val(songid);
-}
-function getbilibiliid(){
-	var songurl=$("#inputvalue").val();
-	if(songurl==''){layer.alert('请确保每项不能为空！');return false;}
-	if(songurl.indexOf('bilibili.com')<0){layer.alert('请输入正确的视频链接！');return false;}
-	try{
-		var songid = songurl.split('video/av')[1].split('/')[0];
-		layer.msg('ID获取成功！下单即可');
-	}catch(e){
-		layer.alert('请输入正确的视频链接！');return false;
-	}
-	$('#inputvalue').val(songid);
-}
-function getzuiyouid(){
-	var songurl=$("#inputvalue").val();
-	if(songurl==''){layer.alert('请确保每项不能为空！');return false;}
-	if(songurl.indexOf('izuiyou.com')<0){layer.alert('请输入正确的帖子链接！');return false;}
-	try{
-		var songid = songurl.split('detail/')[1].split('?')[0];
-		layer.msg('ID获取成功！下单即可');
-	}catch(e){
-		layer.alert('请输入正确的帖子链接！');return false;
-	}
-	$('#inputvalue').val(songid);
-}
-function getmeipaiid(){
-	var songurl=$("#inputvalue").val();
-	if(songurl==''){layer.alert('请确保每项不能为空！');return false;}
-	if(songurl.indexOf('meipai.com')<0){layer.alert('请输入正确的视频链接！');return false;}
-	if(songurl.indexOf('/s/')>0){
-		var ii = layer.load(2, {shade:[0.1,'#fff']});
-		$.ajax({
-			type : "POST",
-			url : "ajax.php?act=gethuoshan",
-			data : {url:songurl},
-			dataType : 'json',
-			success : function(data) {
-				layer.close(ii);
-				if(data.code == 0){
-					$('#inputvalue').val(data.songid);
-					layer.msg('ID获取成功！下单即可');
-				}else{
-					layer.alert(data.msg);return false;
-				}
-			}
-		});
-	}else{
-	try{
-		var songid = songurl.split('media/')[1].split('?')[0];
-		layer.msg('ID获取成功！下单即可');
-	}catch(e){
-		layer.alert('请输入正确的视频链接！');return false;
-	}
-	}
-	$('#inputvalue').val(songid);
-}
-function getquanminid(){
-	var songurl=$("#inputvalue").val();
-	if(songurl==''){layer.alert('请确保每项不能为空！');return false;}
-	if(songurl.indexOf('hao222.com')<0){layer.alert('请输入正确的视频链接！');return false;}
-	try{
-		var songid = songurl.split('vid=')[1].split('&')[0];
-		layer.msg('ID获取成功！下单即可');
-	}catch(e){
-		layer.alert('请输入正确的视频链接！');return false;
-	}
-	$('#inputvalue').val(songid);
-}
-function getmeituid(){
-	var songurl=$("#inputvalue").val();
-	if(songurl==''){layer.alert('请确保每项不能为空！');return false;}
-	if(songurl.indexOf('meitu.com')<0){layer.alert('请输入正确的视频链接！');return false;}
-	try{
-		var songid = songurl.split('feed_id=')[1].split('&')[0];
-		layer.msg('ID获取成功！下单即可');
-	}catch(e){
-		layer.alert('请输入正确的视频链接！');return false;
-	}
-	$('#inputvalue').val(songid);
-}
-function getoasisid(){
-	var songurl=$("#inputvalue").val();
-	if(songurl==''){layer.alert('请确保每项不能为空！');return false;}
-	if(songurl.indexOf('weibo.cn')<0&&songurl.indexOf('weibo.com')<0){layer.alert('请输入正确的视频链接！');return false;}
-	try{
-		var songid = songurl.split('sid=')[1].split('&')[0];
-		layer.msg('ID获取成功！下单即可');
-	}catch(e){
-		layer.alert('请输入正确的视频链接！');return false;
 	}
 	$('#inputvalue').val(songid);
 }
@@ -559,56 +266,6 @@ function checkInput() {
 	if($('#inputname').attr("gettype")=='shareid'){
 		if($("#inputvalue").val()!='' && $("#inputvalue").val().indexOf('http')>=0){
 			getshareid();
-		}
-	}
-	else if($('#inputname').attr("gettype")=='huoshan'){
-		if($("#inputvalue").val()!='' && $("#inputvalue").val().indexOf('http')>=0){
-			gethuoshanid();
-		}
-	}
-	else if($('#inputname').attr("gettype")=='weishi'){
-		if($("#inputvalue").val()!='' && $("#inputvalue").val().indexOf('http')>=0){
-			getweishiid();
-		}
-	}
-	else if($('#inputname').attr("gettype")=='toutiao'){
-		if($("#inputvalue").val()!='' && $("#inputvalue").val().indexOf('http')>=0){
-			gettoutiaoid();
-		}
-	}
-	else if($('#inputname').attr("gettype")=='xiaohongshu'||$('#inputname').attr("gettype")=='pipixia'){
-		if($("#inputvalue").val()!='' && $("#inputvalue").val().indexOf('http')>=0){
-			getxiaohongshuid();
-		}
-	}
-	else if($('#inputname').attr("gettype")=='meipai'){
-		if($("#inputvalue").val()!='' && $("#inputvalue").val().indexOf('http')>=0){
-			getmeipaiid();
-		}
-	}
-	else if($('#inputname').attr("gettype")=='bilibili'){
-		if($("#inputvalue").val()!='' && $("#inputvalue").val().indexOf('http')>=0){
-			getbilibiliid();
-		}
-	}
-	else if($('#inputname').attr("gettype")=='zuiyou'){
-		if($("#inputvalue").val()!='' && $("#inputvalue").val().indexOf('http')>=0){
-			getzuiyouid();
-		}
-	}
-	else if($('#inputname').attr("gettype")=='quanmin'){
-		if($("#inputvalue").val()!='' && $("#inputvalue").val().indexOf('http')>=0){
-			getquanminid();
-		}
-	}
-	else if($('#inputname').attr("gettype")=='meitu'){
-		if($("#inputvalue").val()!='' && $("#inputvalue").val().indexOf('http')>=0){
-			getmeituid();
-		}
-	}
-	else if($('#inputname').attr("gettype")=='oasis'){
-		if($("#inputvalue").val()!='' && $("#inputvalue").val().indexOf('http')>=0){
-			getoasisid();
 		}
 	}
 	else if($('#inputname').attr("gettype")=='shareurl'){

@@ -16,13 +16,13 @@
 <div class="has-header" style="padding: 5px;position: absolute;width: 100%;">
 <div class="text-center" style="color: #a09ee5;">
 <i class="icon ion-checkmark-circled" style="font-size: 80px;"></i><br>
-<span>支付成功，请关闭此页面</span>
+<span>支付成功，请回到浏览器查看订单</span>
 </div>
 </div>
 <script>
-document.querySelector('body').addEventListener('touchmove', function (event) {
+document.body.addEventListener('touchmove', function (event) {
 	event.preventDefault();
-});
+},{ passive: false });
 </script>
 </body>
 </html>

@@ -48,14 +48,16 @@ case 'siteRecharge': //分站充值
 	$zid=intval($_POST['zid']);
 	$do=intval($_POST['actdo']);
 	$rmb=floatval($_POST['rmb']);
+	$remark=trim($_POST['remark']);
 	$row=$DB->getRow("select zid,rmb from pre_site where zid='$zid' limit 1");
 	if(!$row)
 		exit('{"code":-1,"msg":"当前分站不存在！"}');
 	if($do==1 && $rmb>$row['rmb'])$rmb=$row['rmb'];
+	if($remark)$addstr = '（'.$remark.'）';
 	if($do==0){
-		changeUserMoney($zid, $rmb, true, '加款', '后台加款'.$rmb.'元');
+		changeUserMoney($zid, $rmb, true, '加款', '后台加款'.$rmb.'元'.$addstr);
 	}else{
-		changeUserMoney($zid, $rmb, false, '扣除', '后台扣款'.$rmb.'元');
+		changeUserMoney($zid, $rmb, false, '扣除', '后台扣款'.$rmb.'元'.$addstr);
 	}
 	exit('{"code":0,"msg":"succ"}');
 break;

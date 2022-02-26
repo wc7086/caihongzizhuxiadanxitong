@@ -34,7 +34,7 @@ include_once TEMPLATE_ROOT.'argon/head.php';
                           <center class="my-1 d-md-none"><small><font color="#ff0000">下方表单可以左右滑动哦！</font></small></center>
                             <div class="table-responsive">
                                 <table class="table table-vcenter table-condensed table-striped">
-                                <thead><tr><th class="d-none d-md-block">下单账号</th><th>商品名称</th><th>数量</th><th>购买时间</th><th>状态</th><th>操作</th></tr></thead>
+                                <thead><tr><th>下单账号</th><th>商品名称</th><th>数量</th><th>购买时间</th><th>状态</th><th>操作</th></tr></thead>
                                 <tbody id="list">
                                 </tbody>
                                 </table>

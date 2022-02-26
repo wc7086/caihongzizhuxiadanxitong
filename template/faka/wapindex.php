@@ -2,8 +2,7 @@
 if(!defined('IN_CRONLITE'))exit();
 if($_GET['buyok']==1){include_once TEMPLATE_ROOT.'faka/wapquery.php';exit;}
 
-$cssadd = '<link rel="stylesheet" href="'.$cdnserver.'assets/faka/css/index.css?v=2" />';
-include_once TEMPLATE_ROOT.'faka/head2.php';
+include_once TEMPLATE_ROOT.'faka/inc/waphead.php';
 
 if($islogin2==1){
 	$price_obj = new \lib\Price($userrow['zid'],$userrow);
@@ -20,32 +19,32 @@ while($res = $rs->fetch()){
 	$shua_class[$res['cid']]=$res['name'];
 }
 
-$template_label_auto = $conf['template_label_auto']?$conf['template_label_auto']:'自动';
-$template_label_manual = $conf['template_label_manual']?$conf['template_label_manual']:'手动';
+$template_label_auto = $conf['template_label_auto']?$conf['template_label_auto']:'自动发货';
+$template_label_manual = $conf['template_label_manual']?$conf['template_label_manual']:'手动发货';
+
 
 ?>
-<?php if($islogin2==1){?>
-<div class="top w">
-<div class="m_nav">
-   <a href="./user/"><img src="assets/faka/images/m-index_27.png"><span>会员中心</span></a>
-   <a href="./user/#chongzhi"><img src="assets/faka/images/m-index_24.png"><span>充值余额</span></a>
-	<a href="./?mod=wapquery"><img src="assets/faka/images/m-index_26.png"><span>订单查询</span></a>
-	<a href="./user/record.php"><img src="assets/faka/images/m-index_16.png"><span>消费记录</span></a>
-</div></div>
+	
+<div style="height: 50px"></div>
+<?php if(!isset($_GET['cid'])){?><div class="top" style="padding:10px;"><?php echo $conf['anounce']?></div><?php }?>
+	
+
+<?php if($conf['search_open']==1){?>
+<div class="menux" style="background-color: #ffffff;">
+  <form action="?" method="get"><input type="hidden" name="mod" value="wapso"/>
+    <input name="kw" type="text" class="search_input" placeholder="请输入您要查询的商品名称关键词" required>
+    <input type="submit" class="search_submit" style="background-color: #f44530" value="商品搜索">
+  </form>
+</div>
 <?php }?>
-<div class="top w">
-<div class="m_banner" >
-<p><?php echo $conf['anounce']?></p>
-</div>
-</div>
 
-<div class="baoliao w">
-    <div class="panel-group" id="accordion">
-
-<?php foreach($shua_class as $cid=>$classname){?>
-<div class="panel cid<?php echo $cid?>">
-<a data-toggle="collapse" data-parent="#accordion" data-target="#collapse<?php echo $cid?>"><div class="menux"><?php echo $classname?></div></a>
-<div id="collapse<?php echo $cid?>" class="panel-collapse collapse in">
+<?php foreach($shua_class as $cid=>$classname){
+	if(isset($_GET['cid']) && !empty($_GET['cid'])){
+		if($cid!=$_GET['cid'])continue;
+	}
+?>
+<div class="menux cid<?php echo $cid?>"><div align="center"> <?php echo $classname?> </div></div>
+<div class="top" style="padding: 12px;">
 <?php
 $num=0;
 $rs=$DB->query("SELECT * FROM pre_tools WHERE cid='$cid' and active=1 order by sort asc");
@@ -76,18 +75,18 @@ while($res = $rs->fetch()){
 		$isauto = false;
 	}
 	$count = $DB->getColumn("SELECT count(*) FROM pre_faka WHERE tid='{$res['tid']}' and orderid=0");
-	echo '<a href="./?mod=buy&cid='.$cid.'&tid='.$res['tid'].'" class="cid'.$cid.'"><div class="baoliao_content"><div class="bl_img" style="position:relative"><img data-original="'.($res['shopimg']?$res['shopimg']:'assets/faka/images/default.jpg').'" alt="'.$res['name'].'" class="lazy"><div style="width:100px;position:absolute;z-indent:2;left:1px;top:59px;">'.($isauto?'<div class="index_bl_type" style="background-color:#fe5604;max-width:56px;">'.$template_label_auto.'</div>':'<div class="index_bl_type" style="background-color:#49b41a;max-width:56px;">'.$template_label_manual.'</div>').'</div></div><div class="bl_right"><div class="bl_title">'.$res['name'].'</div><div class="bl_tag"><div class="bl_price">'.($conf['template_showsales']==1?'<span class="bl_type" style="background-color:#B187C1;">销量'.$res['sales'].'</span> ':'').$status.'  售价￥<b>'.$price.'</b></div></div></div></div></a>';
-}
-echo '</div></div>';
+	echo '<a href="./?mod=buy&cid='.$cid.'&tid='.$res['tid'].'" class="cid'.$cid.'"><div class="baoliao_content"><div class="bl_img" style="position:relative"><img data-original="'.($res['shopimg']?$res['shopimg']:'assets/faka/images/default.jpg').'" alt="'.$res['name'].'" class="lazy"><div style="width:100px;position:absolute;z-indent:2;left:1px;top:61px;">'.($isauto?'<div class="index_bl_type" style="background-color:#fe5604;max-width:56px;border-radius: 0 0 5px 5px;">'.$template_label_auto.'</div>':'<div class="index_bl_type" style="background-color:#49b41a;max-width:56px;border-radius: 0 0 5px 5px;">'.$template_label_manual.'</div>').'</div></div><div class="bl_right"><div class="bl_title">'.$res['name'].'</div><div class="bl_tag"><div class="bl_price">'.($conf['template_showsales']==1?'<span class="bl_type" style="background-color:#B187C1;">销量'.$res['sales'].'</span> ':'').$status.'  售价￥<b>'.$price.'</b></div></div></div></div></a>';
 }?>
+
+</div><?php }?>
+		
 </div>
-<div class="m_user w">
-<a href="#">返回顶部</a>
+	
+<div class="m_user" style="height:100px">
+    <a href="#">返回顶部</a>
 </div>
 
-<div class="copyright">Copyright &copy; <?php echo date("Y")?> <?php echo $conf['sitename']?>  <?php echo $conf['footer']?></div>
-</div>
-<script src="<?php echo $cdnpublic?>jquery/1.12.4/jquery.min.js"></script>
+<?php include TEMPLATE_ROOT.'faka/inc/wapfoot.php';?>
 <script src="<?php echo $cdnpublic?>layer/2.3/layer.js"></script>
 <script src="<?php echo $cdnpublic?>jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
 <script src="<?php echo $cdnpublic?>jquery-cookie/1.4.1/jquery.cookie.min.js"></script>

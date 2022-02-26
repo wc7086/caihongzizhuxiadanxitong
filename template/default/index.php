@@ -38,26 +38,6 @@ if(!defined('IN_CRONLITE'))exit();
     </div>
   </div>
 </div>
-<!--查单说明开始-->
-<div class="modal fade" align="left" id="cxsm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">查询内容是什么？该输入什么？</h4>
-      </div>
-      	<li class="list-group-item"><font color="red">请在右侧的输入框内输入您下单时，在第一个输入框内填写的信息</font></li>
-      	<li class="list-group-item">例如您购买的是QQ赞类商品，输入下单的QQ账号即可查询订单</li>
-      	<li class="list-group-item">例如您购买的是邮箱类商品，需要输入您的邮箱号，输入QQ号是查询不到的</li>
-      	<li class="list-group-item">例如您购买的是短视频类商品，输入视频链接即可查询，不要带其他中文字符</li>
-      	<li class="list-group-item"><font color="red">如果您不知道下单账号是什么，可以不填写，直接点击查询，则会根据浏览器缓存查询</font></li>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!--查单说明结束-->
 <br/>
 <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6 center-block" style="float: none;">
 <div class="panel panel-default">
@@ -89,19 +69,14 @@ document.write("❤晚上好 下一单醒来有惊喜哟~");
 	<div id="demo-tabs-box-1" class="tab-pane fade active in">
 		<div class="panel panel-primary">
 			<div class="panel-heading">
-				<h3 class="panel-title"><font color="#fff"><i class="fa fa-shopping-cart"></i>&nbsp;&nbsp;<b>自助下单</b></font><span class="pull-right"><a data-toggle="tab" href="#demo-tabs-box-2" aria-expanded="true" class="btn btn-warning btn-rounded"><i class="fa fa-warning"></i> 注意</a></span></h3>
+				<h3 class="panel-title"><font color="#fff"><i class="fa fa-shopping-cart"></i>&nbsp;&nbsp;<b>自助下单</b></font><span class="pull-right"><a href="./user/" class="btn btn-warning btn-rounded"><i class="fa fa-user"></i> 用户中心</a></span></h3>
 			</div>
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="#onlinebuy" data-toggle="tab"><i class="fa fa-shopping-cart"></i> 下单</a></li>
 		<li><a href="#query" data-toggle="tab" id="tab-query"><i class="fa fa-search"></i> 查单</a></li>
-		<li <?php if($conf['gift_open']==0){?>class="hide"<?php }?>><a href="#gift" data-toggle="tab"><i class="fa fa-gift"></i> 抽奖</a></li>
-		<li <?php if(empty($conf['daiguaurl'])){?>class="hide"<?php }?>><a href="./?mod=daigua"><i class="fa fa-rocket"></i> 代挂</a></li>
-		<li <?php if($conf['fenzhan_buy']==0){?>class="hide"<?php }?>><a href="./user/regsite.php" style="color:red">开通分站</a></li>
-		<?php if($islogin2==1){?>
-		<li <?php if($conf['fenzhan_buy']==0){?>class="hide"<?php }?>><a href="./user/">用户中心</a></li>
-		<?php }else{?>
-		<li <?php if($conf['fenzhan_buy']==0){?>class="hide"<?php }?>><a href="./user/login.php">后台登录</a></li>
-		<?php }?>
+		<?php if($conf['gift_open']==1){?><li><a href="#gift" data-toggle="tab"><i class="fa fa-gift"></i> 抽奖</a></li><?php }?>
+		<?php if(!empty($conf['daiguaurl'])){?><li><a href="./?mod=daigua"><i class="fa fa-rocket"></i> 代挂</a></li><?php }?>
+		<?php if($conf['fenzhan_buy']==1){?><li><a href="./user/regsite.php" style="color:red">开通分站</a></li><?php }?>
 	</ul>
 	<div class="modal-body">
 		<div id="myTabContent" class="tab-content">
@@ -116,7 +91,7 @@ document.write("❤晚上好 下一单醒来有惊喜哟~");
 					<select class="form-control" id="searchtype" style="padding: 6px 4px;width:90px"><option value="0">下单账号</option><option value="1">订单号</option></select>
 				</div>
 				<input type="text" name="qq" id="qq3" value="<?php echo $qq?>" class="form-control" placeholder="请输入要查询的内容（留空则显示最新订单）" onkeydown="if(event.keyCode==13){submit_query.click()}" required/>
-				<span class="input-group-btn"><a href="#cxsm" data-toggle="modal" class="btn btn-warning"><i class="glyphicon glyphicon-exclamation-sign"></i></a></span>
+				<span class="input-group-btn"><a tabindex="0" class="btn btn-default" role="button" data-container="body" data-toggle="popover" data-trigger="focus" data-placement="top" title="查询内容是什么？" data-content="请输入您下单时，在第一个输入框内填写的信息。如果您不知道下单账号是什么，可以不填写，直接点击查询，则会根据浏览器缓存查询！"><i class="glyphicon glyphicon-exclamation-sign"></i></a></span>
 			</div></div>
 			<input type="submit" id="submit_query" class="btn btn-primary btn-block" value="立即查询">
 			<div id="result2" class="form-group" style="display:none;">
@@ -129,15 +104,7 @@ document.write("❤晚上好 下一单醒来有惊喜哟~");
 				</div>
 			</div>
 		</div>
-		<div class="tab-pane fade in" id="lqq">
-			<div class="form-group">
-				<div class="input-group"><div class="input-group-addon">请输入QQ</div>
-				<input type="text" name="qq" id="qq4" value="" class="form-control" required/>
-			</div></div>
-			<input type="submit" id="submit_lqq" class="btn btn-primary btn-block" value="立即提交">
-			<div id="result3" class="form-group text-center" style="display:none;"></div>
-		</div>
-		<div class="tab-pane fade in" id="gift">
+		<?php if($conf['gift_open']==1){?><div class="tab-pane fade in" id="gift">
 			<div class="panel-body text-center">
 			<div id="roll">点击下方按钮开始抽奖</div>
 			<hr>
@@ -149,24 +116,11 @@ document.write("❤晚上好 下一单醒来有惊喜哟~");
 			<div class="giftlist" style="display:none;"><strong>最近中奖记录</strong><ul id="pst_1"></ul></div>
 			</div>
 		</div>
-		</div>
+		</div><?php }?>
 	</div>
 </div>
 </div>
-	<div id="demo-tabs-box-2" class="tab-pane fade">
-		<div class="panel panel-primary">
-			<div class="panel-heading">
-				<h3 class="panel-title"><font color="#fff"><i
-						class="fa fa-warning"></i>&nbsp;&nbsp;<b>注意事项</b></font><span class="pull-right"><a
-						data-toggle="tab" href="#demo-tabs-box-1" aria-expanded="false"
-						class="btn btn-warning btn-rounded"><i class="fa fa-shopping-cart"></i> 下单</a>
-				</span></h3>
-			</div>
-			<div class="panel-body">
-				<!--注意事项-->
-				<div id="demo-acc-faq" class="panel-group accordion"><div class="panel panel-trans pad-top"><a href="#demo-acc-faq1" class="text-semibold text-lg text-main" data-toggle="collapse" data-parent="#demo-acc-faq">为什么下单很久了都没有开始刷呢？</a><div id="demo-acc-faq1" class="mar-ver collapse in">由于本站采用全自动订单处理，难免会出现漏单，部分单子处理时间可能会稍长一点，不过都会完成，最终解释权归本站所有。超过24小时没处理请联系客服！</div></div><div class="panel panel-trans pad-top"><a href="#demo-acc-faq2" class="text-semibold text-lg text-main" data-toggle="collapse" data-parent="#demo-acc-faq">空间人气下单方法讲解</a><div id="demo-acc-faq2" class="mar-ver collapse">1.下单前：空间必须是所有人可访问,必须自带1~4条原创说说!<br>2.代刷期间，禁止关闭访问权限，或者删除说说，删除说说的一律由自行负责，不给予补偿。</div></div><div class="panel panel-trans pad-top"><a href="#demo-acc-faq3" class="text-semibold text-lg text-main" data-toggle="collapse" data-parent="#demo-acc-faq">说说赞相关下单方法讲解</a><div id="demo-acc-faq3" class="mar-ver collapse">1.下单前：空间必须是所有人可访问,必须自带1条原创说说!转发的说说不能刷！<br>2.在“QQ号码”栏目输入QQ号码，点击下面的获取说说ID并选择你需要刷的说说的ID，下单即可。<br>3.代刷期间，禁止关闭访问权限，或者删除说说，删除说说的一律由自行负责，不给予补偿。</div></div><div class="panel panel-trans pad-top"><a href="#demo-acc-faq4" class="text-semibold text-lg text-main" data-toggle="collapse" data-parent="#demo-acc-faq">视频/音乐下单方法讲解</a><div id="demo-acc-faq4" class="mar-ver collapse">1.打开你的视频/音乐APP<br>2.复制里面需要刷的视频/歌曲链接<br>3.然后把链接填入到输入框里面，然后提交购买。</div></div><div class="panel panel-trans pad-top"><a href="#demo-acc-faq5" class="text-semibold text-lg text-main" data-toggle="collapse" data-parent="#demo-acc-faq">Q会员/钻下单方法讲解</a><div id="demo-acc-faq5" class="mar-ver collapse">1.下单之前，先确认输的信息是不是正确的，如果密码输错，那就刷不了了，没到账之前不要改密码<br>2.Q会员/钻因为需要人工处理，所以每天不定时开刷，24小时-48小时内到账！</div></div></div>                </div>
-		</div>
-	</div>
+	
 </div>
 
 <?php if($conf['articlenum']>0){
@@ -190,7 +144,8 @@ $i=0;
 <!--文章列表-->
 <?php }?>
 
-<div class="row" <?php if($conf['hide_tongji']==1){?>style="display:none;"<?php }?>>
+<?php if(!$conf['hide_tongji']){?>
+<div class="row">
 	<div class="col-lg-6">
 	<div class="panel panel-success panel-colorful">
 			<div class="pad-all media">
@@ -230,6 +185,7 @@ $i=0;
 		</div>
 	</div>
 </div>
+<?php }?>
 
 <div class="panel panel-primary" <?php if($conf['bottom']==''){?>style="display:none;"<?php }?>>
 <div class="panel-heading"><h3 class="panel-title"><font color="#fff"><i class="fa fa-skyatlas"></i>&nbsp;&nbsp;<b>站点助手</b></font></h3></div>
@@ -259,6 +215,7 @@ var homepage=true;
 var hashsalt=<?php echo $addsalt_js?>;
 $(function() {
 	$("img.lazy").lazyload({effect: "fadeIn"});
+	$('a[data-toggle="popover"]').popover();
 });
 </script>
 <script src="assets/js/main.js?ver=<?php echo VERSION ?>"></script>

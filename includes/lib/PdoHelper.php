@@ -24,7 +24,7 @@ class PdoHelper
 		}
 		$this->db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_SILENT);
 		$this->db->exec("set sql_mode = ''");
-		$this->db->exec("set names utf8");
+		$this->db->exec("set names utf8mb4");
 	}
 
 	/**

@@ -75,26 +75,6 @@ if(!defined('IN_CRONLITE'))exit();
   </div>    
  </div>  
 <!--公告-->
-<!--查单说明开始-->
-<div class="modal fade" align="left" id="cxsm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">查询内容是什么？该输入什么？</h4>
-      </div>
-      	<li class="list-group-item"><font color="red">请在右侧的输入框内输入您下单时，在第一个输入框内填写的信息</font></li>
-      	<li class="list-group-item">例如您购买的是QQ赞类商品，输入下单的QQ账号即可查询订单</li>
-      	<li class="list-group-item">例如您购买的是邮箱类商品，需要输入您的邮箱号，输入QQ号是查询不到的</li>
-      	<li class="list-group-item">例如您购买的是短视频类商品，输入视频链接即可查询，不要带其他中文字符</li>
-      	<li class="list-group-item"><font color="red">如果您不知道下单账号是什么，可以不填写，直接点击查询，则会根据浏览器缓存查询</font></li>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!--查单说明结束-->
 <div class="widget">
 <!--logo-->
     <div class="widget-content themed-background-flat text-center" style="background-image:url(assets/simple/img/baiyun.jpg);background-size: 100% 100%;">
@@ -133,9 +113,9 @@ if(!defined('IN_CRONLITE'))exit();
         <ul class="nav nav-tabs" data-toggle="tabs">
             <li style="width: 25%;" align="center" class="active"><a href="#shop"><i class="fa fa-shopping-cart"></i> <b>下单</b></a></li>
             <li style="width: 25%;" align="center" class=""><a href="#search" id="tab-query"><i class="fa fa-search"></i> <b>查询</b></a></li>
-			<li style="width: 25%;" align="center" <?php if($conf['fenzhan_buy']==0){?>class="hide"<?php }?>><a href="#Substation"><font color="#FF4000"><i class="fa fa-location-arrow fa-spin"></i> <b>分站</b></font></a></li>
-			<li style="width: 25%;" align="center" <?php if($conf['gift_open']==0||$conf['fenzhan_buy']==1){?>class="hide"<?php }?>><a href="#gift" data-toggle="tab"><span style="font-weight:bold"><i class="fa fa-gift fa-fw"></i> 抽奖</span></a></li>
-			<li style="width: 25%;" align="center" <?php if($conf['fenzhan_buy']==1||$conf['gift_open']==1){?>class="hide"<?php }?>><a href="./user/"><span style="font-weight:bold"><i class="fa fa-user fa-fw"></i> 登录</span></a></li>
+			<?php if($conf['fenzhan_buy']==1){?><li style="width: 25%;" align="center"><a href="#Substation"><font color="#FF4000"><i class="fa fa-location-arrow fa-spin"></i> <b>分站</b></font></a></li><?php }?>
+			<?php if($conf['gift_open']==1&&$conf['fenzhan_buy']==0){?><li style="width: 25%;" align="center"><a href="#gift" data-toggle="tab"><span style="font-weight:bold"><i class="fa fa-gift fa-fw"></i> 抽奖</span></a></li><?php }?>
+			<?php if($conf['fenzhan_buy']==0&&$conf['gift_open']==0){?><li style="width: 25%;" align="center"><a onclick="window.location.href='./user/'"><span style="font-weight:bold"><i class="fa fa-user fa-fw"></i> 登录</span></a></li><?php }?>
             <li style="width: 25%;" align="center" class=""><a href="#more"><i class="fa fa-list"></i> <b>更多</b></a></li>
 </ul>
     </div>
@@ -175,7 +155,7 @@ if(!defined('IN_CRONLITE'))exit();
 						<select class="form-control" id="searchtype" style="padding: 6px 4px;width:90px"><option value="0">下单账号</option><option value="1">订单号</option></select>
 					</div>
 					<input type="text" name="qq" id="qq3" value="" class="form-control" placeholder="请输入要查询的内容（留空则显示最新订单）" onkeydown="if(event.keyCode==13){submit_query.click()}" required="">
-					<span class="input-group-btn"><a href="#cxsm" target="_blank" data-toggle="modal" class="btn btn-warning"><i class="glyphicon glyphicon-exclamation-sign"></i></a></span>
+					<span class="input-group-btn"><a tabindex="0" class="btn btn-default" role="button" data-container="body" data-toggle="popover" data-trigger="focus" data-placement="top" title="查询内容是什么？" data-content="请输入您下单时，在第一个输入框内填写的信息。如果您不知道下单账号是什么，可以不填写，直接点击查询，则会根据浏览器缓存查询！"><i class="glyphicon glyphicon-exclamation-sign"></i></a></span>
 				</div>
 			</div>		
 			<input type="submit" id="submit_query" class="btn btn-primary btn-block btn-rounded" style="background: linear-gradient(to right,#87CEFA,#6495ED);color:#fff;" value="立即查询">		
@@ -193,7 +173,7 @@ if(!defined('IN_CRONLITE'))exit();
    </div> 
 <!--查询订单-->
 <!--开通分站开始-->
-<div class="tab-pane animation-fadeInQuick2" id="Substation">
+<?php if($conf['fenzhan_buy']==1){?><div class="tab-pane animation-fadeInQuick2" id="Substation">
 <table class="table table-borderless table-pricing">
             <tbody>
                 <tr class="active">
@@ -225,10 +205,10 @@ if(!defined('IN_CRONLITE'))exit();
             </tbody>
         </table>
     
-	</div>
+	</div><?php }?>
 <!--开通分站结束-->
 <!--抽奖-->
-    <div class="tab-pane" id="gift">
+    <?php if($conf['gift_open']==1){?><div class="tab-pane" id="gift">
 		<div class="panel-body text-center">
 		<div id="roll">点击下方按钮开始抽奖</div>
 		<hr>
@@ -239,12 +219,12 @@ if(!defined('IN_CRONLITE'))exit();
 		<div id="result"></div><br>
 		<div class="giftlist" style="display:none;"><strong>最近中奖记录</strong><ul id="pst_1"></ul></div>
 		</div>
-	</div>
+	</div><?php }?>
 <!--抽奖-->
  <!--更多按钮开始-->
 <div class="tab-pane" id="more">
     <div class="row">
-		<div class="col-sm-6<?php if($conf['gift_open']==0){?> hide<?php }?>">
+		<?php if($conf['gift_open']==1){?><div class="col-sm-6">
             <a href="#gift" data-toggle="tab" class="widget">
                 <div class="widget-content themed-background-info text-right clearfix" style="color: #fff;">
                     <div class="widget-icon pull-left">
@@ -256,8 +236,8 @@ if(!defined('IN_CRONLITE'))exit();
                     <span>在线抽奖领取免费商品</span>
                 </div>
             </a>
-        </div>
-		<div class="col-sm-6<?php if(empty($conf['appurl']) || $conf['gift_open']==1){?> hide<?php }?>">
+        </div><?php }?>
+		<?php if(!empty($conf['appurl']) && $conf['gift_open']==0){?><div class="col-sm-6">
             <a href="<?php echo $conf['appurl']; ?>" target="_blank" class="widget">
                 <div class="widget-content themed-background-info text-right clearfix" style="color: #fff;">
                     <div class="widget-icon pull-left">
@@ -269,8 +249,8 @@ if(!defined('IN_CRONLITE'))exit();
                     <span>下载APP，下单更方便</span>
                 </div>
             </a>
-        </div>
-		<div class="col-sm-6<?php if(empty($conf['invite_tid'])){?> hide<?php }?>">
+        </div><?php }?>
+		<?php if(!empty($conf['invite_tid'])){?><div class="col-sm-6">
             <a  href="./?mod=invite" target="_blank" class="widget">
                 <div class="widget-content themed-background-warning text-right clearfix" style="color: #fff;">
                     <div class="widget-icon pull-left">
@@ -282,8 +262,8 @@ if(!defined('IN_CRONLITE'))exit();
                     <span>推广本站免费领取名片赞</span>
                 </div>
             </a>
-        </div>
-		<div class="col-sm-6<?php if(empty($conf['daiguaurl'])){?> hide<?php }?>">
+        </div><?php }?>
+		<?php if(!empty($conf['daiguaurl'])){?><div class="col-sm-6">
             <a href="./?mod=daigua" class="widget">
                 <div class="widget-content themed-background-success text-right clearfix" style="color: #fff;">
                     <div class="widget-icon pull-left">
@@ -295,7 +275,7 @@ if(!defined('IN_CRONLITE'))exit();
                     <span>管理自己的QQ代挂</span>
                 </div>
             </a>
-        </div>
+        </div><?php }?>
 		<div class="col-sm-6">
             <a  href="./user/" target="_blank" class="widget">
                 <div class="widget-content themed-background-info text-right clearfix" style="color: #fff;">
@@ -338,7 +318,8 @@ $i=0;
 <!--文章列表-->
 <?php }?>
 
-<div class="panel panel-primary" <?php if($conf['hide_tongji']==1){?>style="display:none;"<?php }?>>
+<?php if(!$conf['hide_tongji']){?>
+<div class="panel panel-primary">
 <div class="panel-heading"><h3 class="panel-title"><font color="#000000"><i class="fa fa-bar-chart-o"></i>&nbsp;&nbsp;<b>数据统计</b></font></h3></div>
 <table class="table table-bordered">
 <tbody>
@@ -356,11 +337,12 @@ $i=0;
 </tbody>
 </table>
 </div>
+<?php }?>
 
     <!--底部导航-->
     <div class="panel panel-default">
         <center>
-            <div class="panel-body"><span style="font-weight:bold"><?php echo $conf['sitename'] ?> <i class="fa fa-heart text-danger"></i> 2020 | </span> </span><a href="./"><span style="font-weight:bold"><?php echo $_SERVER['HTTP_HOST']?></span></a><br/><?php echo $conf['footer']?>
+            <div class="panel-body"><span style="font-weight:bold"><?php echo $conf['sitename'] ?> <i class="fa fa-heart text-danger"></i> <?php echo date("Y")?> | </span> </span><a href="./"><span style="font-weight:bold"><?php echo $_SERVER['HTTP_HOST']?></span></a><br/><?php echo $conf['footer']?>
             </div>
     </div>
     <!--底部导航-->
@@ -382,7 +364,7 @@ $i=0;
 				</div>
 				<div id="collapseOne" class="panel-collapse in" style="height: auto;">
 					<div class="panel-body">
-					订单显示（已完成）就证明已经提交到服务器内！并不是订单已刷完。<br>
+					订单显示（已完成）就证明已经提交到服务器内！<br>
 					如果长时间没到账请联系客服处理！<br>
 					订单长时间显示（待处理）请联系客服！
 					</div>
@@ -391,25 +373,24 @@ $i=0;
 			<div class="panel panel-default" style="margin-bottom: 6px;">
 				<div class="panel-heading">
 					<h4 class="panel-title">
-						<a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" class="collapsed">QQ会员/钻类等什么时候到账？</a>
+						<a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" class="collapsed">商品什么时候到账？</a>
 					</h4>
 				</div>
 				<div id="collapseTwo" class="panel-collapse collapse" style="height: 0px;">
 					<div class="panel-body">
-					下单后的48小时内到账（会员或钻全部都是一样48小时内到账）！<br>
-					如果超过48小时，请联系客服退款或补单，提供QQ号码！
+					请参考商品简介里面，有关于到账时间的说明。
 					</div>
 				</div>
 			</div>
 			<div class="panel panel-default" style="margin-bottom: 6px;">
 				<div class="panel-heading">
 					<h4 class="panel-title">
-						<a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" class="collapsed">卡密/CDK没有发送我的邮箱？</a>
+						<a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" class="collapsed">卡密没有发送我的邮箱？</a>
 					</h4>
 				</div>
 				<div id="collapseThree" class="panel-collapse collapse" style="height: 0px;">
 					<div class="panel-body">没有收到请检查自己邮箱的垃圾箱！也可以去查单区：输入自己下单时填写的邮箱进行查单。<br>
-					查询到订单后点击（详细）就可以看到自己购买的卡密/cdk！
+					查询到订单后点击（详细）就可以看到自己购买的卡密！
 					</div>
 				</div>
 			</div>
@@ -453,80 +434,6 @@ $i=0;
 </div>
 <!--联系客服结束-->
 
-     <!--球球大作战-->
-<div class="modal fade" align="left" id="qqdzz" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-   <div class="modal-dialog">
-    <div class="modal-content">
-         <div class="list-group-item reed" style="background:linear-gradient(120deg, #5ED1D7 10%, #71D7A2 90%);">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">x</span><span class="sr-only">Close</span></button>
-    <center><h4 class="modal-title" id="myModalLabel"><b><font color="#fff">数量要求</font></b></h4></center>
-      </div>	  
-      <br> 
-  <div class="modal-body"><center>
-<p class="bg-primary" style="background-color:#424242;padding: 10px;">
-球球粉丝<br>固定数量:100,200,400,800,<br>1000,2000,4000,8000,10000,20000 </p>
-    <p class="bg-primary" style="background-color:#FF6666;padding: 10px;">
-球球爱心<br>固定数量:1000,2000,4000,<br>8000,10000,20000,40000,80000</p></center>
-      <div class="modal-footer">
-      <button type="button" class="btn btn-default" data-dismiss="modal">我知道了</button>
-     </div>
-    </div>
-   </div>
-  </div>
- </div>
-<!--球球大作战-->
-
-      <!--全民K歌-->
-<div class="modal fade" align="left" id="qmkg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-   <div class="modal-dialog">
-    <div class="modal-content">
-         <div class="list-group-item reed" style="background:linear-gradient(120deg, #DF01A5 10%, #FF0080 90%);">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"></span><span class="sr-only">Close</span></button>
-    <center><h4 class="modal-title" id="myModalLabel"><b><font color="#fff">经验上限表</font></b></h4></center>
-      </div>	  
-  <div class="modal-body"><center>
-<p class="bg-primary" style="background-color:#424242;padding: 10px;">
-0-6级： 每天可获得1000点经验 </p>
-    <p class="bg-primary" style="background-color:#FF6666;padding: 10px;">
-7-9级： 每天可获得1500点经验</p>
-    <p class="bg-primary" style="background-color:#0404B4;padding: 10px;">
-10-12级：每天可获得3500点经验 </p>
-<p class="bg-primary" style="background-color:#FF8000;padding: 10px;">
-13-15级：每天可获得26000点经验</p>
-<p class="bg-primary" style="background-color:#04B431;padding: 10px;">
-16-18级：每天可获得45000点经验</p></center>
-      <div class="modal-footer">
-      <button type="button" class="btn btn-default" data-dismiss="modal">我知道了</button>
-     </div>
-    </div>
-   </div>
-  </div>
- </div>
-<!--全民K歌-->
-      <!--面值-->
-<div class="modal fade" align="left" id="spmz" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-   <div class="modal-dialog">
-    <div class="modal-content">
-         <div class="list-group-item reed" style="background:linear-gradient(120deg, #0000FF 10%, #FE2EF7 90%);">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"></span><span class="sr-only">Close</span></button>
-    <center><h4 class="modal-title" id="myModalLabel"><b><font color="#fff">选择数量</font></b></h4></center>
-      </div>	  
-      <br> 
-      <center>  
-      <img src="//q4.qlogo.cn/headimg_dl?dst_uin=<?php echo $conf['kfqq'] ?>&spec=100" alt="avatar" class="img-circle img-thumbnail img-thumbnail-avatar">
-	  <font color="red"> 数量就是要买的多少份！</font></center>
-	 <hr>  <div class="modal-body">
-<p class="bg-primary" style="background-color:#424242;padding: 10px;">
-例如：1000名片赞，选5份就是5000名片赞！</p>
-    <p class="bg-primary" style="background-color:#FF6666;padding: 10px;">
-技巧：数量可以直接输入，比如直接输100！</p>   </div>
-      <div class="modal-footer">
-      <button type="button" class="btn btn-default" data-dismiss="modal">我知道了</button>
-     </div>
-    </div>
-  </div>
- </div>
-<!--面值-->
   <!--分站介绍开始-->
 <div class="modal fade" align="left" id="userjs" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
   <div class="modal-dialog">
@@ -574,7 +481,7 @@ $i=0;
 							</td>
                         </tr>
 						<tr class="danger">
-                            <td>赠送代刷APP</td>
+                            <td>赠送专属APP</td>
                             <td class="text-center">
 								<span class="btn btn-effect-ripple btn-xs btn-danger" style="overflow: hidden; position: relative;"><i class="fa fa-close"></i></span>
 								<span class="btn btn-effect-ripple btn-xs btn-success" style="overflow: hidden; position: relative;"><i class="fa fa-check"></i></span>
@@ -591,75 +498,7 @@ $i=0;
   </div>
 </div>
 <!--分站介绍结束-->
-  
-        <!--钻类-->
-<div class="modal fade" align="left" id="zlsm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-   <div class="modal-dialog">
-    <div class="modal-content">
-         <div class="list-group-item reed" style="background:linear-gradient(120deg, #0000FF 10%, #FE2EF7 90%);">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"></span><span class="sr-only">Close</span></button>
-    <center><h4 class="modal-title" id="myModalLabel"><b><font color="#fff">钻类介绍</font></b></h4></center>
-      </div>	  
-      <br> 
-  <div class="modal-body">
-<p class="bg-primary" style="background-color:#04B45F;padding: 10px;">
-问题：什么是质保期，理论永久是什么？</p>
- <p class="bg-primary" style="background-color:#A8904B1;padding: 10px;">
-质保：理论永久，每个人用的时间都不一样，质保期就像家电的保修期一样，有问题可以联系客服处理哦！</p>     </div>
-      <div class="modal-footer">
-      <button type="button" class="btn btn-default" data-dismiss="modal">我知道了</button>
-     </div>
-   </div>
-  </div>
- </div>
-<!--面值-->
-  
-  <!--份数说明-->
-<div class="modal fade" id="tisk" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="list-group-item reed" style="background:#FFD700;">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">x</span><span class="sr-only">Close</span></button>
-    <center><h4 class="modal-title" id="myModalLabel"><b><font color="#fff">下单时显示的“份数”是什么</font></b></h4></center>
-     </div>  
-            <br> 
-      <center>
-      <font color="red">下单东西的面值×份数=下单份数（份数默认为1）</font>
-      <hr>
-       例如您购买：100个粉丝<br>下单份数选5，就是总共会获得500个粉丝
-      <hr>
-       例如您购买：1000个点赞<br>下单份数选3，就是总共会获得3000个点赞
-      <hr>
-      <font color="red">以此类推 本站其他东西都是如此，希望给您最好的购物体验</font>
-      <br> 
-      </center>
-         <div class="modal-footer" style="background-color: white;">
-      <button type="button" class="btn btn-default" data-dismiss="modal">我知道了</button>
-     </div>
-        </div>
-    </div>
-</div>
-<!--份数说明-->
 
-<div class="modal fade" align="left" id="ptyetz" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-  <div class="modal-dialog">
-    <div class="modal-content">
-	<div class="list-group-item reed" style="background:linear-gradient(120deg, #FF8000 10%, #FF8000 90%);">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"></span><span class="sr-only">Close</span></button>
-    <center><h4 class="modal-title" id="myModalLabel"><b><font color="#fff">最新业务状态</font></b></h4></center>
-		</div>
-              <div style="overflow:scroll; overflow-x:hidden;">
-				 <div class="modal-body">
-                     	<?php echo $conf['anounce']?>
-                    </div>
-				</div>
-     <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">知道了</button>
-    </div>
-  </div>
-</div>
-</div>
-</center></div></div>
 <!--音乐代码-->
 <div id="audio-play" <?php if(empty($conf['musicurl'])){?>style="display:none;"<?php }?>>
   <div id="audio-btn" class="on" onclick="audio_init.changeClass(this,'media')">

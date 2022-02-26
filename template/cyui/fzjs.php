@@ -1,5 +1,11 @@
 <?php 
 if(!defined('IN_CRONLITE'))exit();
+
+if($is_fenzhan == true && $siterow['power']==2){
+	if($siterow['ktfz_price']>0)$conf['fenzhan_price']=$siterow['ktfz_price'];
+	if($conf['fenzhan_cost2']<=0)$conf['fenzhan_cost2']=$conf['fenzhan_price2'];
+	if($siterow['ktfz_price2']>0 && $siterow['ktfz_price2']>=$conf['fenzhan_cost2'])$conf['fenzhan_price2']=$siterow['ktfz_price2'];
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -121,7 +127,7 @@ if(!defined('IN_CRONLITE'))exit();
                 <a href="./">
                   <i class="glyphicon glyphicon-home icon text-primary-dker"></i>
 				  <b class="label bg-info pull-right">❤</b>
-                  <span class="font-bold">代刷首页</span>
+                  <span class="font-bold">网站首页</span>
                 </a>
               </li>
               
@@ -206,7 +212,7 @@ if(!defined('IN_CRONLITE'))exit();
 <div class="list-group-item reed"><span class="btn btn-danger btn-xs">问</span>    什么是<?php echo $conf['sitename']?>的分站，主站？</div>
 <div class="list-group-item reed"><span class="btn btn-success btn-xs">答</span>  分站就是和我们一样的网站，拥有和我们一样的大部分功能。</div>
 <div class="list-group-item reed"><span class="btn btn-danger btn-xs">问</span>    如何搭建？多少钱？能使用多长时间？</div>
-<div class="list-group-item reed"><span class="btn btn-success btn-xs">答</span>  付款给我们客服，一条龙搭建，目前普通分站6.66元，高级分站40元，主站100元，永久使用时间。（授权100永久使用）</div>
+<div class="list-group-item reed"><span class="btn btn-success btn-xs">答</span>  付款给我们客服，一条龙搭建，目前普通分站<?php echo $conf['fenzhan_price']?>元，高级分站<?php echo $conf['fenzhan_price2']?>元，永久使用时间。</div>
 <div class="list-group-item reed"><span class="btn btn-danger btn-xs">问</span>    能赚钱吗？搭建后如何赚钱？</div>
 <div class="list-group-item reed"><span class="btn btn-success btn-xs">答</span>  保证回本赚钱！客户访问你的分站并下单，你就有提成，你也可以直接以代理价格帮别人下单。</div>
 <div class="list-group-item reed"><span class="btn btn-danger btn-xs">问</span>    赚到的钱在哪里？我如何得到？</div>
@@ -217,7 +223,7 @@ if(!defined('IN_CRONLITE'))exit();
 <div class="list-group-item reed"><span class="btn btn-success btn-xs">答</span>  亲，所有分站暂时都不支持上架商品和修改价格，接下来的更新会添加。</div>
 <div class="list-group-item reed"><span class="btn btn-danger btn-xs">问</span>    这个和卡盟一样吗？有什么区别？</div>
 <div class="list-group-item reed"><span class="btn btn-success btn-xs">答</span>  完全不同，利润更高，货源更精，无需注册,无需预存，在线支付，卡密下单，更直接。</div>
-<div class="list-group-item reed"><span class="btn btn-danger btn-xs">问</span>   那么多代刷有分站，主站，为什么选择<?php echo $conf['sitename']?>搭建？</div>
+<div class="list-group-item reed"><span class="btn btn-danger btn-xs">问</span>   那么多商城有分站，主站，为什么选择<?php echo $conf['sitename']?>搭建？</div>
 <div class="list-group-item reed"><span class="btn btn-success btn-xs">答</span>  <?php echo $conf['sitename']?>从事网赚两年多，拥有丰富的人脉和资源，我们的货源全部精挑细选全网性价比最高的，实时掌握代刷市场的动态，加入我们，只要你坚持，你不用担心不赚钱，不用担心货源不好，更不用担心我们跑路，我们不敢保证你月入几千上万，在网上赚个零花钱绝对没问题！</div>
 </div>
                             </div>

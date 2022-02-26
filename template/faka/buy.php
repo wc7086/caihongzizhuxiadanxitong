@@ -40,8 +40,7 @@ if(isset($price_obj)){
 if($tool['is_curl']==4){
 	$count = $DB->getColumn("SELECT count(*) FROM pre_faka WHERE tid='{$tool['tid']}' and orderid=0");
 	$fakainput = getFakaInput();
-	if($fakainput!='hide')$tool['input']=$fakainput;
-	else $tool['input']=null;
+	$tool['input']=$fakainput;
 	$isfaka = 1;
 }elseif($tool['stock']!==null){
 	$count = $tool['stock'];
@@ -61,9 +60,10 @@ if($tool['prices']){
 		$view_mall = '<font color="#ff0000" size="2">购买'.$arr[0].'个以上按批发价￥'.($price-$arr[1]).'计算</font>';
 	}
 }
+$classname = $DB->getColumn("select name from pre_class where cid='{$tool['cid']}' limit 1");
 
-
-include_once TEMPLATE_ROOT.'faka/head.php';
+$hometitle = $tool['name'].' - '.$conf['sitename'];
+include_once TEMPLATE_ROOT.'faka/inc/head.php';
 
 ?>
 <link rel="stylesheet" href="assets/faka/css/buy.css" />
@@ -71,6 +71,11 @@ include_once TEMPLATE_ROOT.'faka/head.php';
 <br/>
 <br/>
 <div class="topliucheng"><img src="<?php echo $cdnserver?>assets/faka/images/goumaizn02.png" title=""></div>
+<div style="margain-bottom：20px;margin: 0 auto;width: 1180px;border-radius: 3px;">
+    <div class="ziti" style="font-size: 16px;color: #7a7a7a;padding-top: 12px;padding-right: 6px;padding-bottom: 6px;padding-left: 4px;border-radius: 3px;">
+        当前位置 -&gt; <a href="./">网站首页</a> -&gt; <a href="./?cid=<?php echo $tool['cid']?>"><?php echo $classname?></a> -&gt; <?php echo $tool['name']?>
+    </div>
+</div>
 
 <div id="body">
 
@@ -152,6 +157,8 @@ include_once TEMPLATE_ROOT.'faka/head.php';
 </div>
 
 </div>
+<?php include_once TEMPLATE_ROOT.'faka/inc/foot.php';?>
+
 <script src="<?php echo $cdnpublic?>jquery/1.12.4/jquery.min.js"></script>
 <script src="<?php echo $cdnpublic?>layer/2.3/layer.js"></script>
 <script src="<?php echo $cdnpublic?>jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
@@ -159,6 +166,5 @@ include_once TEMPLATE_ROOT.'faka/head.php';
 var hashsalt=<?php echo $addsalt_js?>;
 </script>
 <script src="assets/faka/js/faka.js?ver=<?php echo VERSION ?>"></script>
-<div id="footer">
-    		&copy; <?php echo date("Y")?> <?php echo $conf['sitename']?>
-</div>
+</body>
+</html>

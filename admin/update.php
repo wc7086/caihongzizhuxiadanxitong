@@ -54,7 +54,7 @@ $act = isset($_GET['act']) ? $_GET['act'] : null;
 switch ($act) {
 default:
 
-$res=update_versions();
+$res=update_version();
 
 
 if(!$res['msg'])$res['msg']='啊哦，更新服务器开小差了，请刷新此页面。';
@@ -76,12 +76,12 @@ echo '<hr/><div class="well">'.$res['uplog'].'</div>';
 break;
 
 case 'do':
-$res=update_versions();
+$res=update_version();
 $RemoteFile = $res['file'];
 $ZipFile = "Archive.zip";
 copy($RemoteFile,$ZipFile) or die("无法下载更新包文件！".'<a href="update.php">返回上级</a>');
 if (zipExtract($ZipFile,ROOT)) {
-if($admin_path!='admin'){ //修改后台地址
+if($admin_path!='admin' && is_dir(ROOT.'admin')){ //修改后台地址
 	deldir(ROOT.$admin_path);
 	rename(ROOT.'admin',ROOT.$admin_path);
 }

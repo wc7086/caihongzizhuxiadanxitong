@@ -66,7 +66,7 @@ if(isset($_GET['orderid']) && $_GET['orderid'] && md5($_GET['orderid'].SYS_KEY.$
 	$orderid = intval($_GET['orderid']);
 	$res=$DB->getRow("SELECT id,tid,input FROM pre_orders WHERE id='{$orderid}' LIMIT 1");
 	$toolname=$DB->getColumn("SELECT name FROM pre_tools WHERE tid='{$res['tid']}' LIMIT 1");
-	echo '<input type="text" name="orderid" value="'.$orderid.'_'.$toolname.'_'.$res['input'].'" class="form-control" disabled/><input type="hidden" name="orderid" value="'.$orderid.'"/>';
+	echo '<input type="text" name="orderid" value="'.$orderid.'_'.$toolname.'_'.$res['input'].'" class="form-control" disabled/><input type="hidden" name="orderid" value="'.$orderid.'"/><input type="hidden" name="skey" value="'.$_GET['skey'].'"/>';
 }else{
 	echo '<select name="orderid" class="form-control"><option value="0">选择异常的订单（非订单问题不用选）</option>';
 	$rs=$DB->query("SELECT id,tid,input FROM pre_orders WHERE userid='{$userrow['zid']}' ORDER BY id DESC LIMIT 20");
@@ -100,6 +100,14 @@ if(isset($_GET['orderid']) && $_GET['orderid'] && md5($_GET['orderid'].SYS_KEY.$
 </div>
 </div>
 <?php }?>
+<div class="form-group">
+<div class="input-group">
+<span class="input-group-addon" style="padding: 0">
+<img id="codeimg" src="./code.php?r=<?php echo time();?>" height="43" onclick="this.src='./code.php?r='+Math.random();" title="点击更换验证码">
+</span>
+<input type="text" name="code" class="form-control input-lg" required="required" placeholder="输入验证码"/>
+</div>
+</div>
 <input type="submit" class="btn btn-primary btn-block" value="提交"></form>
 <br/><a href="./workorder.php">>>返回工单列表</a>
 </div>
@@ -180,8 +188,15 @@ $orderid=intval($_POST['orderid']);
 $type=intval($_POST['type']);
 $content=str_replace(array('*','^','|'),'',trim(strip_tags(daddslashes($_POST['content']))));
 $picurl=strip_tags(daddslashes($_POST['picurl']));
+$code = isset($_POST['code'])?$_POST['code']:null;
+if (!$code || strtolower($code) != $_SESSION['vc_code']) {
+	unset($_SESSION['vc_code']);
+	showmsg('验证码错误！');
+}
 if (empty($content)) {
 	showmsg('描述信息不能为空！');
+} elseif ($orderid>0 && !$DB->getRow("SELECT id FROM pre_orders WHERE id='$orderid' AND userid='{$userrow['zid']}' LIMIT 1") && md5($orderid.SYS_KEY.$orderid)!==$_POST['skey']) {
+	showmsg('你只能选择自己的订单');
 } elseif ($orderid>0 && $DB->getRow("SELECT id FROM pre_workorder WHERE orderid='$orderid' AND status<2 ORDER BY id DESC LIMIT 1")) {
 	showmsg('请勿重复提交工单！');
 } else {
@@ -199,6 +214,7 @@ if($DB->exec($sql, $data)){
 	if($conf['message_workorder']==1){
 		\lib\MessageSend::workorder_new($id, $userrow['user'], $userrow['zid'], display_type($type), $content);
 	}
+	unset($_SESSION['vc_code']);
 	showmsg('提交工单成功！请等待管理员处理。<br/><br/><a href="./workorder.php">>>返回工单列表</a>',1);
 }else{
 	showmsg('提交工单失败！'.$DB->error(),4);

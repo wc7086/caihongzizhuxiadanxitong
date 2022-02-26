@@ -82,8 +82,8 @@ while($res = $rs->fetch()){
 <li class="" onclick="activeselect(this)"><a href="./user/regsite.php" pjax="no"><i class="layui-icon layui-icon-website"></i> 网站搭建</a></li>
 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="layui-icon layui-icon-rate-solid"></i> 平台福利</a>
     <ul class="dropdown-menu">
-         <li <?php if($conf['gift_open']==0){?>class="hide"<?php }?>><a data-toggle="modal" data-target="#choujiang">福利抽奖</a></li>
-         <li <?php if(empty($conf['invite_tid'])){?>class="hide"<?php }?>><a href="./?mod=invite" pjax="no" target="_blank">免费领赞</a></li>
+         <?php if($conf['gift_open']==1){?><li><a data-toggle="modal" data-target="#choujiang">福利抽奖</a></li><?php }?>
+         <?php if(!empty($conf['invite_tid'])){?><li><a href="./?mod=invite" pjax="no" target="_blank">免费领赞</a></li><?php }?>
     </ul>
 </li>
 <li class="" onclick="activeselect(this)">
@@ -128,7 +128,7 @@ while($res = $rs->fetch()){
 <?php echo $conf['alert']?><br/>
 <div class="btn-group btn-group-justified">
 <a class="layui-btn layui-btn-normal" href="./?mod=query"><i class="layui-icon layui-icon-search"></i> 订单查询</a>
-<a class="layui-btn layui-btn-danger" href="./user/regsite.php"><i class="layui-icon layui-icon-website"></i> 注册分站/赚钱</a>
+<a class="layui-btn layui-btn-danger" href="./user/regsite.php"><i class="layui-icon layui-icon-website"></i> 注册分站</a>
 </div>
 </center>
 	<div class="panel-body list-group-item">
@@ -197,6 +197,7 @@ while($res = $rs->fetch()){
 			</div>
 		</div>
 <!-- 抽奖弹框开始 -->
+<?php if($conf['gift_open']==1){?>
 <div class="modal fade" id="choujiang" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -222,6 +223,7 @@ while($res = $rs->fetch()){
         </div>
     </div>
 </div>
+<?php }?>
 
 <?php if($conf['articlenum']>0){
 $limit = intval($conf['articlenum']);
@@ -246,8 +248,8 @@ $i=0;
 <!--文章列表-->
 <?php }?>
 
-<!-- 抽奖结束 -->
-<div class="panel layui-anim" <?php if($conf['hide_tongji']==1){?>style="display:none;"<?php }?>>
+<?php if(!$conf['hide_tongji']){?>
+<div class="panel layui-anim">
 <div class="panel-heading text-center panel-headcolor-qq"><h3 class="panel-title">本站运行数据</h3></div>
 <table class="table table-bordered" style="background-color:#fff;border: 1px solid #ddd;">
 <tbody>
@@ -260,6 +262,7 @@ $i=0;
 </tbody>
 </table>
 </div>
+<?php }?>
 
 <div class="panel layui-anim" <?php if($conf['bottom']=='' && $conf['footer']==''){?>style="display:none;"<?php }?>>
 <div class="panel-heading text-center panel-headcolor-qq"><h3 class="panel-title">站点助手</h3></div>

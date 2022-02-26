@@ -35,26 +35,6 @@ if(!defined('IN_CRONLITE'))exit();
     </div>
   </div>
 </div>
-<!--查单说明开始-->
-<div class="modal fade" align="left" id="cxsm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">查询内容是什么？该输入什么？</h4>
-      </div>
-      	<li class="list-group-item"><font color="red">请在右侧的输入框内输入您下单时，在第一个输入框内填写的信息</font></li>
-      	<li class="list-group-item">例如您购买的是QQ赞类商品，输入下单的QQ账号即可查询订单</li>
-      	<li class="list-group-item">例如您购买的是邮箱类商品，需要输入您的邮箱号，输入QQ号是查询不到的</li>
-      	<li class="list-group-item">例如您购买的是短视频类商品，输入视频链接即可查询，不要带其他中文字符</li>
-      	<li class="list-group-item"><font color="red">如果您不知道下单账号是什么，可以不填写，直接点击查询，则会根据浏览器缓存查询</font></li>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!--查单说明结束-->
 <br/>
 <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6 center-block" style="float: none;">
 <div class="panel panel-default">
@@ -72,13 +52,14 @@ if(!defined('IN_CRONLITE'))exit();
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="#onlinebuy" data-toggle="tab">下单</a></li>
 		<li><a href="#query" data-toggle="tab" id="tab-query">查单</a></li>
-		<li <?php if($conf['gift_open']==0){?>class="hide"<?php }?>><a href="#gift" data-toggle="tab">抽奖</a></li>
-		<li <?php if(empty($conf['daiguaurl'])){?>class="hide"<?php }?>><a href="./?mod=daigua">代挂</a></li>
-		<li <?php if($conf['fenzhan_buy']==0){?>class="hide"<?php }?>><a href="./user/regsite.php" style="color:red">开通分站</a></li>
+		<?php if($conf['gift_open']==1){?><li><a href="#gift" data-toggle="tab">抽奖</a></li><?php }?>
+		<?php if(!empty($conf['daiguaurl'])){?><li><a href="./?mod=daigua">代挂</a></li><?php }?>
+		<?php if($conf['fenzhan_buy']==1){?><li><a href="./user/regsite.php" style="color:red">开通分站</a></li>
 		<?php if($islogin2==1){?>
-		<li <?php if($conf['fenzhan_buy']==0){?>class="hide"<?php }?>><a href="./user/">用户中心</a></li>
+		<li><a href="./user/">用户中心</a></li>
 		<?php }else{?>
-		<li <?php if($conf['fenzhan_buy']==0){?>class="hide"<?php }?>><a href="./user/login.php">后台登录</a></li>
+		<li><a href="./user/login.php">后台登录</a></li>
+		<?php }?>
 		<?php }?>
 	</ul>
 	<div class="list-group-item">
@@ -94,7 +75,7 @@ if(!defined('IN_CRONLITE'))exit();
 					<select class="form-control" id="searchtype" style="padding: 6px 4px;width:90px"><option value="0">下单账号</option><option value="1">订单号</option></select>
 				</div>
 				<input type="text" name="qq" id="qq3" value="<?php echo $qq?>" class="form-control" placeholder="请输入要查询的内容（留空则显示最新订单）" onkeydown="if(event.keyCode==13){submit_query.click()}" required/>
-				<span class="input-group-btn"><a href="#cxsm" data-toggle="modal" class="btn btn-warning"><i class="glyphicon glyphicon-exclamation-sign"></i></a></span>
+				<span class="input-group-btn"><a tabindex="0" class="btn btn-default" role="button" data-container="body" data-toggle="popover" data-trigger="focus" data-placement="top" title="查询内容是什么？" data-content="请输入您下单时，在第一个输入框内填写的信息。如果您不知道下单账号是什么，可以不填写，直接点击查询，则会根据浏览器缓存查询！"><i class="glyphicon glyphicon-exclamation-sign"></i></a></span>
 			</div></div>
 			<input type="submit" id="submit_query" class="btn btn-primary btn-block" value="立即查询">
 			<div id="result2" class="form-group" style="display:none;">
@@ -107,15 +88,7 @@ if(!defined('IN_CRONLITE'))exit();
 			</div>
 			</div>
 		</div>
-		<div class="tab-pane fade in" id="lqq">
-			<div class="form-group">
-				<div class="input-group"><div class="input-group-addon">请输入QQ</div>
-				<input type="text" name="qq" id="qq4" value="" class="form-control" required/>
-			</div></div>
-			<input type="submit" id="submit_lqq" class="btn btn-primary btn-block" value="立即提交">
-			<div id="result3" class="form-group text-center" style="display:none;"></div>
-		</div>
-		<div class="tab-pane fade in" id="gift">
+		<?php if($conf['gift_open']==1){?><div class="tab-pane fade in" id="gift">
 			<div class="panel-body text-center">
 			<div id="roll">点击下方按钮开始抽奖</div>
 			<hr>
@@ -127,7 +100,7 @@ if(!defined('IN_CRONLITE'))exit();
 			<div class="giftlist" style="display:none;"><strong>最近中奖记录</strong><ul id="pst_1"></ul></div> 
 			</div>
 		</div>
-		</div>
+		</div><?php }?>
 	</div>
 </div>
 
@@ -191,6 +164,7 @@ var homepage=true;
 var hashsalt=<?php echo $addsalt_js?>;
 $(function() {
 	$("img.lazy").lazyload({effect: "fadeIn"});
+	$('a[data-toggle="popover"]').popover();
 });
 </script>
 <script src="assets/js/main.js?ver=<?php echo VERSION ?>"></script>

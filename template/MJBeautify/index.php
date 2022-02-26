@@ -55,7 +55,7 @@ body{ font-size:14px; padding:0;margin:0 auto; position:relative; }
           <?php echo $conf[ 'kfqq']?></a>
         <img src="./assets/beautify/img/gg-rz.jpg" style="width:30px;height:13px;margin:-2px 0 0 5px;">
         <br>
-        <font style="color:#ff8000;font-size:11px;">商务合作！赚钱项目可以找我哦</font></div>
+        <font style="color:#ff8000;font-size:11px;">商务合作可以找我哦</font></div>
       <naw>
         <a class="a" href="./"><i class="fa fa-home fa-fw"></i> 网站首页</a>
 		<a class="a" href="./?chadan=1"><i class="fa fa-search fa-fw"></i> 订单查询</a>
@@ -96,7 +96,7 @@ body{ font-size:14px; padding:0;margin:0 auto; position:relative; }
 	<span class="glyphicon glyphicon-file" style="font-size:12px; margin-right:3px;"></span>系统公告</a>
 	</li>
 	<li><a href="./user/regsite.php" target="_blank">
-	<span class="fa fa-qq" style="font-size:12px; margin-right:3px;"></span>开通分站赚钱</a>
+	<span class="fa fa-qq" style="font-size:12px; margin-right:3px;"></span>开通分站</a>
 	</li>
 	<?php if(!empty($conf['appurl'])){?>
 	<li><a href="<?php echo $conf['appurl']?>">
@@ -118,8 +118,8 @@ body{ font-size:14px; padding:0;margin:0 auto; position:relative; }
     <div class="zzxd-title">
     <font class="text"><i class="fa fa-shopping-cart"></i> 自助下单栏 </font>
     <span class="pull-right" style="margin:7px 12px 0 0;" >
-    <a data-toggle="tab" href="#demo-tabs-box-2" aria-expanded="true" class="btn btn-warning btn-rounded">
-    <i class="fa fa-warning"></i> 下单必看</a></span>
+    <a href="./user/" class="btn btn-warning btn-rounded">
+    <i class="fa fa-user"></i> 用户中心</a></span>
     </div>
 <!-- 自助下单导航  -->
 <ul class="nav nav-tabs zzxd-naw" data-toggle="tabs" style="background:#f3f3f3;">
@@ -129,7 +129,7 @@ body{ font-size:14px; padding:0;margin:0 auto; position:relative; }
     <li ><a href="#query" data-toggle="tab" style="border:none;" id="tab-query">
             <div><i class="fa fa-search fa-fw"></i></div>查 单</a>
     </li>
-    <li><a href="#zq" data-toggle="tab" style="border:none;color:#f00;">
+    <li><a href="#fenzhan" data-toggle="tab" style="border:none;color:#f00;">
             <div><i class="fa fa-usd fa-fw fa-spin"></i></div>赚 钱</a>
     </li>
     <li align="center" <?php if(!$conf['articlenum']){?>class="hide"<?php }?>>
@@ -168,7 +168,7 @@ body{ font-size:14px; padding:0;margin:0 auto; position:relative; }
 </div>
      <div class="cnt tw1" style="padding:10px 0;color:#a84200;font-size:13px;">
          <p><span class="label-yc" style="background:#f89b3c;">待处理</span> 说明正在努力提交到服务器 !</p>
-         <p><span class="label-yc" style="background:#4b98e4;">已完成</span> 并不是刷完了只是开始刷了 !</p>
+         <p><span class="label-yc" style="background:#4b98e4;">已完成</span> 已经提交到服务器正在处理 !</p>
          <p><span class="label-yc" style="background:#fe5d5c;">有异常</span> 下单信息有误请联系客服哦 !</p>
      </div>
 			<div class="form-group">
@@ -177,7 +177,7 @@ body{ font-size:14px; padding:0;margin:0 auto; position:relative; }
 						<select class="form-control" id="searchtype" style="padding: 6px 4px;width:90px"><option value="0">下单账号</option><option value="1">订单号</option></select>
 					</div>
 				<input type="text" name="qq" id="qq3" value="<?php echo $qq?>" class="form-control" placeholder="请输入要查询的内容（留空则显示最新订单）" onkeydown="if(event.keyCode==13){submit_query.click()}" required/>
-				<span class="input-group-btn"><a href="#cxsm" data-toggle="modal" class="btn btn-warning"><i class="glyphicon glyphicon-exclamation-sign"></i></a></span>
+				<span class="input-group-btn"><a tabindex="0" class="btn btn-default" role="button" data-container="body" data-toggle="popover" data-trigger="focus" data-placement="top" title="查询内容是什么？" data-content="请输入您下单时，在第一个输入框内填写的信息。如果您不知道下单账号是什么，可以不填写，直接点击查询，则会根据浏览器缓存查询！"><i class="glyphicon glyphicon-exclamation-sign"></i></a></span>
 			</div></div>
 			<input type="submit" id="submit_query" class="btn btn-primary btn-block" value="立即查询">
 			<div id="result2" class="form-group" style="display:none;">
@@ -190,11 +190,11 @@ body{ font-size:14px; padding:0;margin:0 auto; position:relative; }
 </div><!--end-->
 
 <!--赚钱-->
-<div class="tab-pane fade in" id="zq" style="font-size:13px;letter-spacing:1px;">
+<div class="tab-pane fade in" id="fenzhan" style="font-size:13px;letter-spacing:1px;">
 	<div id="zzdj" class="tabcontent2">
 		<div class="zq-card">
 			<img src="./assets/beautify/img/fenzhan.jpg">
-			<span>免费加盟！一键搭建与我们一样的代刷网站，赚点零花钱完全不是问题哦 ~</span>
+			<span>免费加盟！一键搭建与我们一样的商城网站，赚点零花钱完全不是问题哦 ~</span>
 			<div style="line-height:45px;padding:0 12px;">
 				<font color="#f00"><b><i class="fa fa-star-half-o fa-fw"></i> 分站搭建</b></font>
 				<div class="right">
@@ -225,6 +225,7 @@ $i=0;
 <?php }?>
 
 <!--抽奖-->
+<?php if($conf['gift_open']==1){?>
 <div class="tab-pane fade in" id="gift">
   <div class="panel-body text-center">
     <div id="roll">
@@ -237,78 +238,44 @@ $i=0;
              <ul id="pst_1"></ul>
           </div>
     </div>
-  </div>
+</div>
+<?php }?>
 
 <!--更多-->
 <div class="tab-pane fade fade-right" id="more">
   <div style="margin:8px -15px -17px -15px;">
     <ul id="more-naw">
-      <li class="<?php if($conf['gift_open']==0){?> hide<?php }?>">
+      <?php if($conf['gift_open']==1){?><li>
             <a href="#gift" data-toggle="tab" style="background:#ee5757;">
             <div class="more-title-text"><i class="fa fa-gift"></i></div>抽奖</a>
-      </li>
-      <li class=" <?php if(empty($conf['invite_tid'])){?> hide<?php }?>">
+      </li><?php }?>
+      <?php if(!empty($conf['invite_tid'])){?><li>
             <a href="./?mod=invite" target="_blank" style="background:#f164f1;">
             <div class="more-title-text"><i class="glyphicon glyphicon-hand-right"></i></div>免费领赞</a>
-      </li>
+      </li><?php }?>
       <li>
-            <a href="./user" target="_blank" style="background:#51b1ee;">
-            <div class="more-title-text"><i class="glyphicon glyphicon-user"></i></div>分站登入</a>
+            <a href="./user/" target="_blank" style="background:#51b1ee;">
+            <div class="more-title-text"><i class="glyphicon glyphicon-user"></i></div>用户中心</a>
       </li>
-      <li>
-            <a href="./user" target="_blank" style="background:#51b1ee;">
+      <?php if($conf['fenzhan_buy']==1){?><li>
+            <a href="./user/regsite.php" target="_blank" style="background:#51b1ee;">
             <div class="more-title-text"><i class="fa fa-shield"></i></div>免费加盟</a>
-      </li>
-      <li class="<?php if(empty($conf['daiguaurl'])){?> hide<?php }?>">
+      </li><?php }?>
+      <?php if(!empty($conf['daiguaurl'])){?><li>
             <a href="./?mod=daigua" style="background:#79eded;">
             <div class="more-title-text"><i class="fa fa-qq"></i></div>QQ等级代挂</a>
-      </li>
-      <li class="<?php if(empty($conf['appurl'])){?> hide<?php }?>">
+      </li><?php }?>
+      <?php if(!empty($conf['appurl'])){?><li>
             <a href="<?php echo $conf['appurl']; ?>" target="_blank" style="background:#f164f1;">
             <div class="more-title-text"><i class="fa fa-paper-plane-o"></i></div>APP下载</a>
-      </li>
+      </li><?php }?>
     </ul>
   </div>
 </div>
 <!--end-->
-</div></div></div></div><!自助下单区域--end-->
+</div></div></div></div><!--自助下单区域--end-->
 
 <!--end-->
-<!--下单必看-->
-<div id="demo-tabs-box-2" class="tab-pane fade">
-<div class="main-panel" >
-    <div class="zzxd-title">
-    <div class="text"><i class="fa fa-warning"></i> 下单必看栏</div>
-    <span class="pull-right" style="margin:7px 12px 0 0;" >
-    <a data-toggle="tab" href="#demo-tabs-box-1" aria-expanded="true" class="btn btn-warning btn-rounded">
-    <i class="fa fa-shopping-cart"></i> 返回下单</a></span>
-    </div>
-<div class="panel-group" id="accordion">
-	<div style="border:none;padding:10px 0;">
-<a class="xl-button" data-toggle="collapse" data-parent="#accordion" href="#collapse1">平台下单温馨提示</a>
-<div id="collapse1" class="panel-collapse collapse in xlbox">
-注意：下单前请确认你填写的信息是否有误；若填写错误！导致没刷上 _ 我们概不退款！<br>下单钱请认真查看商品下方说明下单！否者造成损失_概不售后。<br>由于本站采用全自动订单处理，可能会出现漏单，部分单子处理时间可能会稍长一点！若超过24小时没处理请联系客服！
-</div>
-<a class="xl-button" data-toggle="collapse" data-parent="#accordion" href="#collapse2">空间业务下单温馨提示</a>
-<div id="collapse2" class="panel-collapse collapse xlbox">
-注意：在刷任何空间业务时！空间必须是所有人可访问！且代刷中途不能关闭访问权限。<br>下单空间人气时：必须要有最少一条原创说！否者刷的慢或者不到账。<br>下单说说赞时：切记，说说必须是原创说说！不能是转发、视频。
-</div>
-<a class="xl-button" data-toggle="collapse" data-parent="#accordion" href="#collapse3">说说赞相关下单方法讲解</a>
-<div id="collapse3" class="panel-collapse collapse xlbox">
-1、下单前务必填写正确的QQ号及密码等！若填写错误_后果自负哦 ~<br>2.复制你全名k歌里面的需要刷的歌曲链接<br>2、自身带有本业务的请不要下单（如：你本来有会员，就不要下单会员或超会了）但可以下单其他永久钻（如黄钻）或者等官方钻到期了在下单。<br>3、永久钻是“理论永久”_ 是有可能会掉的！若运气好是几个与或者大半年及几年都不会掉。但我们这都是有质保天数的！掉单了按天数退款_ 不会让你亏的。
-</div>
-<a class="xl-button" data-toggle="collapse" data-parent="#accordion" href="#collapse4">永久钻下单温馨提示</a>
-<div id="collapse4" class="panel-collapse collapse xlbox">
-1、下单前务必填写正确的QQ号及密码等！若填写错误_后果自负哦 ~<br>2.复制你全名k歌里面的需要刷的歌曲链接<br>2、自身带有本业务的请不要下单（如：你本来有会员，就不要下单会员或超会了）但可以下单其他永久钻（如黄钻）或者等官方钻到期了在下单。<br>3、永久钻是“理论永久”_ 是有可能会掉的！若运气好是几个与或者大半年及几年都不会掉。但我们这都是有质保天数的！掉单了按天数退款_ 不会让你亏的。 
-</div>
-<a class="xl-button" data-toggle="collapse" data-parent="#accordion" href="#collapse5">视频/音乐代刷下单方法讲解</a>
-<div id="collapse5" class="panel-collapse collapse xlbox">
-1.打开你的视频/音乐APP<br>2.复制里面需要刷的视频/歌曲链接<br>3.然后把链接填入到输入框里面，然后提交购买。</div></div>
-
-</div></div>
-</div>
-</div>
-<!-- end -->
 
 <!--查单说明开始-->
 <div class="modal fade" align="left" id="cxsm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -319,7 +286,7 @@ $i=0;
         <h4 class="modal-title" id="myModalLabel">查询内容是什么？该输入什么？</h4>
       </div>
       	<li class="list-group-item"><font color="red">请在右侧的输入框内输入您下单时，在第一个输入框内填写的信息</font></li>
-      	<li class="list-group-item">例如您购买的是QQ赞类商品，输入下单的QQ账号即可查询订单</li>
+      	<li class="list-group-item">例如您购买的是QQ类商品，输入下单的QQ账号即可查询订单</li>
       	<li class="list-group-item">例如您购买的是邮箱类商品，需要输入您的邮箱号，输入QQ号是查询不到的</li>
       	<li class="list-group-item">例如您购买的是短视频类商品，输入视频链接即可查询，不要带其他中文字符</li>
       	<li class="list-group-item"><font color="red">如果您不知道下单账号是什么，可以不填写，直接点击查询，则会根据浏览器缓存查询</font></li>
@@ -361,8 +328,6 @@ $i=0;
 <img style="width:80px; margin-right:20px;" src="./assets/beautify/img/gg-cyjm.jpg" >
 <img style="width:80px; " src="./assets/beautify/img/gg-gtzf.jpg" ></a>
 </div>
-<a href="./user/regsite.php" class="zdxx-lj-li"><font color="#ff00ff">搭建分站仅需<?php echo $conf["fenzhan_price"]?>一<?php echo $conf["fenzhan_price2"]?>元</font>   
- ---    <font color="#0080ff">点击此处搭建分站 _</font></a>
 </div>
 <!-- end -->
 
@@ -435,28 +400,6 @@ $i=0;
 </div>
 <!-- end -->
 
-<!-- 推介商品 -->
-<div class="modal fade" align="left" id="tjsp" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog popup-bj" style="margin-right:2px;margin-left:12px;max-width:520px;">
-    <div class="popup-title">
-      <div class="popup-title-text">
-        <a class="tablinks xxk" onclick="openCity(event, 'London')" id="defaultOpen">推荐商品</a>
-        <a class="tablinks xxk" onclick="openCity(event, 'Paris')">最新业务</a></div>
-      <a type="button" class="popup-gb-button" data-dismiss="modal">
-        <span class="glyphicon glyphicon-remove" style=" font-size:20px; "></span>
-      </a>
-    </div>
-    <div class="modal-body" style="padding:10px;color:#272727;color:#272727;font-size:13px;">
-      <div id="London" class="tabcontent"><?php echo $conf[ 'chatframe']?></div><!-- 首页聊天代码数据库替换 -->
-      <div id="Paris" class="tabcontent"><?php echo $conf[ 'gg_search']?></div><!-- 订单查询界面广告数据库替换 -->
-    </div>
-    <div class="modal-footer" style="border-top-color:#399;">
-      <button type="button" class="btn btn-default" data-dismiss="modal">知道啦</button>
-    </div>
-  </div>
-</div>
-<!-- end -->
-
 <!-- 客服弹窗 -->
 <div class="modal fade" align="left" id="kftc" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog popup-bj" style="margin-right:2px;margin-left:12px;max-width:520px;">
@@ -521,6 +464,7 @@ var homepage=true;
 var hashsalt=<?php echo $addsalt_js?>;
 $(function() {
 	$("img.lazy").lazyload({effect: "fadeIn"});
+	$('a[data-toggle="popover"]').popover();
 });
 </script>
 <script src="assets/js/main.js?ver=<?php echo VERSION ?>"></script>

@@ -79,7 +79,15 @@ case 'login':
 		setcookie("user_token", $token, time() + 604800, '/');
 		log_result('分站登录', 'User:'.$user.' IP:'.$clientip, null, 1);
 		if($_SESSION['Oauth_qq_openid'] && $_SESSION['Oauth_qq_token']){
-			$DB->exec("UPDATE pre_site SET qq_openid=:qq_openid,lasttime=NOW() WHERE zid=:zid", [':qq_openid'=>$_SESSION['Oauth_qq_openid'], ':zid'=>$row['zid']]);
+			if($_SESSION['Oauth_qq_type']=='wx'){
+				$typename = '微信';
+				$typecolumn = 'wx_openid';
+			}else{
+				$typename = 'QQ';
+				$typecolumn = 'qq_openid';
+			}
+			$DB->exec("UPDATE pre_site SET {$typecolumn}=:qq_openid,lasttime=NOW() WHERE zid=:zid", [':qq_openid'=>$_SESSION['Oauth_qq_openid'], ':zid'=>$row['zid']]);
+			unset($_SESSION['Oauth_qq_type']);
 			unset($_SESSION['Oauth_qq_openid']);
 			unset($_SESSION['Oauth_qq_token']);
 			unset($_SESSION['Oauth_qq_nickname']);
@@ -94,50 +102,74 @@ case 'login':
 	}
 break;
 case 'connect':
-	if(!$conf['login_qq'])exit('{"code":-1,"msg":"当前站点未开启QQ快捷登录"}');
+	if(!$conf['login_qq'] && !$conf['login_wx'])exit('{"code":-1,"msg":"当前站点未开启QQ或微信快捷登录"}');
 	$type = isset($_POST['type'])?$_POST['type']:exit('{"code":-1,"msg":"no type"}');
 	$back = isset($_POST['back'])?$_POST['back']:null;
-	$Oauth = new \lib\Oauth($conf['login_apiurl'], $conf['login_appid'], $conf['login_appkey']);
-	$res = $Oauth->login($type);
-	if(isset($res['code']) && $res['code']==0){
-		$result = ['code'=>0, 'url'=>$res['url']];
+	if($type == 'qq' && $conf['login_qq']==2){
+		$result = ['code'=>0, 'url'=>'connect.php?type=qq'];
 		if($back){
 			$_SESSION['Oauth_back'] = $back;
 		}elseif(isset($_SESSION['Oauth_back'])){
 			unset($_SESSION['Oauth_back']);
 		}
-	}elseif(isset($res['code'])){
-		$result = ['code'=>-1, 'msg'=>$res['msg']];
 	}else{
-		$result = ['code'=>-1, 'msg'=>'快捷登录接口请求失败'];
+		$Oauth = new \lib\Oauth($conf['login_apiurl'], $conf['login_appid'], $conf['login_appkey']);
+		$res = $Oauth->login($type);
+		if(isset($res['code']) && $res['code']==0){
+			$result = ['code'=>0, 'url'=>$res['url']];
+			if($back){
+				$_SESSION['Oauth_back'] = $back;
+			}elseif(isset($_SESSION['Oauth_back'])){
+				unset($_SESSION['Oauth_back']);
+			}
+		}elseif(isset($res['code'])){
+			$result = ['code'=>-1, 'msg'=>$res['msg']];
+		}else{
+			$result = ['code'=>-1, 'msg'=>'快捷登录接口请求失败'];
+		}
 	}
 	exit(json_encode($result));
 break;
 case 'unbind':
 	if(!$islogin2)exit('{"code":-1,"msg":"未登录"}');
-	if(!$conf['login_qq'])exit('{"code":-1,"msg":"当前站点未开启QQ快捷登录"}');
+	if(!$conf['login_qq'] && !$conf['login_wx'])exit('{"code":-1,"msg":"当前站点未开启QQ或微信快捷登录"}');
 	$type = isset($_POST['type'])?$_POST['type']:exit('{"code":-1,"msg":"no type"}');
-	if($DB->exec("update `pre_site` set `qq_openid` =NULL where `zid`='{$userrow['zid']}'")){
-		exit('{"code":0,"msg":"您已成功解绑QQ！"}');
+	if($type=='wx'){
+		$typename = '微信';
+		$typecolumn = 'wx_openid';
 	}else{
-		exit('{"code":-1,"msg":"解绑QQ失败！'.$DB->error().'"}');
+		$typename = 'QQ';
+		$typecolumn = 'qq_openid';
+	}
+	if($DB->exec("update `pre_site` set `{$typecolumn}`=NULL where `zid`='{$userrow['zid']}'")){
+		exit('{"code":0,"msg":"您已成功解绑'.$typename.'！"}');
+	}else{
+		exit('{"code":-1,"msg":"解绑'.$typename.'失败！'.$DB->error().'"}');
 	}
 break;
 case 'quickreg':
-	if(!$conf['login_qq'])exit('{"code":-1,"msg":"当前站点未开启QQ快捷登录"}');
+	if(!$conf['login_qq'] && !$conf['login_wx'])exit('{"code":-1,"msg":"当前站点未开启QQ或微信快捷登录"}');
 	if(!$_SESSION['Oauth_qq_openid'] || !$_SESSION['Oauth_qq_token'])exit('{"code":-1,"msg":"请返回重新登录"}');
 	if(!$_POST['submit'])exit('{"code":-1,"msg":"access"}');
-	$user = 'qq_'.random(8);
+	$type = isset($_POST['type'])?$_POST['type']:exit('{"code":-1,"msg":"no type"}');
+	$user = $type.'_'.random(8);
 	$pwd = $_SESSION['Oauth_qq_token'];
 	$openid = $_SESSION['Oauth_qq_openid'];
 	$nickname = $_SESSION['Oauth_qq_nickname'];
 	if(strlen($nickname)>32) $nickname = mb_strcut($nickname, 0, 32);
 	$faceimg = $_SESSION['Oauth_qq_faceimg'];
+	if($type=='wx'){
+		$typecolumn = 'wx_openid';
+		$pwd = md5($pwd);
+	}else{
+		$typecolumn = 'qq_openid';
+	}
 
-	$sql="insert into `pre_site` (`upzid`,`power`,`domain`,`domain2`,`user`,`pwd`,`qq_openid`,`nickname`,`faceimg`,`rmb`,`qq`,`sitename`,`keywords`,`description`,`addtime`,`lasttime`,`status`) values (:upzid,0,NULL,NULL,:user,:pwd,:qq_openid,:nickname,:faceimg,'0',NULL,NULL,NULL,NULL,NOW(),NOW(),'1')";
+	$sql="insert into `pre_site` (`upzid`,`power`,`domain`,`domain2`,`user`,`pwd`,`{$typecolumn}`,`nickname`,`faceimg`,`rmb`,`qq`,`sitename`,`keywords`,`description`,`addtime`,`lasttime`,`status`) values (:upzid,0,NULL,NULL,:user,:pwd,:qq_openid,:nickname,:faceimg,'0',NULL,NULL,NULL,NULL,NOW(),NOW(),'1')";
 	$data = [':upzid'=>$siterow['zid']?$siterow['zid']:0, ':user'=>$user, ':pwd'=>$pwd, ':qq_openid'=>$openid, ':nickname'=>$nickname, ':faceimg'=>$faceimg];
 	if($DB->exec($sql, $data)){
 		$zid = $DB->lastInsertId();
+		unset($_SESSION['Oauth_qq_type']);
 		unset($_SESSION['Oauth_qq_openid']);
 		unset($_SESSION['Oauth_qq_token']);
 		unset($_SESSION['Oauth_qq_nickname']);

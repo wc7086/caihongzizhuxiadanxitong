@@ -99,26 +99,6 @@ if(!defined('IN_CRONLITE'))exit();
    
     <!--顶部导航-->
 
-<!--查单说明开始-->
-<div class="modal fade" align="left" id="cxsm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">查询内容是什么？该输入什么？</h4>
-      </div>
-      	<li class="list-group-item"><font color="red">请在右侧的输入框内输入您下单时，在第一个输入框内填写的信息</font></li>
-      	<li class="list-group-item">例如您购买的是QQ赞类商品，输入下单的QQ账号即可查询订单</li>
-      	<li class="list-group-item">例如您购买的是邮箱类商品，需要输入您的邮箱号，输入QQ号是查询不到的</li>
-      	<li class="list-group-item">例如您购买的是短视频类商品，输入视频链接即可查询，不要带其他中文字符</li>
-      	<li class="list-group-item"><font color="red">如果您不知道下单账号是什么，可以不填写，直接点击查询，则会根据浏览器缓存查询</font></li>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!--查单说明结束-->
     <div class="block">
         <ul class="nav nav-tabs" data-toggle="tabs">
             <li class="active" style="width: 20%;" align="center">
@@ -127,15 +107,15 @@ if(!defined('IN_CRONLITE'))exit();
             <li style="width: 20%;" align="center">
                 <a href="#search" data-toggle="tab" id="tab-query"><i class="fa fa-search"></i> 查单</a>
             </li>
-            <li style="width: 20%;" align="center" <?php if($conf['fenzhan_buy']==0){?>class="hide"<?php }?>>
+            <?php if($conf['fenzhan_buy']==1){?><li style="width: 20%;" align="center" >
                 <a href="#ktfz" data-toggle="tab"><i class="fa fa-coffee fa-fw"></i> 分站</a>
-            </li>
-			<li style="width: 20%;" align="center" <?php if(!$conf['articlenum']){?>class="hide"<?php }?>>
+            </li><?php }?>
+			<?php if($conf['articlenum']>0){?><li style="width: 20%;" align="center">
                 <a href="#article" data-toggle="tab"><i class="fa fa-newspaper-o fa-fw"></i> 文章</a>
-            </li>
-            <li style="width: 20%;" align="center" <?php if($conf['gift_open']==0||$conf['articlenum']>0){?>class="hide"<?php }?>>
+            </li><?php }?>
+            <?php if($conf['gift_open']==1&&!$conf['articlenum']){?><li style="width: 20%;" align="center">
                 <a href="#gift" data-toggle="tab"><i class="fa fa-gift fa-fw"></i> 抽奖</a>
-            </li>
+            </li><?php }?>
             <li style="width: 20%;" align="center">
                 <a href="#more" data-toggle="tab"><i class="fa fa-folder-open"></i> 更多</a>
             </li>
@@ -176,7 +156,7 @@ if(!defined('IN_CRONLITE'))exit();
 						</div>
                         <input type="text" name="qq" id="qq3" value="<?php echo $qq ?>" class="form-control"
                                placeholder="请输入要查询的内容（留空则显示最新订单）" required/>
-						<span class="input-group-btn"><a href="#cxsm" target="_blank" data-toggle="modal" class="btn btn-warning"><i class="glyphicon glyphicon-exclamation-sign"></i></a></span>
+						<span class="input-group-btn"><a tabindex="0" class="btn btn-default" role="button" data-container="body" data-toggle="popover" data-trigger="focus" data-placement="top" title="查询内容是什么？" data-content="请输入您下单时，在第一个输入框内填写的信息。如果您不知道下单账号是什么，可以不填写，直接点击查询，则会根据浏览器缓存查询！"><i class="glyphicon glyphicon-exclamation-sign"></i></a></span>
                     </div>
                 </div>
                 <input type="submit" id="submit_query" class="btn btn-primary btn-block" value="立即查询"><br/>
@@ -206,7 +186,7 @@ if(!defined('IN_CRONLITE'))exit();
 
 
             <!--开通分站-->
-            <div class="tab-pane fade fade-up" id="ktfz">
+            <?php if($conf['fenzhan_buy']==1){?><div class="tab-pane fade fade-up" id="ktfz">
                 <div class="block block-link-hover2 text-center">
                     <div class="block-content block-content-full bg-success">
                         <div class="h4 font-w700 text-white push-10"><i
@@ -226,7 +206,7 @@ if(!defined('IN_CRONLITE'))exit();
                                 <td>还可以锻炼自己销售口才</td>
                             </tr>
                             <tr>
-                                <td>宝妈、学生等网络兼职首选</td>
+                                <td>宝妈、学生等网络赚钱首选</td>
                             </tr>
                             <tr>
                                 <td>分站满<?php echo $conf['tixian_min']; ?>元即可申请提现</td>
@@ -242,7 +222,7 @@ if(!defined('IN_CRONLITE'))exit();
                     <button onclick="window.open('./user/regsite.php')" class="btn btn-danger">开通分站</button>
                     </div>
                 </div>
-            </div>
+            </div><?php }?>
             <!--开通分站-->
 			<!--抽奖-->
 				<div class="tab-pane fade fade-up" id="gift">
@@ -278,39 +258,39 @@ $i=0;
 <?php }?>
            <!--更多-->
             <div class="tab-pane fade fade-right" id="more">
-                <div class="col-xs-6 col-sm-4 col-lg-4<?php if(empty($conf['appurl'])){?> hide<?php }?>">
+                <?php if(!empty($conf['appurl'])){?><div class="col-xs-6 col-sm-4 col-lg-4">
                     <a class="block block-link-hover2 text-center" href="<?php echo $conf['appurl']; ?>" target="_blank">
                         <div class="block-content block-content-full bg-success">
                             <i class="fa fa-cloud-download fa-3x text-white"></i>
                             <div class="font-w600 text-white-op push-15-t">APP下载</div>
                         </div>
                     </a>
-                </div>
+                </div><?php }?>
          
-                <div class="col-xs-6 col-sm-4 col-lg-4<?php if(empty($conf['daiguaurl'])){?> hide<?php }?>">
+                <?php if(!empty($conf['daiguaurl'])){?><div class="col-xs-6 col-sm-4 col-lg-4">
                     <a class="block block-link-hover2 text-center" href="./?mod=daigua">
                         <div class="block-content block-content-full bg-primary">
                             <i class="fa fa-rocket fa-3x text-white"></i>
                             <div class="font-w600 text-white-op push-15-t">QQ等级代挂</div>
                         </div>
                     </a>
-                </div>
-				<div class="col-xs-6 col-sm-4 col-lg-4<?php if($conf['gift_open']==0 || !$conf['articlenum']){?> hide<?php }?>">
+                </div><?php }?>
+				<?php if($conf['gift_open']==1){?><div class="col-xs-6 col-sm-4 col-lg-4">
                     <a class="block block-link-hover2 text-center" href="#gift" data-toggle="tab">
                         <div class="block-content block-content-full bg-info">
                             <i class="fa fa-gift fa-3x text-white"></i>
                             <div class="font-w600 text-white-op push-15-t">抽奖</div>
                         </div>
                     </a>
-                </div>
-				<div class="col-xs-6 col-sm-4 col-lg-4<?php if(empty($conf['invite_tid'])){?> hide<?php }?>">
+                </div><?php }?>
+				<?php if(!empty($conf['invite_tid'])){?><div class="col-xs-6 col-sm-4 col-lg-4">
 					<a class="block block-link-hover2 text-center" href="./?mod=invite" target="_blank">
 						<div class="block-content block-content-full bg-warning">
 						  <i class="fa fa-paper-plane-o fa-3x text-white"></i>
 							<div class="font-w600 text-white-op push-15-t">免费领赞</div>
 						  </div>
 					</a>
-				</div>
+				</div><?php }?>
 
                 <div class="col-xs-6 col-sm-4 col-lg-4">
                     <a class="block block-link-hover2 text-center" href="./user/" target="_blank">
@@ -325,7 +305,7 @@ $i=0;
         </div>
     </div>
     <!--版本介绍-->
-    <div class="modal fade" id="userjs" tabindex="-1" role="dialog" aria-hidden="true">
+    <?php if($conf['fenzhan_buy']==1){?><div class="modal fade" id="userjs" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-popin">
             <div class="modal-content">
                 <div class="block block-themed block-transparent remove-margin-b">
@@ -348,7 +328,7 @@ $i=0;
                                 </thead>
                                 <tbody>
                                 <tr class="active">
-                                    <td>专属代刷平台</td>
+                                    <td>专属商城平台</td>
                                     <td class="text-center">
                                         <span class="btn btn-effect-ripple btn-xs btn-success"><i
                                                     class="fa fa-check"></i></span>
@@ -441,7 +421,7 @@ $i=0;
                 </div>
             </div>
         </div>
-    </div>
+    </div><?php }?>
     <!--版本介绍-->
     <!--联系客服开始-->
         <div class="modal fade" id="customerservice" tabindex="-1" role="dialog" aria-hidden="true">
@@ -465,7 +445,7 @@ $i=0;
                                 </div>
                                 <div id="collapseOne" class="panel-collapse in" style="height: auto;">
                                     <div class="panel-body">
-									订单显示（已完成）就证明已经提交到服务器内！并不是订单已刷完。<br>
+									订单显示（已完成）就证明已经提交到服务器内！<br>
 									如果长时间没到账请联系客服处理！<br>
 									订单长时间显示（待处理）请联系客服！
 									</div>
@@ -474,25 +454,24 @@ $i=0;
                             <div class="panel panel-default" style="margin-bottom: 6px;">
                                 <div class="panel-heading">
                                     <h4 class="panel-title">
-                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" class="collapsed">QQ会员/钻类等什么时候到账？</a>
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" class="collapsed">商品什么时候到账？</a>
                                     </h4>
                                 </div>
                                 <div id="collapseTwo" class="panel-collapse collapse" style="height: 0px;">
                                     <div class="panel-body">
-									下单后的48小时内到账（会员或钻全部都是一样48小时内到账）！<br>
-									如果超过48小时，请联系客服退款或补单，提供QQ号码！
+									请参考商品简介里面，有关于到账时间的说明。
 									</div>
                                 </div>
                             </div>
 							<div class="panel panel-default" style="margin-bottom: 6px;">
                                 <div class="panel-heading">
                                     <h4 class="panel-title">
-                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" class="collapsed">卡密/CDK没有发送我的邮箱？</a>
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" class="collapsed">卡密没有发送我的邮箱？</a>
                                     </h4>
                                 </div>
                                 <div id="collapseThree" class="panel-collapse collapse" style="height: 0px;">
                                     <div class="panel-body">没有收到请检查自己邮箱的垃圾箱！也可以去查单区：输入自己下单时填写的邮箱进行查单。<br>
-								    查询到订单后点击（详细）就可以看到自己购买的卡密/cdk！
+								    查询到订单后点击（详细）就可以看到自己购买的卡密！
 									</div>
                                 </div>
                             </div>
@@ -536,56 +515,9 @@ $i=0;
             </div>
         </div>
     <!--联系客服结束-->
-<div class="block block-themed">
-	<div class="block-header bg-info">
-		<h3 class="block-title">用户反馈留言</h3>
-	</div>
-<marquee direction="up" behavior="scroll" loop="3" scrollamount="3" scrolldelay="10" align="top" bgcolor="#ffffff" height="200px" width="93%" hspace="20" vspace="10" onmouseover="this.stop()" onmouseout="this.start()" style="background-color: rgb(255, 255, 255); height: 200px; width: 93%; margin: 10px 20px;">
 
-<div class="gg_info" style="margin: 0;color:red"><b>官方：不忘初心，方得始终！感谢一路相伴！</b></div>
 
-<div class="gg_info" style="margin: 0;color:blue">用户203***130说：<b>没毛病老铁，我又来下单了</b></div>
-<div class="gg_info" style="margin: 0;color:blue">用户960***86说：<b>超级会员快满五个月了，感谢感谢</b></div>
-<div class="gg_info" style="margin: 0;color:blue">用户298***775说：<b>我搭建了个分站，请问一天赚36算少还是多？</b></div>
-<div class="gg_info" style="margin: 0;color:blue">用户89***120说：<b>放假啦，又来你这里接单赚钱咯</b></div>
-<div class="gg_info" style="margin: 0;color:blue">用户160***816说：<b>QQ会员已稳三个月，起来报道。</b></div>
-<div class="gg_info" style="margin: 0;color:blue">用户368***785说：<b>今天我分站提了50多块钱，学生放假就是爽</b></div>
-<div class="gg_info" style="margin: 0;color:blue">用户103***108说：<b>秒刷名片赞是真的快，十万名片赞一天就到了</b></div>
-<div class="gg_info" style="margin: 0;color:blue">用户60***216说：<b>超级会员已稳定6个月，不多bb，有事没事都会来你这里下两单</b></div>
-<div class="gg_info" style="margin: 0;color:blue">用户132***988说：<b>从你们网站刚开我就搭建了个分站，这么多天也赚了两千多了，你们挺诚信的</b></div>
-<div class="gg_info" style="margin: 0;color:blue">用户107***124说：<b>我是分站长，每天提现10+元，虽然不多但是起码是自己努力挣的钱！</b></div>
-<div class="gg_info" style="margin: 0;color:blue">用户139***201说：<b>今天在你网站进货，一天挣了39块钱啊</b></div>
-<div class="gg_info" style="margin: 0;color:blue">用户303***963说：<b>名片赞的真的快，会员也稳定快三个月了</b></div>
-<div class="gg_info" style="margin: 0;color:blue">用户296***909说：<b>啥时候搞活动多送点福利呗</b></div>
-<div class="gg_info" style="margin: 0;color:blue">用户97***634说：<b>好便宜啊8毛一万名片赞</b></div>
-<div class="gg_info" style="margin: 0;color:blue">用户395***824说：<b>豪华绿钻两个月了还没掉耶</b></div>
-<div class="gg_info" style="margin: 0;color:blue">用户386***163说：<b>我是分站站长，我要努力赚钱！</b></div>
-<div class="gg_info" style="margin: 0;color:blue">用户231***069说：<b>下面这个分享领赞活动我一天领了1万多赞啊</b></div>
-<div class="gg_info" style="margin: 0;color:blue">用户322***396说：<b>客服态度真的好好啊</b></div>
-<div class="gg_info" style="margin: 0;color:blue">用户266***864说：<b>相信你们平台会越来越好，加油！</b></div>
-<div class="gg_info" style="margin: 0;color:blue">用户186***768说：<b>超会已稳一个月，前来反馈。感谢平台</b></div>
-<div class="gg_info" style="margin: 0;color:blue">用户209***116说：<b>在你这里下单520说说赞追到个女朋友！！！值。</b></div>
-<div class="gg_info" style="margin: 0;color:blue">用户368***423说：<b>今天活动好多啊，感觉要爱上你这个平台了</b></div>
-<div class="gg_info" style="margin: 0;color:blue">用户331***032说：<b>今天提了32元，美滋滋……</b></div>
-<div class="gg_info" style="margin: 0;color:blue">用户216***675说：<b>在你这搭建了个专业版分站，我要努力宣传！争取一天提现50+元！！！</b></div>
-<div class="gg_info" style="margin: 0;color:blue">用户206***311说：<b>这里东西质量真的不错，快刷名片赞基本上秒刷，感谢站长提供平台！</b></div>
-<div class="gg_info" style="margin: 0;color:blue">用户97***097说：<b>老板，提现的56块钱秒到账，怎么做到的？</b></div>
-<div class="gg_info" style="margin: 0;color:blue">用户108***111说：<b>新手看价格，老手求品质，而牛逼的我搭建分站赚钱</b></div>
-<div class="gg_info" style="margin: 0;color:blue">用户768***346说：<b>感谢站长提供这么好的平台给我们接单，支持到底！！！</b></div>
-<div class="gg_info" style="margin: 0;color:blue">用户199***017说：<b>用这个接单卖给同学，还挺赚钱的耶！抱拳了</b></div>
-<div class="gg_info" style="margin: 0;color:blue">用户367***788说：<b>每天来领100赞，美滋滋(～￣▽￣)～</b></div>
-<div class="gg_info" style="margin: 0;color:blue">用户109***148说：<b>18块的买超会都三个月了还在，帮女朋友也开了个哈哈哈！</b></div>
-<div class="gg_info" style="margin: 0;color:blue">用户111***684说：<b>666，终于更新了抽奖</b></div><div class="gg_info" style="margin: 0;color:blue">用户203***337说：<b>卧槽，这个真人名片赞速度真他妈快，3分钟刷了4万多</b></div><div class="gg_info" style="margin: 0;color:blue">用户292***724说：<b>非常不错</b></div><div class="gg_info" style="margin: 0;color:blue">用户217***359说：<b>多做这中活动</b></div><div class="gg_info" style="margin: 0;color:blue">用户136***498说：<b>希望能迅速赞</b></div><div class="gg_info" style="margin: 0;color:blue">用户212***285说：<b>hao</b></div><div class="gg_info" style="margin: 0;color:blue">用户318***115说：<b>应该尽量的保证质量，并设置分享有奖，这样，也吸引了客户</b></div><div class="gg_info" style="margin: 0;color:blue">用户159***280说：<b>每天送100名片赞</b></div><div class="gg_info" style="margin: 0;color:blue">用户265***010说：<b>类似于QQ空间里说说的赞，能不能设置指定数量？希望采纳</b></div><div class="gg_info" style="margin: 0;color:blue">用户486***443说：<b>更好</b></div><div class="gg_info" style="margin: 0;color:blue">用户280***172说：<b>非常好</b></div><div class="gg_info" style="margin: 0;color:blue">用户282***989说：<b>好</b></div><div class="gg_info" style="margin: 0;color:blue">用户142***439说：<b>不错不错。太好了</b></div><div class="gg_info" style="margin: 0;color:blue">用户932***936说：<b>能按着数量刷就好了</b></div><div class="gg_info" style="margin: 0;color:blue">用户340***683说：<b>很好用很便宜!</b></div><div class="gg_info" style="margin: 0;color:blue">用户177***283说：<b>很不错的网站，加油</b></div><div class="gg_info" style="margin: 0;color:blue">用户212***285说：<b>好</b></div><div class="gg_info" style="margin: 0;color:blue">用户624***185说：<b>这个平台很不错，信誉很好</b></div><div class="gg_info" style="margin: 0;color:blue">用户316***940说：<b>应该把全民k歌刷花间单的</b></div><div class="gg_info" style="margin: 0;color:blue">用户148***683说：<b>希望可以多点福利，东西很便宜，很好。</b></div><div class="gg_info" style="margin: 0;color:blue">用户132***627说：<b>挺好的</b></div><div class="gg_info" style="margin: 0;color:blue">用户154***984说：<b>我帮你们的网站分享给了很多群，永远支持你们</b></div><div class="gg_info" style="margin: 0;color:blue">用户238***434说：<b>刷赞</b></div><div class="gg_info" style="margin: 0;color:blue">用户239***848说：<b>炫酷点  再加点音乐就好了</b></div><div class="gg_info" style="margin: 0;color:blue">用户245***114说：<b>多搞一些低价产品，价格比其他网站略低就好了</b></div><div class="gg_info" style="margin: 0;color:blue">用户157***694说：<b>下单要快</b></div><div class="gg_info" style="margin: 0;color:blue">用户321***803说：<b>多做一些宣传</b></div><div class="gg_info" style="margin: 0;color:blue">用户213***668说：<b>666</b></div><div class="gg_info" style="margin: 0;color:blue">用户321***995说：<b>QQ代刷网是全国最大的代刷网平台,主打QQ钻业务,刷粉丝软件,空间业务,进货价格便宜</b></div><div class="gg_info" style="margin: 0;color:blue">用户210***769说：<b>非常好，以后要来就来这里</b></div><div class="gg_info" style="margin: 0;color:blue">用户325***178说：<b>QQ代刷网，<?php echo $_SERVER['HTTP_HOST'];?>，24小时自助下单平台</b></div><div class="gg_info" style="margin: 0;color:blue">用户325***178说：<b>刷更多的赞</b></div><div class="gg_info" style="margin: 0;color:blue">用户168***382说：<b>666</b></div><div class="gg_info" style="margin: 0;color:blue">用户353***251说：<b>很有诚信，刷的很快，推荐这个平台</b></div><div class="gg_info" style="margin: 0;color:blue">用户852***349说：<b>要是能有宣传功能的话，这个平台肯定更受欢迎</b></div><div class="gg_info" style="margin: 0;color:blue">用户183***110说：<b>ui好一点，背景好一点，加油吧</b></div><div class="gg_info" style="margin: 0;color:blue">用户218***577说：<b>建议可以去发广告，宣传自己的网址哦，贴吧里还是有很多人玩的</b></div><div class="gg_info" style="margin: 0;color:blue">用户157***694说：<b>下单速度要快</b></div><div class="gg_info" style="margin: 0;color:blue">用户316***484说：<b>希望继续努力，还不错</b></div><div class="gg_info" style="margin: 0;color:blue">用户343***331说：<b>免费的再多点</b></div><div class="gg_info" style="margin: 0;color:blue">用户340***317说：<b>速度快</b></div><div class="gg_info" style="margin: 0;color:blue">用户356***078说：<b>24小时自助下单平台<?php echo $_SERVER['HTTP_HOST'];?>，QQ代刷网，<?php echo $conf['sitename'] ?></b></div><div class="gg_info" style="margin: 0;color:blue">用户155***605说：<b>很好啊</b></div><div class="gg_info" style="margin: 0;color:blue">用户954***293说：<b>代刷网真是不错，一直用的这个网站，QQ代刷网，<?php echo $_SERVER['HTTP_HOST'];?>，代刷网，搭建代刷网</b></div><div class="gg_info" style="margin: 0;color:blue">用户314***137说：<b>希望多出来刷东西的</b></div>
-<div class="gg_info" style="margin: 0;color:blue">用户532***563说：<b>平台很棒啊，支持<?php echo $conf['sitename'] ?>，自助下单平台</b></div>
-<div class="gg_info" style="margin: 0;color:blue">用户532***563说：<b>24小时自助下单代刷QQ名片赞,空间人气,粉丝,作品双击喜欢,作品播放量,全民K歌粉丝 </b></div>
-
-<div class="gg_info" style="margin: 0;color:blue">用户280***172说：<b></b></div><div class="gg_info" style="margin: 0;color:blue">用户111***684说：<b>价格再合理一点</b></div><div class="gg_info" style="margin: 0;color:blue">用户203***337说：<b>这个平台特别棒，，，，真的特别特别棒</b></div><div class="gg_info" style="margin: 0;color:blue">用户292***724说：<b>非常不错</b></div><div class="gg_info" style="margin: 0;color:blue">用户217***359说：<b>多做这中活动</b></div><div class="gg_info" style="margin: 0;color:blue">用户136***498说：<b>希望能迅速赞</b></div><div class="gg_info" style="margin: 0;color:blue">用户212***285说：<b>hao</b></div><div class="gg_info" style="margin: 0;color:blue">用户318***115说：<b>应该尽量的保证质量，并设置分享有奖，这样，也吸引了客户</b></div><div class="gg_info" style="margin: 0;color:blue">用户159***280说：<b>每天送100名片赞</b></div><div class="gg_info" style="margin: 0;color:blue">用户265***010说：<b>类似于QQ空间里说说的赞，能不能设置指定数量？希望采纳</b></div><div class="gg_info" style="margin: 0;color:blue">用户486***443说：<b>更好</b></div><div class="gg_info" style="margin: 0;color:blue">用户280***172说：<b>非常好</b></div><div class="gg_info" style="margin: 0;color:blue">用户282***989说：<b>好</b></div><div class="gg_info" style="margin: 0;color:blue">用户142***439说：<b>不错不错。太好了</b></div><div class="gg_info" style="margin: 0;color:blue">用户932***936说：<b>能按着数量刷就好了</b></div><div class="gg_info" style="margin: 0;color:blue">用户340***683说：<b>很好用很便宜!</b></div><div class="gg_info" style="margin: 0;color:blue">用户177***283说：<b>很不错的网站，加油</b></div><div class="gg_info" style="margin: 0;color:blue">用户212***285说：<b>好</b></div><div class="gg_info" style="margin: 0;color:blue">用户624***185说：<b>这个平台很不错，信誉很好</b></div><div class="gg_info" style="margin: 0;color:blue">用户316***940说：<b>应该把全民k歌刷花间单的</b></div><div class="gg_info" style="margin: 0;color:blue">用户148***683说：<b>希望可以多点福利，东西很便宜，很好。</b></div><div class="gg_info" style="margin: 0;color:blue">用户132***627说：<b>挺好的</b></div><div class="gg_info" style="margin: 0;color:blue">用户154***984说：<b>我帮你们的网站分享给了很多群，永远支持你们</b></div><div class="gg_info" style="margin: 0;color:blue">用户238***434说：<b>刷赞</b></div><div class="gg_info" style="margin: 0;color:blue">用户239***848说：<b>炫酷点  再加点音乐就好了</b></div><div class="gg_info" style="margin: 0;color:blue">用户245***114说：<b>多搞一些低价产品，价格比其他网站略低就好了</b></div><div class="gg_info" style="margin: 0;color:blue">用户157***694说：<b>下单要快</b></div><div class="gg_info" style="margin: 0;color:blue">用户321***803说：<b>多做一些宣传</b></div><div class="gg_info" style="margin: 0;color:blue">用户213***668说：<b>666</b></div><div class="gg_info" style="margin: 0;color:blue">用户321***995说：<b>好了</b></div>
-<div class="gg_info" style="margin: 0;color:blue">用户532***563说：<b>24小时自助下单平台,免登陆的虚拟业务在线自动处理平台,专业为QQ空间,全民K歌,新浪微博,火山视频等业务提供代刷服务,最大的空间业务代刷平台 <?php echo $_SERVER['HTTP_HOST'];?></b></div>
-<div class="gg_info" style="margin: 0;color:blue">用户210***769说：<b>非常好，以后要来就来这里</b></div><div class="gg_info" style="margin: 0;color:blue">用户325***178说：<b>更好宣传</b></div><div class="gg_info" style="margin: 0;color:blue">用户325***178说：<b>刷更多的赞</b></div><div class="gg_info" style="margin: 0;color:blue">用户168***382说：<b>666</b></div><div class="gg_info" style="margin: 0;color:blue">用户353***251说：<b>很有诚信，刷的很快，推荐这个平台</b></div><div class="gg_info" style="margin: 0;color:blue">用户852***349说：<b>要是能有宣传功能的话，这个平台肯定更受欢迎</b></div><div class="gg_info" style="margin: 0;color:blue">用户183***110说：<b>ui好一点，背景好一点，加油吧</b></div><div class="gg_info" style="margin: 0;color:blue">用户218***577说：<b>建议可以去发广告，宣传自己的网址哦，贴吧里还是有很多人玩的</b></div><div class="gg_info" style="margin: 0;color:blue">用户157***694说：<b>下单速度要快</b></div><div class="gg_info" style="margin: 0;color:blue">用户316***484说：<b>希望继续努力，还不错</b></div><div class="gg_info" style="margin: 0;color:blue">用户343***331说：<b>免费的再多点</b></div><div class="gg_info" style="margin: 0;color:blue">用户340***317说：<b>速度快</b></div><div class="gg_info" style="margin: 0;color:blue">用户356***078说：<b>刷豪华黄钻</b></div><div class="gg_info" style="margin: 0;color:blue">用户155***605说：<b>很好啊</b></div><div class="gg_info" style="margin: 0;color:blue">用户954***293说：<b>好好努力</b></div><div class="gg_info" style="margin: 0;color:blue">用户314***137说：<b>希望多出来刷东西的</b></div>
-</marquee>
-</div>
-
-<div class="block block-themed" <?php if($conf['hide_tongji']==1){?>style="display:none;"<?php }?>>
+<?php if($conf['hide_tongji']==0){?><div class="block block-themed">
 	<div class="block-header bg-success">
 		<h3 class="block-title"><i class="fa fa-bar-chart-o"></i>&nbsp;&nbsp;数据统计</h3>
 	</div>
@@ -604,11 +536,11 @@ $i=0;
 </tr>
 </tbody>
 </table>
-</div>
+</div><?php }?>
 
     <!--底部导航-->
     <div class="block">
-            <div class="block-content text-center"><p><span style="font-weight:bold"><?php echo $conf['sitename'] ?> <i class="fa fa-heart text-danger"></i> 2020 | </span><a class="" href="#customerservice" style="font-weight:bold" data-toggle="modal">客服与帮助</span></a><br/><?php echo $conf['footer']?></p>
+            <div class="block-content text-center"><p><span style="font-weight:bold"><?php echo $conf['sitename'] ?> <i class="fa fa-heart text-danger"></i> <?php echo date("Y")?> | </span><a class="" href="#customerservice" style="font-weight:bold" data-toggle="modal">客服与帮助</span></a><br/><?php echo $conf['footer']?></p>
             </div>
     </div>
     <!--底部导航-->

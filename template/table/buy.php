@@ -36,6 +36,7 @@ if(!defined('IN_CRONLITE'))exit();
       <ul class="nav navbar-nav navbar-right">
 	  <li class=""><a href="./"><span class="glyphicon glyphicon-home"></span>&nbsp;下单首页</a></li>
 	  <li class=""><a href="./?mod=query"><span class="glyphicon glyphicon-search"></span>&nbsp;查询订单</a></li>
+	  <?php if($conf['articlenum']>0){?><li class=""><a href="<?php echo article_url()?>"><span class="glyphicon glyphicon-list"></span>&nbsp;文章列表</a></li><?php }?>
 	  <?php if($conf['fenzhan_buy']==1){?><li class=""><a href="./user/"><span class="glyphicon glyphicon-cog"></span>&nbsp;分站后台</a></li>
 	  </ul><?php }?>
 	  </ul>

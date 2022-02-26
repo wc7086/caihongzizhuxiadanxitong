@@ -1,11 +1,17 @@
 <?php
+if(!defined('IN_CRONLITE'))exit();
 @header('Content-Type: text/html; charset=UTF-8');
 
-$admin_cdnpublic = 1;
+$scriptpath=str_replace('\\','/',$_SERVER['SCRIPT_NAME']);
+$scriptpath = substr($scriptpath, 0, strrpos($scriptpath, '/'));
+$scriptpath = substr($scriptpath, 0, strrpos($scriptpath, '/'));
+$siteurl = (is_https() ? 'https://' : 'http://').$_SERVER['HTTP_HOST'].$scriptpath.'/';
+
+$admin_cdnpublic = 0;
 if($admin_cdnpublic==1){
 	$cdnpublic = '//lib.baomitu.com/';
 }elseif($admin_cdnpublic==2){
-	$cdnpublic = '//cdn.bootcss.com/';
+	$cdnpublic = 'https://cdn.bootcdn.net/ajax/libs/';
 }elseif($admin_cdnpublic==4){
 	$cdnpublic = '//s1.pstatp.com/cdn/expire-1-M/';
 }else{
@@ -194,17 +200,12 @@ h4{font-family:"微软雅黑",Georgia,Serif;}
 	</a>
 </li>
 <li>
-	<a class="<?php echo checkIfActive('classlist,shoplist,shopedit,price,shoprank')?>" href="./set.php?mod=ggzz">
-		<i class="fa fa-list sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">货源推荐</span>
-	</a>
-</li>
-<li>
 	<a class="<?php echo checkIfActive('list,export')?>" href="./list.php">
 		<i class="fa fa-list sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">订单管理</span>
 	</a>
 </li>
 
-<li class="<?php echo checkIfActive('classlist,shoplist,shopedit,price,shoprank')?>">
+<li class="<?php echo checkIfActive('classlist,shoplist,shopedit,price,shoprank,cardlist')?>">
 	<a href="javascript:void(0)" class="sidebar-nav-menu"><i class="fa fa-chevron-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="fa fa-shopping-cart sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">商品管理</span></a>
 	<ul>
 <li>
@@ -222,6 +223,11 @@ h4{font-family:"微软雅黑",Georgia,Serif;}
 		加价模板
 	</a>
 </li>
+<?php if($conf['iskami']==1){?><li>
+	<a class="<?php echo checkIfActive("cardlist") ?>" href="./cardlist.php">
+		兑换卡密
+	</a>
+</li><?php }?>
 	</ul>
 </li>
 
@@ -480,6 +486,13 @@ h4{font-family:"微软雅黑",Georgia,Serif;}
 <ul class="dropdown-menu dropdown-menu-right">
 <li class="dropdown-header text-center">
 <strong>管理员用户</strong>
+</li>
+<li>
+<a href="set.php?mod=bind">
+<i class="fa fa-qrcode fa-fw pull-right"></i>
+扫码登录
+</a>
+</li>
 </li>
 <li>
 <a href="set.php?mod=account">

@@ -54,8 +54,11 @@ break;
 case 'app_query':
 	if(!$conf['appcreate_key'])exit('{"code":-1,"msg":"未配置APP生成平台密钥"}');
 	$app = new \lib\AppCreate($conf['appcreate_key']);
-	$url = (is_https() ? 'https://' : 'http://').$_SERVER['HTTP_HOST'];
-	$url=isset($_SESSION['appurl2'])?$_SESSION['appurl2']:$url;
+	$scriptpath=str_replace('\\','/',$_SERVER['SCRIPT_NAME']);
+	$scriptpath = substr($scriptpath, 0, strrpos($scriptpath, '/'));
+	$scriptpath = substr($scriptpath, 0, strrpos($scriptpath, '/'));
+	$siteurl = (is_https() ? 'https://' : 'http://').$_SERVER['HTTP_HOST'].$scriptpath.'/';
+	$url=isset($_SESSION['appurl2'])?$_SESSION['appurl2']:$siteurl;
 	$url = !empty($_POST['url'])?trim($_POST['url']):$url;
 	$domain = parse_url($url)['host'];
 	$res=$app->queryurl($url);

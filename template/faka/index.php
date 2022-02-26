@@ -14,7 +14,7 @@ if(isset($_GET['tid']) && !empty($_GET['tid']))
     }
 }
 
-include_once TEMPLATE_ROOT.'faka/head.php';
+include_once TEMPLATE_ROOT.'faka/inc/head.php';
 
 if($islogin2==1){
 	$price_obj = new \lib\Price($userrow['zid'],$userrow);
@@ -38,22 +38,46 @@ $template_label_manual = $conf['template_label_manual']?$conf['template_label_ma
 <div class="g-body">
 <br/>
 <br/>
-<div class="topliucheng"><img src="<?php echo $cdnserver?>assets/faka/images/goumaizn01.png" title="">
+<?php if(isset($_GET['cid']) && !empty($_GET['cid'])){
+$classname = $DB->getColumn("select name from pre_class where cid=:cid limit 1", [':cid'=>$_GET['cid']]);
+?>
+<div class="topliucheng"><img src="<?php echo $cdnserver?>assets/faka/images/goumaizn01.png" title=""></div>
+<div style="margain-bottom：20px;margin: 0 auto;width: 1180px;border-radius: 3px;">
+    <div class="ziti" style="font-size: 16px;color: #7a7a7a;padding-top: 12px;padding-right: 6px;padding-bottom: 6px;padding-left: 4px;border-radius: 3px;">
+        当前位置 -&gt; <a href="./">网站首页</a> -&gt; <?php echo $classname?>
+    </div>
+</div>
+<?php }else{?>
+<div class="topliucheng ziti"><img src="<?php echo $cdnserver?>assets/faka/images/goumaizn01.png" title="">
 <?php echo $conf['anounce']?>
 </div>
+<?php }?>
+
 <div id="bd">
 
 <div id="bar">
-<div class="bar_top">商家信息</div>
+<div class="bar_top">客户服务</div>
 <div class="from_wz_41">
-<div class="kefu"><a target="blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin=<?php echo $conf['kfqq']?>&amp;Site=qq&amp;Menu=yes">QQ:<?php echo $conf['kfqq']?></a> </div>
-<!--div class="kefu">
-QQ群：168133539</div>
-<div class="kefu">
-微信：71007288</div-->
+<div class="kefu"><a target="blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin=<?php echo $conf['kfqq']?>&amp;Site=qq&amp;Menu=yes">QQ:<?php echo $conf['kfqq']?></a></div>
+<?php if(!empty($conf['kfwx'])){?><div class="kefu">微信：<?php echo $conf['kfwx']?></div><?php }?>
 </div>
 
-<div class="bar_top">手机扫码购买</div><div class="erweima">
+<div class="bar_top">商品分类</div>
+
+<div>
+	<table style="width:100%" border="0" cellpadding="10" cellspacing="0">
+		<tbody><tr>
+			<td class="ziti" style="font-size: 16px;cursor:pointer" onclick="window.location.href = './'"><b>全部商品</b></td>
+		</tr>
+		<?php foreach($shua_class as $cid=>$classname){?>
+		<tr class="cid<?php echo $row['cid']?>">
+			<td class="ziti" style="font-size: 16px;cursor:pointer" onclick="window.location.href = './?cid=<?php echo $cid?>'"><?php echo $classname?></td>
+		</tr>
+		<?php }?>
+	</tbody></table>
+</div>
+
+<div class="bar_top">手机浏览</div><div class="erweima">
 <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&margin=10&data=<?php echo $siteurl?>"> </div>
 </div>
 
@@ -63,16 +87,17 @@ QQ群：168133539</div>
 			<thead>
 				<tr >
   				    <th class="indexlistlb ziti">商品名称</th>
-		
-					
-					 <th class="indexlistlb ziti">售价</th>
-					 
+					 <th class="indexlistlb ziti">售价</th>		 
 					 <th class="indexlistlb ziti">库存</th>
 					 <th class="indexlistlb ziti">操作</th>
 				</tr>
 			</thead>
 			<tbody>
-<?php foreach($shua_class as $cid=>$classname){?>
+<?php foreach($shua_class as $cid=>$classname){
+	if(isset($_GET['cid']) && !empty($_GET['cid'])){
+		if($cid!=$_GET['cid'])continue;
+	}
+?>
 <tr class="cid<?php echo $cid?>"><th colspan="4" class="tableth1 ziti" ><?php echo $classname?></th></tr>
 <?php
 $rs=$DB->query("SELECT * FROM pre_tools WHERE cid='$cid' and active=1 order by sort asc");
@@ -111,55 +136,7 @@ while($res = $rs->fetch()){
 </div></div>
 </div>
 
-<div class="footer">
-  <div class="nb">
-    <div class="promise">
-      <ul>
-        <li>
-          <div class="promise-box">
-            <em class="yec-icon-qg yec-icon"></em>
-            <div class="word ziti">
-              <h3>正品保障</h3>
-              <p>我们坚持“诚信为本、客户第一”的经营理为广大客户提供 优质的产品及服务，我们保证所售商品均为正品，请放心选购。</p>
-            </div>
-          </div>
-        </li>
-        <li>
-          <div class="promise-box">
-            <em class="yec-icon-fare yec-icon"></em>
-            <div class="word ziti">
-              <h3>折扣&amp;优惠</h3>
-              <p>我们会将优惠商品第一时间上架并进行通知，购买数量超过商品设定的值，价格会更便宜，如果您是批发商可以联系我们定制会员级别。</p>
-            </div>
-          </div>
-        </li>
-        <li>
-          <div class="promise-box">
-            <em class="yec-icon-cs yec-icon"></em>
-            <div class="word ziti">
-              <h3>售后无忧</h3>
-              <p>我们的上班时间是早8:00点-晚22:00点（节假日除外），如遇到紧急情况无法联系到客服请不要着急，客服上线后第一时间处理，感谢您的支持。</p>
-            </div>
-          </div>
-        </li>
-        <li>
-          <div class="promise-box">
-            <em class="yec-icon-help yec-icon"></em>
-            <div class="word ziti">
-              <h3>帮助中心</h3>
-              <p>如果你对本网站有不会使用的地方，请阅读帮助中心提供的帮助文档，或者联系我们的客服人员。</p>
-            </div>
-          </div>
-        </li>
-      </ul>
-    </div>
-    <div class="foot-sortnav"></div>
-    <div class="copyright ziti">
-      <p>
-         Copyright © <?php echo date("Y")?> <?php echo $conf['sitename']?>   All rights reserved. <?php echo $conf['footer']?>
-    </div>
-  </div>
-</div>
+<?php include_once TEMPLATE_ROOT.'faka/inc/foot.php';?>
 <script src="<?php echo $cdnpublic?>jquery/1.12.4/jquery.min.js"></script>
 <script src="<?php echo $cdnpublic?>jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 <script type="text/javascript">

@@ -1,4 +1,5 @@
 <?php
+$is_defend=true;
 require '../includes/common.php';
 if($islogin2==1){}else exit("<script language='javascript'>window.location.href='./login.php';</script>");
 
@@ -7,6 +8,11 @@ if($_GET['mod']=='faka'){
 }
 $title = '平台首页';
 include 'head.php';
+
+$scriptpath = str_replace('\\','/',$_SERVER['SCRIPT_NAME']);
+$scriptpath = substr($scriptpath, 0, strrpos($scriptpath, '/'));
+$scriptpath = substr($scriptpath, 0, strrpos($scriptpath, '/'));
+$fenzhan_url = 'http://'.$userrow['domain'].$scriptpath.'/';
 ?>
 <link rel="stylesheet" href="<?php echo $cdnpublic?>toastr.js/latest/css/toastr.min.css">
 <style>
@@ -87,7 +93,7 @@ if(strlen($userrow['pwd'])<6 || is_numeric($userrow['pwd']) && strlen($userrow['
 		<ul class="list-group no-radius">
 		<?php if($userrow['power']>0){?>
 			<li class="list-group-item"><b>通知提醒：</b>你当前有<font color="orange"><b id="tiaosu">0</b></font>条信息未阅读<a href="./message.php" class="btn btn-primary btn-xs pull-right">立即查看</a></li>
-			<li style="font-weight:bold" class="list-group-item">我的域名：<a href="http://<?php echo $userrow['domain']?>/" target="_blank" rel="noreferrer"><?php echo $userrow['domain']?></a><a href="uset.php?mod=site" class="btn btn-info btn-xs pull-right">编辑信息</a></li>
+			<li style="font-weight:bold" class="list-group-item">我的域名：<a href="<?php echo $fenzhan_url?>" target="_blank" rel="noreferrer"><?php echo $userrow['domain']?></a><a href="uset.php?mod=site" class="btn btn-info btn-xs pull-right">编辑信息</a></li>
 			<?php if($conf['fanghong_api']){?>
 			<li style="font-weight:bold;overflow: hidden;" class="list-group-item">防红链接：<a href="javascript:;" id="copy-btn" data-clipboard-text="" >Loading...</a>&nbsp;&nbsp;&nbsp;<span class="pull-right"><button class="btn btn-default btn-xs" id="recreate_url">重新生成</button>&nbsp;&nbsp;<a href="javascript:void(0);" onclick="layer.alert('防红链接：该链接可以在QQ直接打开的您的网站，方便推广！<br />Tips：点击短网址即可复制哦~',{icon: 3,title: '小提示',skin: 'layui-layer-molv layui-layer-wxd'});" class="btn btn-info btn-xs">说明</a></span></li>
 			<?php }?>

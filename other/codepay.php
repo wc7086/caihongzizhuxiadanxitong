@@ -186,7 +186,7 @@ $codepay_html=$codepay_back_data['codepay_html'];
             <div data-role="qrPayImg" class="qrcode-img-area">
                 <div class="ui-loading qrcode-loading" data-role="qrPayImgLoading" style="display: none;">加载中</div>
                 <div style="position: relative;display: inline-block;">
-                    <img id='show_qrcode' alt="加载中..." src="<?php echo $qr ?>" width="210" height="210" style="display: block;">
+                    <img id='show_qrcode' alt="加载中..." src="<?php echo $qr ?>" width="210" height="210" style="display: block;" onerror="this.src='<?php echo $codepay_path?>/img/no.png'">
                     <img onclick="$('#use').hide()" id="use" src="<?php echo $codepay_path?>/img/use_<?php echo $type ?>.png"
                          style="position: absolute;top: 50%;left: 50%;width:32px;height:32px;margin-left: -21px;margin-top: -21px">
                 </div>
@@ -236,13 +236,13 @@ $codepay_html=$codepay_back_data['codepay_html'];
 </div>
 <div class="copyRight"></div>
 <!--注意下面加载顺序 顺序错乱会影响业务-->
-<script src="<?php echo $codepay_path?>/js/jquery-1.10.2.min.js"></script>
+<script src="//cdn.staticfile.org/jquery/1.12.4/jquery.min.js"></script>
 <!--[if lt IE 8]>
-<script src="<?php echo $codepay_path?>/js/json3.min.js"></script><![endif]-->
+<script src="//cdn.staticfile.org/json3/3.3.3/json3.min.js"></script><![endif]-->
 <script>
     var user_data =<?php echo json_encode($user_data);?>
 </script>
-<script src="<?php echo $codepay_path?>/js/notify.js"></script>
+<script src="//cdn.staticfile.org/socket.io/1.7.4/socket.io.min.js"></script>
 <script src="<?php echo $codepay_path?>/js/codepay_util.js?v=2.2"></script>
 <?php echo $codepay_html;?>
 <script src="//cdn.staticfile.org/toastr.js/latest/js/toastr.min.js"></script>

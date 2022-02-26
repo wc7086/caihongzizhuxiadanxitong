@@ -146,7 +146,9 @@ if(isset($_GET['cid'])){
 	$sql=" cid='$cid' AND active=1";
 	$con='
 	<div class="panel panel-default"><div class="panel-heading font-bold" style="background-color: #9999CC;color: white;">'.$shua_class[$cid].'分类 - [<a href="shoplist.php" style="color:#fff00f">查看全部</a>]</div>
-	<div class="well well-sm" style="margin: 0;">分类 '.$shua_class[$cid].' 共有 <b>'.$numrows.'</b> 个商品</div>';
+	<div class="well well-sm" style="margin: 0;">分类 '.$shua_class[$cid].' 共有 <b>'.$numrows.'</b> 个商品</div>
+	<div class="wrapper">
+    <a href="#" data-toggle="modal" data-target="#search2" id="search2" class="btn btn-primary"><i class="fa fa-navicon"></i>&nbsp;分类查看</a>&nbsp;<a class="btn btn-info" href="javascript:void(0)" onclick="up_price('.$cid.')"><i class="fa fa-plus-circle"></i>&nbsp;提升售价</a></div>';
 	$link='&cid='.$cid;
 }else{
 	$numrows=$DB->getColumn("SELECT count(*) FROM pre_tools WHERE active=1");
@@ -155,7 +157,7 @@ if(isset($_GET['cid'])){
 	<div class="panel panel-default"><div class="panel-heading font-bold" style="background-color: #9999CC;color: white;">商品列表</div>
 	<div class="well well-sm" style="margin: 0;">系统共有 <b>'.$numrows.'</b> 个商品 - 提升价格赚的更多哦！提高价格最好不要太贵了否则没人买的哦！</div>
     <div class="wrapper">
-    <a href="#" data-toggle="modal" data-target="#search2" id="search2" class="btn btn-primary"><i class="fa fa-navicon"></i>&nbsp;分类查看</a>&nbsp;<a class="btn btn-success" onclick="return confirm(\'是否要重置所有商品价格设定，恢复到最初状态？\');" href="shoplist.php?my=reset"><i class="fa fa-refresh"></i>&nbsp;恢复价格</a>&nbsp;<a class="btn btn-info" href="javascript:void(0)" onclick="up_price(\''.$userrow['zid'].'\')"><i class="fa fa-plus-circle"></i>&nbsp;提升售价</a></div>';
+    <a href="#" data-toggle="modal" data-target="#search2" id="search2" class="btn btn-primary"><i class="fa fa-navicon"></i>&nbsp;分类查看</a>&nbsp;<a class="btn btn-success" onclick="reset_price(0)" href="javascript:void(0)"><i class="fa fa-refresh"></i>&nbsp;恢复价格</a>&nbsp;<a class="btn btn-info" href="javascript:void(0)" onclick="up_price(0)"><i class="fa fa-plus-circle"></i>&nbsp;提升售价</a></div>';
 }
 
 echo $con;
@@ -229,22 +231,40 @@ echo'</ul>';
 </div>
 <?php include './foot.php';?>
 <script>
-function up_price(zid){
-    	layer.prompt({title: '价格提升百分比 例如5 最好不要超过10', formType: 0}, function(text, index){
-		layer.close(index);
-		if(text.indexOf("%")==-1){
-			text=text+'%';
-		}
+function reset_price(cid){
+	if(confirm('是否要重置所有商品价格设定，恢复到最初状态？')){
 		$.ajax({
 			type:"post",
-			url:"ajax_user.php?act=up_price",
+			url:"ajax_user.php?act=reset_price",
 			data:{
-				zid:<?=$userrow['zid']?>,up:text
+				cid:cid
 			},
 			dataType:"json",
 			success:function(data){
 				if(data.code==0){
-					layer.alert('价格提升成功，刷新即可看到效果',function(){
+					layer.alert('恢复价格成功！',{icon:1},function(){
+                      window.location.reload();
+                    });
+				}else{
+					layer.alert(data.msg);
+				}
+			}
+		});
+	}
+}
+function up_price(cid){
+    layer.prompt({title: '价格提升百分比 例如5 最好不要超过10', formType: 0}, function(text, index){
+		layer.close(index);
+		$.ajax({
+			type:"post",
+			url:"ajax_user.php?act=up_price",
+			data:{
+				up:text,cid:cid
+			},
+			dataType:"json",
+			success:function(data){
+				if(data.code==0){
+					layer.alert('价格提升成功！刷新即可看到效果',{icon:1},function(){
                       window.location.reload();
                     });
 				}else{

@@ -6,7 +6,7 @@ $is_defend=true;
 include("../includes/common.php");
 if($islogin2==1){
 	@header('Content-Type: text/html; charset=UTF-8');
-	exit("<script language='javascript'>alert('您已登陆！');window.location.href='./';</script>");
+	exit("<script language='javascript'>alert('您已登录！');window.location.href='./';</script>");
 }
 if(!$conf['user_open'] && $conf['fenzhan_buy']==1){
 	exit("<script language='javascript'>window.location.href='./regsite.php';</script>");

@@ -6,18 +6,18 @@ PRIMARY KEY  (`k`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `pre_config` VALUES ('cache', '');
-INSERT INTO `pre_config` VALUES ('version', '2051');
+INSERT INTO `pre_config` VALUES ('version', '2055');
 INSERT INTO `pre_config` VALUES ('admin_user', 'admin');
 INSERT INTO `pre_config` VALUES ('admin_pwd', '123456');
 INSERT INTO `pre_config` VALUES ('alipay_api', '2');
 INSERT INTO `pre_config` VALUES ('qqpay_api', '2');
 INSERT INTO `pre_config` VALUES ('wxpay_api', '2');
 INSERT INTO `pre_config` VALUES ('style', '1');
-INSERT INTO `pre_config` VALUES ('cdnpublic', '1');
-INSERT INTO `pre_config` VALUES ('sitename', '彩虹商城');
-INSERT INTO `pre_config` VALUES ('keywords', 'QQ云商城,QQ代刷网,代刷网,自助下单,网红助手,网红速成');
-INSERT INTO `pre_config` VALUES ('description', '彩虹商城，专业提供国内网红速方案，帮您走出网红的第一步，我们提供最专业的售前指导，提供最优质的售后服务，给您一个放心的平台！');
-INSERT INTO `pre_config` VALUES ('kfqq', '2464589955');
+INSERT INTO `pre_config` VALUES ('cdnpublic', '0');
+INSERT INTO `pre_config` VALUES ('sitename', '彩虹云商城');
+INSERT INTO `pre_config` VALUES ('keywords', 'QQ云商城,自助下单,网红助手,网红速成');
+INSERT INTO `pre_config` VALUES ('description', '彩虹云商城，专注数字娱乐产品、网络生活服务产品销售，只为您方便、快捷、省心！');
+INSERT INTO `pre_config` VALUES ('kfqq', '123456789');
 INSERT INTO `pre_config` VALUES ('anounce', '<p>
 <li class="list-group-item"><span class="btn btn-danger btn-xs">1</span> 售后问题可直接联系平台在线QQ客服</li>
 <li class="list-group-item"><span class="btn btn-success btn-xs">2</span> 下单之前请一定要看完该商品的注意事项再进行下单！</li>
@@ -25,15 +25,14 @@ INSERT INTO `pre_config` VALUES ('anounce', '<p>
 <li class="list-group-item"><span class="btn btn-warning btn-xs">4</span> 温馨提示：请勿重复下单哦！必须要等待前面任务订单完成才可以下单！</li>
 <li class="list-group-item"><span class="btn btn-primary btn-xs">5</span> <a href="./user/regsite.php">价格贵？不怕，点击0元搭建，在后台超低价下单！</a></li>
 <div class="btn-group btn-group-justified">
-<a target="_blank" class="btn btn-info" href="http://wpa.qq.com/msgrd?v=3&uin=2464589955&site=qq&menu=yes"><i class="fa fa-qq"></i> 联系客服</a>
+<a target="_blank" class="btn btn-info" href="http://wpa.qq.com/msgrd?v=3&uin=123456&site=qq&menu=yes"><i class="fa fa-qq"></i> 联系客服</a>
 <a target="_blank" class="btn btn-warning" href="http://qun.qq.com/join.html"><i class="fa fa-users"></i> 官方Q群</a>
 <a target="_blank" class="btn btn-danger" href="./"><i class="fa fa-cloud-download"></i> APP下载</a>
 </div></p>');
 INSERT INTO `pre_config` VALUES ('paymsg', '<hr/>小提示：<b style="color:red">如果微信出现无法付款时，您可以把微信的钱转到QQ里，然后使用QQ钱包支付！<a href="./?mod=wx" target="_blank">点击查看教程</a></b>');
 INSERT INTO `pre_config` VALUES ('modal', '');
-INSERT INTO `pre_config` VALUES ('beijing', '/assets/img/bj.png');
 INSERT INTO `pre_config` VALUES ('bottom', '');
-INSERT INTO `pre_config` VALUES ('gg_search', '<span class="label label-primary">待处理</span> 说明正在努力提交到服务器！<p></p><p></p><span class="label label-success">已完成</span> 并不是刷完了只是开始刷了！<p></p><p></p><span class="label label-warning">处理中</span> 已经开始为您开单 请耐心等！<p></p><p></p><span class="label label-danger">有异常</span> 下单信息有误 联系客服处理！');
+INSERT INTO `pre_config` VALUES ('gg_search', '<span class="label label-primary">待处理</span> 说明正在努力提交到服务器！<p></p><p></p><span class="label label-success">已完成</span> 已经提交到接口正在处理！<p></p><p></p><span class="label label-warning">处理中</span> 已经开始为您开单 请耐心等！<p></p><p></p><span class="label label-danger">有异常</span> 下单信息有误 联系客服处理！');
 INSERT INTO `pre_config` VALUES ('chatframe', '');
 INSERT INTO `pre_config` VALUES ('fenzhan_expiry', '12');
 INSERT INTO `pre_config` VALUES ('fenzhan_tixian', '0');
@@ -70,7 +69,7 @@ INSERT INTO `pre_config` VALUES ('captcha_open_reg', '1');
 INSERT INTO `pre_config` VALUES ('tixian_limit', '1');
 INSERT INTO `pre_config` VALUES ('workorder_open', '1');
 INSERT INTO `pre_config` VALUES ('workorder_type', '业务补单|卡密错误|充值没到账|订单中途改了密码');
-INSERT INTO `pre_config` VALUES ('invite_content', '特价名片赞0.1元起刷，免费领名片赞，免费拉圈圈99+，空间人气、QQ钻、大会员、名片赞、说说赞、空间访问、全民K歌，链接：[url] (请复制链接到浏览器打开)');
+INSERT INTO `pre_config` VALUES ('invite_content', '特价名片赞0.1元起，免费领名片赞，空间人气、QQ钻、大会员、名片赞、说说赞、空间访问、全民K歌，链接：[url] (请复制链接到浏览器打开)');
 INSERT INTO `pre_config` VALUES ('fenzhan_edithtml', '1');
 INSERT INTO `pre_config` VALUES ('shopdesc_editor', '1');
 INSERT INTO `pre_config` VALUES ('updatestatus', '0');
@@ -181,9 +180,10 @@ CREATE TABLE `pre_orders` (
 DROP TABLE IF EXISTS `pre_kms`;
 CREATE TABLE `pre_kms` (
   `kid` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `type` tinyint(1) NOT NULL DEFAULT 0,
   `zid` int(11) unsigned NOT NULL DEFAULT 0,
   `tid` int(11) unsigned NOT NULL DEFAULT 0,
-  `type` tinyint(1) NOT NULL DEFAULT 0,
+  `num` int(11) unsigned NOT NULL DEFAULT 1,
   `km` varchar(255) NOT NULL,
   `money` decimal(10,2) NOT NULL DEFAULT '0.00',
   `addtime` timestamp NULL DEFAULT NULL,
@@ -203,7 +203,9 @@ CREATE TABLE `pre_faka` (
   `usetime` datetime DEFAULT NULL,
   `orderid` int(11) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`kid`),
-  KEY `orderid` (`orderid`)
+  KEY `orderid` (`orderid`),
+  KEY `tid` (`tid`),
+  KEY `getleft` (`tid`,`orderid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS `pre_pay`;
@@ -242,6 +244,7 @@ CREATE TABLE `pre_site` (
   `email` VARCHAR(64) DEFAULT NULL,
   `phone` VARCHAR(20) DEFAULT NULL,
   `qq_openid` VARCHAR(64) DEFAULT NULL,
+  `wx_openid` VARCHAR(64) DEFAULT NULL,
   `nickname` VARCHAR(64) DEFAULT NULL,
   `faceimg` VARCHAR(150) DEFAULT NULL,
   `rmb` decimal(10,2) NOT NULL DEFAULT '0.00',
@@ -279,7 +282,8 @@ CREATE TABLE `pre_site` (
   KEY `domain2` (`domain2`),
   UNIQUE KEY `user` (`user`),
   KEY `qq` (`qq`),
-  KEY `qq_openid` (`qq_openid`)
+  KEY `qq_openid` (`qq_openid`),
+  KEY `wx_openid` (`wx_openid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=2;
 
 DROP TABLE IF EXISTS `pre_tixian`;
@@ -326,6 +330,9 @@ CREATE TABLE `pre_shequ` (
   `type` varchar(20) NOT NULL,
   `result` tinyint(1) NOT NULL DEFAULT '1',
   `status` tinyint(1) NOT NULL DEFAULT '0',
+  `remark` varchar(255) DEFAULT NULL,
+  `protocol` tinyint(1) NOT NULL DEFAULT 0,
+  `monitor` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

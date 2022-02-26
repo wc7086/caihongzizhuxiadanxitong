@@ -31,8 +31,6 @@ if(!empty($data)){
 }
 else $sql=" A.userid='{$cookiesid}'";
 
-$qu_total = $DB->getColumn("SELECT count(*) FROM `pre_orders` A LEFT JOIN `pre_tools` B ON A.`tid`=B.`tid` WHERE{$sql} ");
-
 $q_status=isset($_GET['status'])?trim(daddslashes($_GET['status'])):"";
 if(isset($q_status) && $q_status != ""){
 	$qu_status = intval($q_status);
@@ -41,7 +39,7 @@ if(isset($q_status) && $q_status != ""){
 $limit = 10;
 $start = $limit * ($page-1);
 
-$total = $DB->getColumn("SELECT count(*) FROM `pre_orders` A LEFT JOIN `pre_tools` B ON A.`tid`=B.`tid` WHERE{$sql} ");
+$total = $DB->getColumn("SELECT count(*) FROM `pre_orders` A WHERE{$sql} ");
 $total_page = ceil($total/$limit);
 $sql = "SELECT A.*,B.`name`,B.`shopimg` FROM `pre_orders` A LEFT JOIN `pre_tools` B ON A.`tid`=B.`tid` WHERE{$sql} ORDER BY A.`id` DESC LIMIT {$start},{$limit}";
 $rs=$DB->query($sql);
@@ -132,6 +130,7 @@ td.wbreak{max-width:420px;word-break:break-all;}
 #orderItem .orderTitle{word-break:keep-all;}
 #orderItem .orderContent{word-break:break-all;}
 #orderItem .btn{height: 100%;margin: 0;}
+#orderItem .orderContent img{max-width:100%}
 a, a:focus, a:hover, a:active {
     outline: none;
     text-decoration: none;
@@ -272,7 +271,7 @@ if($total_page!=$page){?>
     <div class="fui-content-inner">
         <div class="content-empty" style="">
         	<img src="./assets/store/picture/nolist.png" style="width: 6rem;margin-bottom: .5rem;"><br>
-        	<?php if($_GET['data'] || $_GET['page'] || $qu_total>0){ ?>
+        	<?php if($_GET['data']){ ?>
 	            <p style="color: #999;font-size: .75rem">没有查询到数据</p>
         	<?php }else{ ?>
 	            <p style="color: #999;font-size: .75rem">您暂时没有任何订单哦！</p>

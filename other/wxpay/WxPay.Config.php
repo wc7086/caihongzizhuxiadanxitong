@@ -7,6 +7,8 @@ define("WX_API_APPID", $conf['wxpay_appid']);
 define("WX_API_MCHID", $conf['wxpay_mchid']);
 define("WX_API_KEY", $conf['wxpay_key']);
 define("WX_API_APPSECRET", $conf['wxpay_appsecret']);
+define("WX_SSLCERT_PATH", SYSTEM_ROOT.'wxpay/cert/apiclient_cert.pem');
+define("WX_SSLKEY_PATH", SYSTEM_ROOT.'wxpay/cert/apiclient_key.pem');
 
 class WxPayConfig
 {
@@ -32,6 +34,16 @@ class WxPayConfig
 	const MCHID = WX_API_MCHID;
 	const KEY = WX_API_KEY;
 	const APPSECRET = WX_API_APPSECRET;
+
+	//=======【证书路径设置】=====================================
+	/**
+	 * TODO：设置商户证书路径
+	 * 证书路径,注意应该填写绝对路径（仅退款、撤销订单时需要，可登录商户平台下载，
+	 * API证书下载地址：https://pay.weixin.qq.com/index.php/account/api_cert，下载之前需要安装商户操作证书）
+	 * @var path
+	 */
+	const SSLCERT_PATH = WX_SSLCERT_PATH;
+	const SSLKEY_PATH = WX_SSLKEY_PATH;
 	
 	//=======【curl代理设置】===================================
 	/**

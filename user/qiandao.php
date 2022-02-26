@@ -81,7 +81,7 @@ if($conf['fanghong_api']>0){
 					<div class="avatar-group">
 <?php
 foreach($qqrow as $row){
-	echo '						<img src="http://q4.qlogo.cn/headimg_dl?dst_uin='.$row.'&spec=100" class="img-rounded img-circle img-thumbnail">';
+	echo $row?'<img src="http://q4.qlogo.cn/headimg_dl?dst_uin='.$row.'&spec=100" class="img-rounded img-circle img-thumbnail">':'<img src="../assets/img/user.png" class="img-rounded img-circle img-thumbnail">';
 }
 ?>
 					</div>

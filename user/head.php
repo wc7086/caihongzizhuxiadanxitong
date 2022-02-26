@@ -2,7 +2,7 @@
 if($conf['cdnpublic']==1){
 	$cdnpublic = '//lib.baomitu.com/';
 }elseif($conf['cdnpublic']==2){
-	$cdnpublic = '//cdn.bootcss.com/';
+	$cdnpublic = 'https://cdn.bootcdn.net/ajax/libs/';
 }elseif($conf['cdnpublic']==4){
 	$cdnpublic = '//s1.pstatp.com/cdn/expire-1-M/';
 }else{
@@ -164,6 +164,12 @@ if($userrow['status']==0){
                   <span>自助下单</span>
                 </a>
               </li>
+			  <?php if($conf['openbatchorder']==1){?><li class="<?php echo checkIfActive('shops')?>">
+                <a href="./shops.php">                      
+                  <i class="fa fa-clone"></i>
+                  <span>批量下单</span>
+                </a>
+              </li><?php }?>
 			  <?php if($conf['workorder_open']==1){?>
 			  <li class="<?php echo checkIfActive('workorder')?>">
                 <a href="./workorder.php">

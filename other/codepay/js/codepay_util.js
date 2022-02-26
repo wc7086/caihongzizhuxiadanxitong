@@ -238,7 +238,7 @@ function startNotiry(data) {
         $("#show_qrcode").attr("src", '');
         $("#show_qrcode").attr("alt", '支付成功 1秒后自动跳转');
         if (!isNaN(status) && status > 1)$("#msg h1").html('支付成功 1秒后自动跳转');
-        if (!user_data.return_url)user_data.return_url = 'https://codepay.fateqq.com/demo_show.html';
+        if (!user_data.return_url)user_data.return_url = 'https://codepay.kjkl8.com/demo_show.html';
         var openUrl = user_data.return_url;
         var query = createLinkstring(o);
         openUrl += openUrl.indexOf('?') > 1 ? "&" + query : "?" + query;

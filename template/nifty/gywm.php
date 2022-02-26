@@ -158,8 +158,8 @@ img.logo{width:14px;height:14px;margin:0 5px 0 3px;}
 						<div class="hide-fixed pull-right pad-rgt"><em>建立于：<?php echo $conf['build']?></em></div></h3>
 					</div>
 					<div class="panel-body">
-					专业的代刷自助下单平台，优质的售后服务，致力于最专业的代刷平台！<hr>
-我们的货源全部精挑细选全网性价比最高的，实时掌握代刷市场的动态！
+					专业的自助下单平台，优质的售后服务，致力于最专业的商城平台！<hr>
+我们的货源全部精挑细选全网性价比最高的，实时掌握市场的动态！
 					</div>
 				</div>
 			   </div>
@@ -286,31 +286,6 @@ img.logo{width:14px;height:14px;margin:0 5px 0 3px;}
         </div>
     </div>
 	
-	<div class="modal fade" id="lqq" role="dialog" tabindex="-1" aria-labelledby="demo-default-modal" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><i class="pci-cross pci-circle"></i></button>
-                     <h4 class="modal-title"><i class="fa fa-circle-o"></i> 免费拉圈圈99+</h4>
-                </div>
-                <div class="modal-body">
-			<div class="alert alert-success">免费拉取QQ名片圈圈赞99+，输入QQ号并提交即可！</div>
-		<div class="tab-pane fade in" id="lqq">
-			<div class="form-group">
-				<div class="input-group"><div class="input-group-addon">请输入QQ</div>
-				<input type="text" name="qq" id="qq4" value="" class="form-control" required/>
-			</div></div>
-			<input type="submit" id="submit_lqq" class="btn btn-primary btn-block" value="立即提交">
-			<div id="result3" class="form-group text-center" style="display:none;"></div>
-		</div>
-                </div>
-                <div class="modal-footer">
-                    <button data-dismiss="modal" class="btn btn-default" type="button">关闭</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
 	<div class="modal fade" id="ltjl" role="dialog" tabindex="-1" aria-labelledby="demo-default-modal" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">

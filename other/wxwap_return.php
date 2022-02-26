@@ -25,7 +25,11 @@ if(!$row)exit('该订单号不存在，请返回来源地重新发起请求！')
 <i class="icon ion-information-circled" style="font-size: 80px;"></i><br>
 <span>正在检测付款结果...</span>
 <script src="//cdn.staticfile.org/jquery/1.12.4/jquery.min.js"></script>
+<script src="//cdn.staticfile.org/layer/3.1.1/layer.min.js"></script>
 <script>
+	document.body.addEventListener('touchmove', function (event) {
+		event.preventDefault();
+	},{ passive: false });
 	// 检查是否支付完成
     function loadmsg() {
         $.ajax({
@@ -37,13 +41,10 @@ if(!$row)exit('该订单号不存在，请返回来源地重新发起请求！')
             success: function (data, textStatus) {
                 //从服务器得到数据，显示数据并继续查询
                 if (data.code == 1) {
-                    if (confirm("您已支付完成，需要跳转到订单页面吗？")) {
-                        window.location.href=data.backurl;
-                    } else {
-                        // 用户取消
-                    }
+                    layer.msg('支付成功，正在跳转中...', {icon: 16,shade: 0.1,time: 15000});
+					setTimeout(window.location.href=data.backurl, 1000);
                 }else{
-                    setTimeout("loadmsg()", 3000);
+                    setTimeout("loadmsg()", 2000);
                 }
             },
             //Ajax请求超时，继续查询
@@ -51,7 +52,7 @@ if(!$row)exit('该订单号不存在，请返回来源地重新发起请求！')
                 if (textStatus == "timeout") {
                     setTimeout("loadmsg()", 1000);
                 } else { //异常
-                    setTimeout("loadmsg()", 4000);
+                    setTimeout("loadmsg()", 3000);
                 }
             }
         });

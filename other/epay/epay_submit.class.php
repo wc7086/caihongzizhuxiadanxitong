@@ -96,6 +96,23 @@ class AlipaySubmit {
 	}
 
 	/**
+     * 建立请求，以跳转链接
+     * @param $para_temp 请求参数数组
+     * @return 跳转链接
+     */
+	function buildRequestUrl($para_temp) {
+		//待请求参数数组
+		$para = $this->buildRequestPara($para_temp);
+		
+		//把参数组中所有元素，按照“参数=参数值”的模式用“&”字符拼接成字符串，并对字符串做urlencode编码
+		$request_data = createLinkstringUrlencode($para);
+
+		$url = $this->alipay_gateway_new . '?' . $request_data;
+		
+		return $url;
+	}
+
+	/**
 	 * 获取付款二维码接口
 	*/
 	function getqrcode(){

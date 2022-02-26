@@ -21,7 +21,10 @@ td.wbreak{max-width:420px;word-break:break-all;}
     margin-bottom: 0;
     vertical-align: middle;
 }
+.dates{max-width: 120px;}
+.input-group-addon{min-width: unset;}
 </style>
+<link href="../assets/appui/css/datepicker.css" rel="stylesheet">
 <div class="wrapper">
   <div class="col-sm-12">
 <div class="panel panel-default">
@@ -100,6 +103,17 @@ function display_zt($zt){
 }
 
 $sqls = $userrow['power']>0?"A.zid='{$userrow['zid']}'":"A.userid='{$userrow['zid']}'";
+$links = '';
+if(!empty($_GET['starttime']) || !empty($_GET['endtime'])){
+	if(!empty($_GET['starttime'])){
+		$sqls.=" AND A.addtime>='{$_GET['starttime']} 00:00:00'";
+		$links.="&starttime=".$_GET['starttime'];
+	}
+	if(!empty($_GET['endtime'])){
+		$sqls.=" AND A.addtime<='{$_GET['endtime']} 23:59:59'";
+		$links.="&endtime=".$_GET['endtime'];
+	}
+}
 
 if(isset($_GET['kw']) && !empty($_GET['kw'])) {
 	$kw=daddslashes($_GET['kw']);
@@ -109,16 +123,27 @@ if(isset($_GET['kw']) && !empty($_GET['kw'])) {
 	<div class="panel-heading font-bold" style="background-color: #9999CC;color: white;"> '.$_GET['kw'].' 订单查询 - [<a href="list.php" style="color:#fff00f">查看全部</a>]</div>
 	<div class="well well-sm" style="margin: 0;">包含 '.$_GET['kw'].' 的共有 <b>'.$numrows.'</b> 个订单</div>
 	<div class="wrapper">';
-	$link='&kw='.$_GET['kw'];
+	$link='&kw='.$_GET['kw'].$links;
 }else{
 	$sql=" {$sqls}";
-	$numrows=$DB->getColumn("SELECT count(*) FROM pre_orders A WHERE{$sql}");
-	$ondate=$DB->getColumn("SELECT count(*) FROM pre_orders A WHERE status=1 AND{$sql}");
-	$ondate2=$DB->getColumn("SELECT count(*) FROM pre_orders A WHERE status=2 AND{$sql}");
-	$con='
+	if(isset($_GET['type']) && $_GET['type']>=0) {
+		$sql.=" AND `status`='{$_GET['type']}'";
+		$links.="&type=".$_GET['type'];
+		$numrows=$DB->getColumn("SELECT count(*) FROM pre_orders A WHERE{$sql}");
+		$con='
+	<div class="panel-heading font-bold" style="background-color: #9999CC;color: white;">订单查询 - [<a href="list.php" style="color:#fff00f">查看全部</a>]</div>
+	<div class="well well-sm" style="margin: 0;">'.display_zt($_GET['type']).' 状态的共有 <b>'.$numrows.'</b> 个订单</div>
+	<div class="wrapper">';
+	}else{
+		$numrows=$DB->getColumn("SELECT count(*) FROM pre_orders A WHERE{$sql}");
+		$ondate=$DB->getColumn("SELECT count(*) FROM pre_orders A WHERE status=1 AND{$sql}");
+		$ondate2=$DB->getColumn("SELECT count(*) FROM pre_orders A WHERE status=2 AND{$sql}");
+		$con='
 	<div class="panel-heading font-bold" style="background-color: #9999CC;color: white;">订单查询</div>
 	<div class="well well-sm" style="margin: 0;">共有 <b>'.$numrows.'</b> 个订单，其中已完成的有 <b>'.$ondate.'</b> 个，正在处理的有 <b>'.$ondate2.'</b> 个。</div>
 	<div class="wrapper">';
+	}
+	$link=$links;
 }
 echo $con;
 ?>
@@ -126,6 +151,12 @@ echo $con;
   <div class="form-group">
     <label><b>搜索订单</b></label>
     <input type="text" class="form-control" name="kw" placeholder="请输入下单账号或订单号" value="">
+	<div class="input-group input-daterange">
+	<input type="text" id="starttime" name="starttime" class="form-control dates" placeholder="开始日期" autocomplete="off" title="留空则不限时间范围" value="<?php echo $_GET['starttime']?>">
+	<span class="input-group-addon" onclick="$('#starttime').val('');$('#endtime').val('');" title="清除"><i class="fa fa-chevron-right"></i></span>
+	<input type="text" id="endtime" name="endtime" class="form-control dates" placeholder="结束日期" autocomplete="off" title="留空则不限时间范围" value="<?php echo $_GET['endtime']?>">
+	</div>
+	<select name="type" class="form-control"><option value="-1">全部状态</option><option value="0">待处理</option><option value="2">正在处理</option><option value="1">已完成</option><option value="3">异常</option><option value="4">已退单</option></select>
 	<button type="submit" class="btn btn-info"><i class="fa fa-search"></i>&nbsp;搜索</button>
 	<a href="#" data-toggle="modal" data-target="#search2" id="search2" class="btn btn-success"><i class="fa fa-exclamation-circle"></i>&nbsp;订单状态说明</a>
   </div>
@@ -239,6 +270,8 @@ echo'</ul></center>';
 	</div>
 </div>
 <?php include './foot.php';?>
+<script src="//lib.baomitu.com/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+<script src="//lib.baomitu.com/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.zh-CN.min.js"></script>
 <script>
 function showOrder(id,skey){
 	var ii = layer.load(2, {shade:[0.1,'#fff']});
@@ -254,7 +287,11 @@ function showOrder(id,skey){
 				var item = '<table class="table table-condensed table-hover" id="orderItem">';
 				item += '<tr><td colspan="6" style="text-align:center" class="orderTitle"><b>订单基本信息</b></td></tr><tr class="orderTitle"><td class="info" class="orderTitle">订单编号</td><td colspan="5" class="orderContent">'+id+'</td></tr><tr><td class="info" class="orderTitle">商品名称</td><td colspan="5" class="orderContent">'+data.name+'</td></tr><tr><td class="info">订单金额</td class="orderTitle"><td colspan="5" class="orderContent">'+data.money+'元</td></tr><tr><td class="info">购买时间</td class="orderTitle"><td colspan="5">'+data.date+'</td></tr><tr><td class="info" class="orderTitle">下单信息</td><td colspan="5" class="orderContent">'+data.inputs+'</td><tr><td class="info" class="orderTitle">订单状态</td><td colspan="5" class="orderContent">'+status[data.status]+'</td></tr>';
 				if(data.complain){
-					item += '<tr><td class="info" class="orderTitle">订单操作</td><td class="orderContent"><a href="./workorder.php?my=add&orderid='+id+'&skey='+skey+'" target="_blank" onclick="return checklogin('+data.islogin+')" class="btn btn-xs btn-default">投诉订单</a></td></tr>';
+					item += '<tr><td class="info" class="orderTitle">订单操作</td><td class="orderContent"><a href="./workorder.php?my=add&orderid='+id+'&skey='+skey+'" target="_blank" onclick="return checklogin('+data.islogin+')" class="btn btn-xs btn-default">投诉订单</a>';
+					if(data.selfrefund == 1 && data.islogin == 1 && (data.status == 0 || data.status == 3)){
+						item += '&nbsp;<a onclick="return apply_refund('+id+',\''+skey+'\')" class="btn btn-xs btn-danger">申请退款</a>';
+					}
+					item += '</td></tr>';
 				}
 				if(data.list && data.list.order_state){
 					item += '<tr><td colspan="6" style="text-align:center" class="orderTitle"><b>订单实时状态</b></td><tr><td class="warning">下单数量</td><td>'+data.list.num+'</td><td class="warning">下单时间</td><td colspan="3">'+data.list.add_time+'</td></tr><tr><td class="warning">初始数量</td><td>'+data.list.start_num+'</td><td class="warning">当前数量</td><td>'+data.list.now_num+'</td><td class="warning">订单状态</td><td><font color=blue>'+data.list.order_state+'</font></td></tr>';
@@ -281,6 +318,53 @@ function showOrder(id,skey){
 		}
 	});
 }
+function checklogin(islogin){
+	if(islogin==1){
+		return true;
+	}else{
+		var confirmobj = layer.confirm('为方便反馈处理结果，投诉订单前请先登录网站！', {
+		  btn: ['登录','注册','取消']
+		}, function(){
+			window.location.href='./login.php';
+		}, function(){
+			window.location.href='./reg.php';
+		}, function(){
+			layer.close(confirmobj);
+		});
+		return false;
+	}
+}
+function apply_refund(id,skey){
+	var confirmobj = layer.confirm('待处理或异常状态订单可以申请退款，退款之后资金会退到用户余额，是否确认退款？', {
+	  btn: ['确认退款','取消']
+	}, function(){
+		var ii = layer.load(2, {shade:[0.1,'#fff']});
+		$.ajax({
+			type : "POST",
+			url : "../ajax.php?act=apply_refund",
+			data : {id:id,skey:skey},
+			dataType : 'json',
+			success : function(data) {
+				layer.close(ii);
+				if(data.code == 0){
+					layer.alert('成功退款'+data.money+'元到余额！', {icon:1}, function(){ window.location.reload(); });
+				}else{
+					layer.alert(data.msg, {icon:2});
+				}
+			}
+		});
+	}, function(){
+		layer.close(confirmobj);
+	});
+}
+$(document).ready(function(){
+	$('.input-datepicker, .input-daterange').datepicker({
+        format: 'yyyy-mm-dd',
+		autoclose: true,
+        clearBtn: true,
+        language: 'zh-CN'
+    });
+})
 </script>
 </body>
 </html>

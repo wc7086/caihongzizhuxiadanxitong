@@ -26,7 +26,7 @@ include_once 'head.php';
 		</div>
 		<div id="sidebar-extra-info" class="sidebar-content sidebar-nav-mini-hide">
 			<div class="text-center">
-				<small>2020 <i class="fa fa-heart text-danger"></i> <a href="./"> <?php echo $conf['sitename']?></a></small><br>
+				<small><?php echo date("Y")?> <i class="fa fa-heart text-danger"></i> <a href="./"> <?php echo $conf['sitename']?></a></small><br>
 			</div>
 		</div>
 	</div>

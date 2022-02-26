@@ -30,12 +30,12 @@ function connect(type){
 		} 
 	});
 }
-function quickreg(){
+function quickreg(type){
 	var ii = layer.load(2, {shade:[0.1,'#fff']});
 	$.ajax({
 		type : "POST",
 		url : "ajax.php?act=quickreg",
-		data : {submit:'do'},
+		data : {type:type,submit:'do'},
 		dataType : 'json',
 		success : function(data) {
 			layer.close(ii);

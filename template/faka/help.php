@@ -1,18 +1,23 @@
 <?php
 if(!defined('IN_CRONLITE'))exit();
 
-include_once TEMPLATE_ROOT.'faka/head.php';
+$hometitle = '帮助中心 - '.$conf['sitename'];
+include_once TEMPLATE_ROOT.'faka/inc/head.php';
 ?>
 <div class="g-body">
 <br/>
 <br/>
 <div id="bd">
 
+<div class="ziti" style="font-size: 16px;color: #7a7a7a;padding-top: 12px;padding-right: 6px;padding-bottom: 6px;padding-left: 4px;border-radius: 3px;">当前位置 -&gt;
+    <a href="./">网站首页</a> -&gt; 帮助中心
+</div>
+
 <div id="bar">
 <div class="bar_top">关于我们</div><br />
 
 <ul id="bar_ul">
-<li ><a href="./?mod=about">关于我们</a></li>
+<?php if(!empty($conf['template_about'])){?><li ><a href="./?mod=about">关于我们</a></li><?php }?>
 <li class="va"><a href="./?mod=help">帮助中心</a></li>
 </ul>
 </div>
@@ -21,7 +26,7 @@ include_once TEMPLATE_ROOT.'faka/head.php';
 <div id="bar_r">
 
 
-<div id="body_xiao">
+<div id="body_xiao" style="background-image:url('assets/faka/images/aboutbg.png');background-repeat: no-repeat; background-color:#FFFFFF;">
     	<div class="table">
 
 <br/>
@@ -30,14 +35,13 @@ include_once TEMPLATE_ROOT.'faka/head.php';
 </p></span><br/>
 
     	
-<span ><p>如何购买卡密：</p><p>第一步：先注册 一个账号 或者登陆</p><p>第二步：选购指定商品 确认够买</p><p>第三步：充值结算</p><p>第四步：完成 提取卡密</p><p>如有疑问请联系客服处理</p></span>
-        	
+<span style="font-size: 16px; white-space: normal;" class="ziti"><?php echo $conf['template_help']?></span>
 
 
 </div>
 </div>
 </div>
 </div></div>
-<div id="footer">
-    		&copy; <?php echo date("Y")?> <?php echo $conf['sitename']?>
-</div>
+<?php include_once TEMPLATE_ROOT.'faka/inc/foot.php';?>
+</body>
+</html>

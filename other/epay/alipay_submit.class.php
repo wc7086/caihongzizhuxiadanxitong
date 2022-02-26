@@ -93,7 +93,7 @@ class AlipaySubmit {
 		$para = $this->buildRequestPara($para_temp);
 		
 		$sHtml = "<form id='alipaysubmit' name='alipaysubmit' action='http://".$this->alipay_config['getway']."/open/gateway.html' method='".$method."'>";
-		while (list ($key, $val) = each ($para)) {
+		foreach ($para as $key=>$val) {
             $sHtml.= "<input type='hidden' name='".$key."' value='".$val."'/>";
         }
 

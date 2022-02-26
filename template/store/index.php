@@ -337,7 +337,7 @@ $class_show_num = intval($conf['index_class_num_style'])?intval($conf['index_cla
                             <ul>
                                 <li><a href="JavaScript:void(0)" onclick="$('.tzgg').show()">
                                         <marquee behavior="alternate">
-                                            <span style="color:red">❤️诚邀各级大咖合作共赢-24小时自助下单-售后稳定❤️<</span>
+                                            <span style="color:red">❤️诚邀各级大咖合作共赢-24小时自助下单-售后稳定❤️</span>
                                         </marquee>
                                     </a></li>
                             </ul>

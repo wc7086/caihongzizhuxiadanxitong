@@ -32,79 +32,27 @@ if($_GET['do']=='pricejk'){
 	saveSetting('pricejk_lasttime',$date);
 	$success = 0;
 	$is_need = 0;
+	if($conf['pricejk_yile']==1){
+		$allowType = array_merge(explode(',',$CACHE->read('pricejk_type1')), explode(',',$CACHE->read('pricejk_type2')));
+	}else{
+		$allowType = explode(',',$CACHE->read('pricejk_type1'));
+		$allowType[] = 'yile';
+	}
+	if(count($allowType) == 0)exit('没有支持价格监控的对接网站类型');
 	$rs=$DB->query("SELECT * FROM pre_shequ ORDER BY id ASC");
 	while($res = $rs->fetch())
 	{
-		if(!in_array($res['type'], ['jiuwu', 'yile', 'kayixin', 'shangmeng', 'kashangwl', 'shangzhanwl', 'daishua', 'extend'])) continue;
-		$tcount = $DB->getColumn("SELECT count(*) FROM pre_tools WHERE is_curl=2 AND shequ='{$res['id']}' AND cid IN ({$conf['pricejk_cid']})");
-		if($tcount>0 && $res['username'] && $res['password']){
+		if(!in_array($res['type'], $allowType)) continue;
+		$tcount = $DB->getColumn("SELECT count(*) FROM pre_tools WHERE is_curl=2 AND shequ='{$res['id']}' AND cid IN ({$conf['pricejk_cid']}) AND active=1");
+		if($tcount>0 && $res['username'] && $res['password'] && $res['type']){
 			$is_need++;
-			if($res['type']=='jiuwu'){
-				$results = pricejk_jiuwu($res['id'],$success);
-				if($results===true){
-					saveSetting('pricejk_status','ok');
-				}else{
-					saveSetting('pricejk_status',$results);
-					echo '对接站点ID'.$res['id'].'：'.$results.'<br/>';
-				}
-			}elseif($res['type']=='yile'){
-				$results = pricejk_yile($res['id'],$success);
-				if($results===true){
-					saveSetting('pricejk_status','ok');
-				}else{
-					saveSetting('pricejk_status',$results);
-					echo '对接站点ID'.$res['id'].'：'.$results.'<br/>';
-				}
-			}elseif($res['type']=='kayixin'){
-				$results = pricejk_kayixin($res['id'],$success);
-				if($results===true){
-					saveSetting('pricejk_status','ok');
-				}else{
-					saveSetting('pricejk_status',$results);
-					echo '对接站点ID'.$res['id'].'：'.$results.'<br/>';
-				}
-			}elseif($res['type']=='shangmeng'){
-				$results = pricejk_shangmeng($res['id'],$success);
-				if($results===true){
-					saveSetting('pricejk_status','ok');
-				}else{
-					saveSetting('pricejk_status',$results);
-					echo '对接站点ID'.$res['id'].'：'.$results.'<br/>';
-				}
-			}elseif($res['type']=='kashangwl'){
-				$results = pricejk_kashangwl($res['id'],$success);
-				if($results===true){
-					saveSetting('pricejk_status','ok');
-				}else{
-					saveSetting('pricejk_status',$results);
-					echo '对接站点ID'.$res['id'].'：'.$results.'<br/>';
-				}
-			}elseif($res['type']=='shangzhanwl'){
-				$results = pricejk_shangzhanwl($res['id'],$success);
-				if($results===true){
-					saveSetting('pricejk_status','ok');
-				}else{
-					saveSetting('pricejk_status',$results);
-					echo '对接站点ID'.$res['id'].'：'.$results.'<br/>';
-				}
-			}elseif($res['type']=='daishua'){
-				$results = pricejk_this($res['id'],$success);
-				if($results===true){
-					saveSetting('pricejk_status','ok');
-				}else{
-					saveSetting('pricejk_status',$results);
-					echo '对接站点ID'.$res['id'].'：'.$results.'<br/>';
-				}
-			}elseif($res['type']=='extend'){
-				if(class_exists("ExtendAPI", false) && method_exists('ExtendAPI','pricejk')){
-					$results = ExtendAPI::pricejk($res['id'],$success);
-					if($results===true){
-						saveSetting('pricejk_status','ok');
-					}else{
-						saveSetting('pricejk_status',$results);
-						echo '对接站点ID'.$res['id'].'：'.$results.'<br/>';
-					}
-				}
+			$results = third_call($res['type'], $res, 'pricejk', [$res['id'], &$success]);
+			if($results === false) continue;
+			if($results===true){
+				saveSetting('pricejk_status','ok');
+			}else{
+				saveSetting('pricejk_status',$results);
+				echo '对接站点ID'.$res['id'].'：'.$results.'<br/>';
 			}
 		}
 	}
@@ -138,7 +86,7 @@ elseif($_GET['do']=='daily'){ //每天执行一次
 		$limit = intval($conf['rank_reward']);
 		$cron_lasttime = getSetting('cron_rank_time', true);
 		if($cron_lasttime != date("Ymd")){
-			$re = $DB->query("SELECT a.zid,SUM(money) AS money FROM pre_orders AS a WHERE (TO_DAYS(NOW()) - TO_DAYS(addtime) = 1) AND zid>1 GROUP BY zid HAVING money>0 ORDER BY money DESC LIMIT {$limit}");
+			$re = $DB->query("SELECT a.zid,SUM(money) AS money FROM pre_orders AS a WHERE (TO_DAYS(NOW()) - TO_DAYS(addtime) = 1) AND zid>1 AND status!=4 GROUP BY zid HAVING money>0 ORDER BY money DESC LIMIT {$limit}");
 			$allmoney = 0;
 			$count = 0;
 			while ($site = $re->fetch()) {
@@ -196,30 +144,12 @@ elseif($_GET['do']=='updatestatus'){ //订单状态监控
 				$DB->exec("UPDATE `pre_orders` SET `uptime`=".time()." WHERE id='{$row['id']}'");
 				continue;
 			}
-			if($shequ['type']=='yile'){
-				$list = yile_chadan($shequ['url'], $row['djorder'], $shequ['username'], $shequ['password']);
-			}elseif($shequ['type']=='jiuwu'){
-				$list = jiuwu_chadan($shequ['url'], $shequ['username'], $shequ['password'], $row['djorder']);
-			}elseif($shequ['type']=='shangmeng'){
-				$list = shangmeng_chadan($shequ['username'], $shequ['password'], $row['djorder']);
-			}elseif($shequ['type']=='kashangwl'){
-				$list = kashangwl_chadan($shequ['url'], $shequ['username'], $shequ['password'], $row['djorder']);
-			}elseif($shequ['type']=='shangzhanwl'){
-				$list = shangzhanwl_chadan($shequ['url'], $shequ['username'], $shequ['password'], $row['djorder']);
-			}elseif($shequ['type']=='daishua'){
-				$list = this_chadan($shequ['url'], $row['djorder']);
-			}elseif($shequ['type']=='liuliangka'){
-				$list = liuliangka_chadan($shequ['url'], $shequ['username'], $shequ['password'], $row['djorder']);
-			}elseif($shequ['type']=='extend'){
-				if(class_exists("ExtendAPI", false) && method_exists('ExtendAPI','chadan')){
-					$list = ExtendAPI::chadan($shequ['url'], $shequ['username'], $shequ['password'], $row['djorder'], $tool['goods_id'], [$row['input'], $row['input2'], $row['input3'], $row['input4'], $row['input5']]);
-				}
-			}
+			$list = third_call($shequ['type'], $shequ, 'query_order', [$row['djorder'], $tool['goods_id'], [$row['input'], $row['input2'], $row['input3'], $row['input4'], $row['input5']]]);
 			$checkcount++;
-			if($list && ($list['order_state']=='已完成'||$list['order_state']=='订单已完成'||$list['订单状态']=='已完成'||$list['订单状态']=='已发货'||$list['订单状态']=='交易成功')){
+			if($list && is_array($list) && ($list['order_state']=='已完成'||$list['order_state']=='订单已完成'||$list['订单状态']=='已完成'||$list['订单状态']=='已发货'||$list['订单状态']=='交易成功'||$list['订单状态']=='已支付')){
 				$DB->exec("UPDATE `pre_orders` SET `status`=1,`uptime`=".time()." WHERE id='{$row['id']}'");
 				$successcount++;
-			}elseif($list && (strpos($list['order_state'],'异常')!==false||strpos($list['order_state'],'退单')!==false||$list['订单状态']=='异常'||$list['订单状态']=='已退单')){
+			}elseif($list && is_array($list) && (strpos($list['order_state'],'异常')!==false||strpos($list['order_state'],'退单')!==false||$list['订单状态']=='异常'||$list['订单状态']=='已退单')){
 				$DB->exec("UPDATE `pre_orders` SET `status`=3,`uptime`=".time()." WHERE id='{$row['id']}'");
 			}else{
 				$DB->exec("UPDATE `pre_orders` SET `uptime`=".time()." WHERE id='{$row['id']}'");

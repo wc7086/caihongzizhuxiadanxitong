@@ -50,24 +50,25 @@ if(isset($_GET['kw']) && !empty($_GET['kw'])) {
 	if($sqls)$sql="(".$sql.")".$sqls;
 	$numrows=$DB->getColumn("SELECT count(*) from pre_orders A WHERE{$sql}");
 	$con='包含 '.$_GET['kw'].' 的共有 <b>'.$numrows.'</b> 个订单';
-	$link='&kw='.$_GET['kw'];
+	$link='&kw='.$_GET['kw'].$links;
 }elseif(isset($_GET['id'])) {
 	$id = intval($_GET['id']);
 	$sql=" A.`id`='$id'".$sqls;
 	$numrows=$DB->getColumn("SELECT count(*) from pre_orders A WHERE{$sql}");
 	$con='';
-	$link='&id='.$_GET['id'];
+	$link='&id='.$_GET['id'].$links;
 }elseif(isset($_GET['tid'])) {
 	$tid = intval($_GET['tid']);
 	$sql=" A.`tid`='$tid'".$sqls;
 	if(isset($_GET['type']) && $_GET['type']>=0) {
 		$sql.=" AND `status`='{$_GET['type']}'";
 		$addstr=display_zt($_GET['type']).' 状态的';
+		$links.='&type='.$_GET['type'];
 	}
 	$tool_name = $DB->getColumn("SELECT name FROM pre_tools WHERE tid='$tid' limit 1");
 	$numrows=$DB->getColumn("SELECT count(*) from pre_orders A WHERE{$sql}");
 	$con=$tool_name.' '.$addstr.'共有 <b>'.$numrows.'</b> 个订单';
-	$link='&tid='.$_GET['tid'];
+	$link='&tid='.$_GET['tid'].$links;
 }elseif(isset($_GET['cid'])) {
 	$cid = intval($_GET['cid']);
 	$tidlist = $DB->getAll("SELECT tid FROM pre_tools WHERE cid='$cid'");
@@ -79,39 +80,43 @@ if(isset($_GET['kw']) && !empty($_GET['kw'])) {
 	if(isset($_GET['type']) && $_GET['type']>=0) {
 		$sql.=" AND `status`='{$_GET['type']}'";
 		$addstr=display_zt($_GET['type']).' 状态的';
+		$links.='&type='.$_GET['type'];
 	}
 	$class_name = $DB->getColumn("SELECT name FROM pre_class WHERE cid='$cid' limit 1");
 	$numrows=$DB->getColumn("SELECT count(*) from pre_orders A WHERE{$sql}");
 	$con=$class_name.' '.$addstr.'共有 <b>'.$numrows.'</b> 个订单';
-	$link='&cid='.$_GET['cid'];
+	$link='&cid='.$_GET['cid'].$links;
 }elseif(isset($_GET['zid'])) {
 	$zid = intval($_GET['zid']);
 	$sql=" A.`zid`='$zid'".$sqls;
 	if(isset($_GET['type']) && $_GET['type']>=0) {
 		$sql.=" AND `status`='{$_GET['type']}'";
 		$addstr=display_zt($_GET['type']).' 状态的';
+		$links.='&type='.$_GET['type'];
 	}
 	$numrows=$DB->getColumn("SELECT count(*) from pre_orders A WHERE{$sql}");
 	$con='站点ID:'.$_GET['zid'].' '.$addstr.'共有 <b>'.$numrows.'</b> 个订单';
-	$link='&zid='.$_GET['zid'];
+	$link='&zid='.$_GET['zid'].$links;
 }elseif(isset($_GET['uid'])) {
 	$uid = intval($_GET['uid']);
 	$sql=" A.`userid`='$uid'".$sqls;
 	if(isset($_GET['type']) && $_GET['type']>=0) {
 		$sql.=" AND A.`status`='{$_GET['type']}'";
 		$addstr=display_zt($_GET['type']).' 状态的';
+		$links.='&type='.$_GET['type'];
 	}
 	$numrows=$DB->getColumn("SELECT count(*) from pre_orders A WHERE{$sql}");
 	$con='用户ID:'.$_GET['uid'].' '.$addstr.'共有 <b>'.$numrows.'</b> 个订单';
-	$link='&uid='.$_GET['uid'];
+	$link='&uid='.$_GET['uid'].$links;
 }elseif(isset($_GET['type']) && $_GET['type']>=0) {
 	$sql=" A.`status`='{$_GET['type']}'".$sqls;
 	$numrows=$DB->getColumn("SELECT count(*) from pre_orders A WHERE{$sql}");
 	$con=''.display_zt($_GET['type']).' 状态的共有 <b>'.$numrows.'</b> 个订单';
 	if($_GET['type']==3)$con.='&nbsp;[<a href="list.php?my=fillall" onclick="return confirm(\'你确定要将所有异常订单改为待处理状态吗？\');">将所有异常订单改为待处理状态</a>]';
-	$link='&type='.$_GET['type'];
+	$link='&type='.$_GET['type'].$links;
 }else{
 	$sql=" 1".$sqls;
+	$link=$links;
 	$numrows=$DB->getColumn("SELECT count(*) from pre_orders A WHERE{$sql}");
 	$ondate=$DB->getColumn("select count(*) from pre_orders A where status=1{$sqls}");
 	$ondate2=$DB->getColumn("select count(*) from pre_orders A where status=2{$sqls}");

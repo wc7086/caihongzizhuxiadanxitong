@@ -40,7 +40,8 @@ function listTable(query){
 		cache : false,
 		success : function(data) {
 			layer.close(ii);
-			$("#listTable").html(data)
+			$("#listTable").html(data);
+			$('[data-toggle="tooltip"], .enable-tooltips').tooltip({container: 'body', animation: false});
 		},
 		error:function(data){
 			layer.msg('服务器错误');
@@ -64,7 +65,8 @@ function show(tid) {
 				  type: 1,
 				  title: '商品详情',
 				  skin: 'layui-layer-rim',
-				  content: item
+				  content: item,
+				  shadeClose: true
 				});
 			}else{
 				layer.alert(data.msg);
@@ -293,7 +295,8 @@ function getPrice(tid) {
 				  type: 1,
 				  title: '修改商品价格',
 				  skin: 'layui-layer-rim',
-				  content: data.data
+				  content: data.data,
+				  shadeClose: true
 				});
 				  changePrice();
 			}else{
@@ -470,7 +473,8 @@ function setStock(tid,stock) {
 					return false;
 				}
 			});
-		}
+		},
+		shadeClose: true
 	});
 }
 $(document).ready(function(){

@@ -13,7 +13,11 @@ case 'getTool':
 	$rows=$DB->getRow("select * from pre_tools where tid='$tid' limit 1");
 	if(!$rows)
 		exit('{"code":-1,"msg":"商品不存在"}');
-	$rows['link'] = 'http://'.$_SERVER['HTTP_HOST'].'/?cid='.$rows['cid'].'&tid='.$rows['tid'];
+	$scriptpath=str_replace('\\','/',$_SERVER['SCRIPT_NAME']);
+	$scriptpath = substr($scriptpath, 0, strrpos($scriptpath, '/'));
+	$scriptpath = substr($scriptpath, 0, strrpos($scriptpath, '/'));
+	$siteurl = (is_https() ? 'https://' : 'http://').$_SERVER['HTTP_HOST'].$scriptpath.'/';
+	$rows['link'] = $siteurl.'?cid='.$rows['cid'].'&tid='.$rows['tid'];
 	$result=array("code"=>0,"msg"=>"succ","data"=>$rows);
 	exit(json_encode($result));
 break;
@@ -230,61 +234,17 @@ break;
 case 'getGoodsList': //获取对接商品列表
 	$shequ=intval($_POST['shequ']);
 	$row=$DB->getRow("select * from pre_shequ where id='$shequ' limit 1");
-	if($row['type']=='yile'){
-		$type = 'yile';
-		$list = yile_goodslist($row['url'],$row['username'],$row['password']);
-	}elseif($row['type']=='jiuwu'){
-		$type = 'jiuwu';
-		$list = jiuwu_goodslist_details($row['url'],$row['username'],$row['password']);
-	}elseif($row['type']=='daishua'){
-		$type = 'this';
-		$list = this_goodslist($row['url'],$row['username'],$row['password']);
-	}elseif($row['type']=='liuliangka'){
-		$type = 'liuliangka';
-		$list = liuliangka_goodslist($row['url'],$row['username'],$row['password']);
-	}elseif($row['type']=='zhike'){
-		$type = 'zhike';
-		$list = zhike_goodslist($row['url'],$row['username'],$row['password']);
-	}elseif($row['type']=='extend'){
-		$type = 'extend';
-		if(class_exists("ExtendAPI", false) && method_exists('ExtendAPI','goodslist')){
-			$list = ExtendAPI::goodslist($row['url'], $row['username'], $row['password']);
-		}
-	}else{
-		exit('{"code":-1,"msg":"请直接在参数名处填写下单页面地址"}');
-	}
+	$list = third_call($row['type'], $row, 'goods_list');
+	if($list === false) exit('{"code":-1,"msg":"请直接在参数名处填写下单页面地址"}');
 	if(!is_array($list))$result=array('code'=>-1,'msg'=>$list);
-	else $result=array('code'=>0,'msg'=>'succ','type'=>$type,'data'=>$list);
+	else $result=array('code'=>0,'msg'=>'succ','type'=>$row['type'],'data'=>$list);
 	exit(json_encode($result));
 break;
 case 'getGoodsParam': //获取对接参数名
 	$shequ=intval($_POST['shequ']);
 	$goodsid=intval($_POST['goodsid']);
 	$row=$DB->getRow("select * from pre_shequ where id='$shequ' limit 1");
-	if($row['type']=='yile'){
-		$result = yile_goods_details($row['url'],$goodsid,$row['username'],$row['password']);
-		$paramname = '';
-		foreach($result['inputs'] as $v){
-			$paramname.=$v[0].'|';
-		}
-		$result['paramname'] = trim($paramname, '|');	
-	}elseif($row['type']=='shangmeng'){
-		$result = shangmeng_goods_details($goodsid,$row['username'],$row['password']);
-	}elseif($row['type']=='kashangwl'){
-		$result = kashangwl_goods_details($row['url'],$goodsid,$row['username'],$row['password']);
-	}elseif($row['type']=='shangzhanwl'){
-		$result = shangzhanwl_goods_details($row['url'],$goodsid,$row['username'],$row['password']);
-	}elseif($row['type']=='daishua'){
-		$result = this_goods_details($row['url'],$goodsid,$row['username'],$row['password']);
-	}elseif($row['type']=='zhike'){
-		$result = zhike_goods_details($row['url'],$_POST['goods_param'],$row['username'],$row['password']);
-	}elseif($row['type']=='extend'){
-		if(class_exists("ExtendAPI", false) && method_exists('ExtendAPI','goods_details')){
-			$result = ExtendAPI::goods_details($row['url'],$goodsid,$row['username'],$row['password']);
-		}
-	}else{
-		$result = jiuwu_goodsparam($row['url'],$goodsid,$row['username'],$row['password']);
-	}
+	$result = third_call($row['type'], $row, 'goods_info', [$goodsid]);
 	if(!is_array($result)){
 		$error = $result;
 		$result=array();
@@ -298,7 +258,7 @@ break;
 case 'getKyxCategory':
 	$shequ=intval($_POST['shequ']);
 	$row=$DB->getRow("select * from pre_shequ where id='$shequ' limit 1");
-	$data = getKyxCategory($row);
+	$data = third_call('kayixin', $row, 'getKyxCategory');
 	if(!is_array($data)){
 		$result=array();
 		$result['code'] = -1;
@@ -313,7 +273,7 @@ case 'getKyxProductList':
 	$shequ=intval($_POST['shequ']);
 	$categoryid=intval($_POST['categoryid']);
 	$row=$DB->getRow("select * from pre_shequ where id='$shequ' limit 1");
-	$data = getKyxProductList($row, $categoryid);
+	$data = third_call('kayixin', $row, 'getKyxProductList', [$categoryid]);
 	if(!is_array($data)){
 		$result=array();
 		$result['code'] = -1;
@@ -418,7 +378,7 @@ case 'goodslistbycid':
 	$cid=isset($_POST['cid'])?intval($_POST['cid']):0;
 	$row=$DB->getRow("select * from pre_shequ where id='$shequ' limit 1");
 	if($row['type']=='daishua'){
-		$rows = this_goodslistbycid($row['url'],$cid,$row['username'],$row['password']);
+		$rows = third_call('daishua', $row, 'goods_list_by_cid', [$cid]);
 	}else{
 		exit('{"code":-1,"msg":"该对接网站类型不支持批量添加商品"}');
 	}
@@ -441,8 +401,8 @@ case 'batchaddgoods':
 	if(count($_POST['list'])==0)exit('{"code":-1,"msg":"请至少选中一个商品"}');
 	if($_POST['mcid']=='new'){
 		$sort = $DB->getColumn("select sort from pre_class order by sort desc limit 1");
-		$sql="insert into `pre_class` (`name`,`sort`,`active`) values (:name,:sort,1)";
-		if(!$DB->exec($sql, [':name'=>$_POST['cname'], ':sort'=>$sort+1])){
+		$sql="insert into `pre_class` (`name`,`shopimg`,`sort`,`active`) values (:name,:shopimg,:sort,1)";
+		if(!$DB->exec($sql, [':name'=>$_POST['cname'], ':shopimg'=>$_POST['cimg'], ':sort'=>$sort+1])){
 			exit('{"code":-1,"msg":"新建分类失败！'.$DB->error().'"}');
 		}
 		$mcid=$DB->lastInsertId();

@@ -39,9 +39,6 @@ $sitepath = substr($scriptpath, 0, strrpos($scriptpath, '/'));
 $siteurl = (is_https() ? 'https://' : 'http://').$_SERVER['HTTP_HOST'].$sitepath.'/';
 if(!isset($_SERVER['HTTP_USER_AGENT']) || !strpos($_SERVER['HTTP_USER_AGENT'],chr(46)))$_SERVER['HTTP_USER_AGENT']='Mozilla/5.0 (Windows NT 10.0) Safari/537.36';
 
-if(file_exists(ROOT."includes/extend.class.php")){
-	include_once(ROOT."includes/extend.class.php");
-}
 include ROOT.'includes/core.func.php';
 include ROOT.'includes/member.php';
 

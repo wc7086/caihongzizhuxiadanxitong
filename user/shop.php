@@ -25,6 +25,8 @@ img.logo{width: 22px;margin: -2px 5px 0 5px;}
 #list2 td{max-width:280px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
 #orderItem .orderTitle{word-break:keep-all;}
 #orderItem .orderContent{word-break:break-all;}
+#orderItem .orderContent img{max-width:100%}
+#alert_frame img{max-width:100%}
 </style>
 <div class="wrapper">
 	<div class="col-sm-12 col-md-8 col-lg-6 center-block" style="float: none;">

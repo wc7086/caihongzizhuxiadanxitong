@@ -8,7 +8,7 @@ if($conf['qqpay_api']!=1)exit('当前支付接口未开启');
 $row=$DB->getRow("SELECT * FROM pre_pay WHERE trade_no='{$trade_no}' LIMIT 1");
 if(!$row)exit('该订单号不存在，请返回来源地重新发起请求！');
 
-$ordername = !empty($conf['ordername'])?str_replace('[time]',time(),$conf['ordername']):$row['name'];
+$ordername = !empty($conf['ordername'])?ordername_replace($conf['ordername'],$row['name'],$trade_no):$row['name'];
 
 require_once (SYSTEM_ROOT.'qqpay/qpayMchAPI.class.php');
 
@@ -40,6 +40,7 @@ if($result['return_code']=='SUCCESS' && $result['result_code']=='SUCCESS'){
 <!DOCTYPE html>
 <html>
 <head>
+<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Language" content="zh-cn">
 <meta name="renderer" content="webkit">
@@ -92,6 +93,7 @@ if($result['return_code']=='SUCCESS' && $result['result_code']=='SUCCESS'){
 </div>
 <script src="//lib.baomitu.com/jquery/1.12.4/jquery.min.js"></script>
 <script src="//lib.baomitu.com/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+<script src="//cdn.staticfile.org/layer/3.1.1/layer.min.js"></script>
 <script>
     var code_url = '<?php echo $code_url?>';
     $('#qrcode').qrcode({
@@ -125,13 +127,10 @@ if($result['return_code']=='SUCCESS' && $result['result_code']=='SUCCESS'){
             success: function (data, textStatus) {
                 //从服务器得到数据，显示数据并继续查询
                 if (data.code == 1) {
-					if (confirm("您已支付完成，需要跳转到订单页面吗？")) {
-                        window.location.href=data.backurl;
-                    } else {
-                        // 用户取消
-                    }
+					layer.msg('支付成功，正在跳转中...', {icon: 16,shade: 0.1,time: 15000});
+					setTimeout(window.location.href=data.backurl, 1000);
                 }else{
-                    setTimeout("loadmsg()", 4000);
+                    setTimeout("loadmsg()", 3000);
                 }
             },
             //Ajax请求超时，继续查询
